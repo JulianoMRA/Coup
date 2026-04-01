@@ -31,7 +31,12 @@ independently verifiable before the next one begins.
   3. A WebSocket connection from the browser to the backend is established and confirmed (e.g., a ping/pong or connection event visible in the UI)
   4. The `projectStateForPlayer(gameState, playerId)` function exists, strips hidden cards for other players, and passes unit tests before any broadcast logic is written
   5. CI runs and all tests pass on every push
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 01-01-PLAN.md — Monorepo scaffold, shared types, test infrastructure (Wave 0)
+- [ ] 01-02-PLAN.md — Backend: Express + Socket.IO server, projectStateForPlayer TDD
+- [ ] 01-03-PLAN.md — Frontend: UUID session, WebSocket client, connection badge
+- [ ] 01-04-PLAN.md — CI GitHub Actions workflow + end-to-end verification
 **UI hint**: yes
 
 ### Phase 2: Room and Lobby
@@ -116,11 +121,11 @@ independently verifiable before the next one begins.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/4 | Planning complete | - |
 | 2. Room and Lobby | 0/TBD | Not started | - |
 | 3. Game Engine (FSM) | 0/TBD | Not started | - |
 | 4. Basic Game Loop | 0/TBD | Not started | - |
