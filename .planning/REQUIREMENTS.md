@@ -7,12 +7,12 @@
 
 ### Session & Room
 
-- [ ] **ROOM-01**: Jogador pode criar uma sala e receber um link de convite compartilhável
-- [ ] **ROOM-02**: Jogador pode entrar na sala via link sem cadastro (apenas digita um nome)
-- [ ] **ROOM-03**: Sala suporta de 2 a 6 jogadores
+- [x] **ROOM-01**: Jogador pode criar uma sala e receber um link de convite compartilhável
+- [x] **ROOM-02**: Jogador pode entrar na sala via link sem cadastro (apenas digita um nome)
+- [x] **ROOM-03**: Sala suporta de 2 a 6 jogadores
 - [x] **ROOM-04**: Identidade do jogador persiste via UUID no localStorage (reconexão restaura o slot)
-- [ ] **ROOM-05**: Lobby exibe todos os jogadores presentes com botão "Pronto"
-- [ ] **ROOM-06**: Criador da sala inicia o jogo quando todos estão prontos
+- [x] **ROOM-05**: Lobby exibe todos os jogadores presentes com botão "Pronto"
+- [x] **ROOM-06**: Criador da sala inicia o jogo quando todos estão prontos
 
 ### Game Initialization
 
@@ -112,12 +112,12 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ROOM-01 | Phase 2 | Pending |
-| ROOM-02 | Phase 2 | Pending |
-| ROOM-03 | Phase 2 | Pending |
+| ROOM-01 | Phase 2 | Complete |
+| ROOM-02 | Phase 2 | Complete |
+| ROOM-03 | Phase 2 | Complete |
 | ROOM-04 | Phase 1 | Complete |
-| ROOM-05 | Phase 2 | Pending |
-| ROOM-06 | Phase 2 | Pending |
+| ROOM-05 | Phase 2 | Complete |
+| ROOM-06 | Phase 2 | Complete |
 | INIT-01 | Phase 3 | Pending |
 | INIT-02 | Phase 3 | Pending |
 | INIT-03 | Phase 1 | Complete |
