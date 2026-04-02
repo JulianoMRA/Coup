@@ -11,7 +11,7 @@ independently verifiable before the next one begins.
 
 ## Phases
 
-- [x] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (completed 2026-04-02)
+- [ ] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (gap closure in progress)
 - [ ] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger
 - [ ] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring
 - [ ] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log
@@ -31,12 +31,13 @@ independently verifiable before the next one begins.
   3. A WebSocket connection from the browser to the backend is established and confirmed (e.g., a ping/pong or connection event visible in the UI)
   4. The `projectStateForPlayer(gameState, playerId)` function exists, strips hidden cards for other players, and passes unit tests before any broadcast logic is written
   5. CI runs and all tests pass on every push
-**Plans**: 4 plans
+**Plans**: 5 plans
 Plans:
 - [x] 01-01-PLAN.md — Monorepo scaffold, shared types, test infrastructure (Wave 0)
 - [x] 01-02-PLAN.md — Backend: Express + Socket.IO server, projectStateForPlayer TDD
 - [x] 01-03-PLAN.md — Frontend: UUID session, WebSocket client, connection badge
 - [x] 01-04-PLAN.md — CI GitHub Actions workflow + end-to-end verification
+- [ ] 01-05-PLAN.md — Gap closure: vitest workspace config so `npm run test` passes at repo root (CI unblock)
 **UI hint**: yes
 
 ### Phase 2: Room and Lobby
@@ -125,7 +126,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 4/4 | Complete   | 2026-04-02 |
+| 1. Foundation | 4/5 | Gap closure | - |
 | 2. Room and Lobby | 0/TBD | Not started | - |
 | 3. Game Engine (FSM) | 0/TBD | Not started | - |
 | 4. Basic Game Loop | 0/TBD | Not started | - |
