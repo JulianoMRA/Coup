@@ -18,7 +18,7 @@
 
 - [ ] **INIT-01**: Baralho de 15 cartas (3× Duke, Assassin, Captain, Ambassador, Contessa) é embaralhado no servidor
 - [ ] **INIT-02**: Cada jogador recebe 2 cartas de influência ocultas e 2 moedas ao iniciar
-- [ ] **INIT-03**: O servidor nunca envia cartas ocultas de um jogador para outros clientes
+- [x] **INIT-03**: O servidor nunca envia cartas ocultas de um jogador para outros clientes
 - [ ] **INIT-04**: Ordem de turnos é definida aleatoriamente no início
 
 ### Turn Loop
@@ -65,8 +65,8 @@
 
 ### Real-Time Sync
 
-- [ ] **SYNC-01**: Todas as transições de estado são enviadas via WebSocket a todos os clientes instantaneamente
-- [ ] **SYNC-02**: Cada cliente recebe apenas a projeção de estado filtrada para seu jogador (cartas ocultas de outros nunca trafegam)
+- [x] **SYNC-01**: Todas as transições de estado são enviadas via WebSocket a todos os clientes instantaneamente
+- [x] **SYNC-02**: Cada cliente recebe apenas a projeção de estado filtrada para seu jogador (cartas ocultas de outros nunca trafegam)
 - [ ] **SYNC-03**: Jogador que reconecta (atualiza a página) recupera seu estado de jogo via UUID da sessão
 
 ### Post-Game
@@ -120,7 +120,7 @@
 | ROOM-06 | Phase 2 | Pending |
 | INIT-01 | Phase 3 | Pending |
 | INIT-02 | Phase 3 | Pending |
-| INIT-03 | Phase 1 | Pending |
+| INIT-03 | Phase 1 | Complete |
 | INIT-04 | Phase 3 | Pending |
 | TURN-01 | Phase 4 | Pending |
 | TURN-02 | Phase 4 | Pending |
@@ -146,8 +146,8 @@
 | LOG-01 | Phase 4 | Pending |
 | LOG-02 | Phase 4 | Pending |
 | LOG-03 | Phase 4 | Pending |
-| SYNC-01 | Phase 1 | Pending |
-| SYNC-02 | Phase 1 | Pending |
+| SYNC-01 | Phase 1 | Complete |
+| SYNC-02 | Phase 1 | Complete |
 | SYNC-03 | Phase 6 | Pending |
 | POST-01 | Phase 6 | Pending |
 | POST-02 | Phase 6 | Pending |

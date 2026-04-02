@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 planned — 4 plans ready for execution
-last_updated: "2026-04-01T19:54:17.632Z"
+stopped_at: Completed 01-foundation-01-PLAN.md
+last_updated: "2026-04-02T04:00:04.870Z"
 last_activity: 2026-04-01 — Roadmap created; all 39 v1 requirements mapped across 7 phases
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 4
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-foundation P01 | 20min | 2 tasks | 25 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - Roadmap: Plain TypeScript enum + transition map for FSM (no XState)
 - Roadmap: In-memory Map<roomId, GameState> — no database in v1
 - Roadmap: Ambassador draws exchange cards only after challenge window passes (prevents deck info leak)
+- [Phase 01-foundation]: npm workspace:* protocol not supported by npm — use '*' for workspace deps
+- [Phase 01-foundation]: Tailwind v4 is CSS-first — no tailwind.config.ts, use @theme directives in CSS
+- [Phase 01-foundation]: Vitest globals require explicit types entry in tsconfig (vitest/globals)
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T19:54:17.628Z
-Stopped at: Phase 1 planned — 4 plans ready for execution
-Resume file: .planning/phases/01-foundation/01-01-PLAN.md
+Last session: 2026-04-02T04:00:04.866Z
+Stopped at: Completed 01-foundation-01-PLAN.md
+Resume file: None

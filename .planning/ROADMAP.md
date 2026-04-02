@@ -33,7 +33,7 @@ independently verifiable before the next one begins.
   5. CI runs and all tests pass on every push
 **Plans**: 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Monorepo scaffold, shared types, test infrastructure (Wave 0)
+- [x] 01-01-PLAN.md — Monorepo scaffold, shared types, test infrastructure (Wave 0)
 - [ ] 01-02-PLAN.md — Backend: Express + Socket.IO server, projectStateForPlayer TDD
 - [ ] 01-03-PLAN.md — Frontend: UUID session, WebSocket client, connection badge
 - [ ] 01-04-PLAN.md — CI GitHub Actions workflow + end-to-end verification
