@@ -11,7 +11,7 @@ independently verifiable before the next one begins.
 
 ## Phases
 
-- [x] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (gap closure in progress) (completed 2026-04-02)
+- [x] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (gap closure in progress) (completed 2026-04-02)
 - [ ] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger
 - [ ] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring
 - [ ] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log
@@ -50,7 +50,12 @@ Plans:
   3. The lobby correctly rejects a 7th join attempt (max 6 players)
   4. Each player can click "Pronto" and the host sees all ready states update in real time
   5. When all players are ready, the host can click "Iniciar" and the game transitions out of lobby state
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 02-01-PLAN.md — Shared types, install deps, test stubs (Wave 1 — foundation)
+- [ ] 02-02-PLAN.md — Backend: room-store, POST /api/rooms, socket handlers (Wave 2)
+- [ ] 02-03-PLAN.md — Frontend: home page, lobby page, useLobby hook (Wave 3)
+- [ ] 02-04-PLAN.md — Human verification: end-to-end lobby flow (Wave 4 — checkpoint)
 **UI hint**: yes
 
 ### Phase 3: Game Engine (FSM)
@@ -127,7 +132,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete   | 2026-04-02 |
-| 2. Room and Lobby | 0/TBD | Not started | - |
+| 2. Room and Lobby | 0/4 | Not started | - |
 | 3. Game Engine (FSM) | 0/TBD | Not started | - |
 | 4. Basic Game Loop | 0/TBD | Not started | - |
 | 5. Character Actions and Reactions | 0/TBD | Not started | - |
