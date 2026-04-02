@@ -12,7 +12,11 @@ Amigos conseguem jogar Coup online de forma simples: cria sala, compartilha link
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Monorepo npm workspaces with Next.js frontend + Express/Socket.IO backend running locally — *Validated in Phase 1: Foundation*
+- [x] UUID session token persists across page refresh (localStorage `coup_player_id`) — *Validated in Phase 1: Foundation*
+- [x] WebSocket connection established; badge shows Conectado/Desconectado — *Validated in Phase 1: Foundation*
+- [x] `projectStateForPlayer()` pure function exists with 6 unit tests — *Validated in Phase 1: Foundation*
+- [x] CI runs `npm run test` on push to main (all 10 tests pass) — *Validated in Phase 1: Foundation*
 
 ### Active
 
@@ -69,4 +73,4 @@ Este documento evolui a cada transição de fase e marco de milestone.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after initialization*
+*Last updated: 2026-04-02 after Phase 1 completion*
