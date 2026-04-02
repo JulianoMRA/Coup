@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-04-PLAN.md — Phase 1 Foundation complete
-last_updated: "2026-04-02T05:19:27.532Z"
+stopped_at: Completed 01-05-PLAN.md — vitest workspace config fixed, CI unblocked
+last_updated: "2026-04-02T14:17:59.371Z"
 last_activity: 2026-04-01 — Roadmap created; all 39 v1 requirements mapped across 7 phases
 progress:
   total_phases: 7
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 5
+  completed_plans: 5
   percent: 0
 ---
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P02 | 6 | 2 tasks | 4 files |
 | Phase 01-foundation P03 | 6 | 2 tasks | 7 files |
 | Phase 01-foundation P04 | 10 | 2 tasks | 1 files |
+| Phase 01-foundation P05 | 24m | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,7 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: socket.io-client v4.8.3 io() does not accept type arguments — typed via cast to Socket<ServerToClientEvents, ClientToServerEvents>
 - [Phase 01-foundation]: vitest.config.ts requires resolve.alias for @/ path to match Next.js tsconfig paths
 - [Phase 01-foundation]: CI triggers only on push to main (no pull_request) per D-07; Node 24 with npm cache
+- [Phase 01-foundation]: vitest v4.1.2 requires projects API in vitest.config.ts — workspace array format breaks alias resolution; frontend config uses fileURLToPath(import.meta.url) for ESM-safe dirname
 
 ### Pending Todos
 
@@ -89,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T05:19:27.529Z
-Stopped at: Completed 01-04-PLAN.md — Phase 1 Foundation complete
+Last session: 2026-04-02T14:17:59.363Z
+Stopped at: Completed 01-05-PLAN.md — vitest workspace config fixed, CI unblocked
 Resume file: None
