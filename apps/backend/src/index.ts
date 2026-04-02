@@ -1,26 +1,23 @@
 import express from "express"
-import { createServer } from "http"
+import { createServer } from "node:http"
 import { Server } from "socket.io"
 import type { ClientToServerEvents, ServerToClientEvents } from "@coup/shared"
+import { registerSocketHandlers } from "./socket-handler"
 
 const app = express()
-const httpServer = createServer(app)
+export const httpServer = createServer(app)
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
+export const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env["FRONTEND_URL"] ?? "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 })
 
-io.on("connection", (socket) => {
-  socket.on("PING", () => {
-    socket.emit("PONG")
-  })
-})
+registerSocketHandlers(io)
 
 const PORT = process.env["PORT"] ?? 3001
 
 httpServer.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`)
+  console.log(`Backend listening on :${PORT}`)
 })
