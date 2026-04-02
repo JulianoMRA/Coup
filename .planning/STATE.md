@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 UI-SPEC approved
-last_updated: "2026-04-02T18:33:09.972Z"
-last_activity: 2026-04-02 -- Phase 02 execution started
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-02T19:23:49.829Z"
+last_activity: 2026-04-02
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
+  completed_plans: 7
   percent: 0
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 ## Current Position
 
 Phase: 02 (room-and-lobby) — EXECUTING
-Plan: 1 of 4
-Status: Executing Phase 02
-Last activity: 2026-04-02 -- Phase 02 execution started
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-04-02
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P03 | 6 | 2 tasks | 7 files |
 | Phase 01-foundation P04 | 10 | 2 tasks | 1 files |
 | Phase 01-foundation P05 | 24m | 1 tasks | 2 files |
+| Phase 02-room-and-lobby P02 | 3min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: vitest.config.ts requires resolve.alias for @/ path to match Next.js tsconfig paths
 - [Phase 01-foundation]: CI triggers only on push to main (no pull_request) per D-07; Node 24 with npm cache
 - [Phase 01-foundation]: vitest v4.1.2 requires projects API in vitest.config.ts — workspace array format breaks alias resolution; frontend config uses fileURLToPath(import.meta.url) for ESM-safe dirname
+- [Phase 02-room-and-lobby]: Handler tests verify logic through room-store pure functions — socket integration tested in Plan 04 human verification
+- [Phase 02-room-and-lobby]: LEAVE_ROOM only calls socket.leave() with no player removal — reconnect guard deferred to Phase 6
+- [Phase 02-room-and-lobby]: nanoid customAlphabet used for 8-char alphanumeric roomId (collision-resistant, URL-safe, not Math.random)
 
 ### Pending Todos
 
@@ -91,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T14:39:02.584Z
-Stopped at: Phase 2 UI-SPEC approved
-Resume file: .planning/phases/02-room-and-lobby/02-UI-SPEC.md
+Last session: 2026-04-02T19:23:49.826Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: None

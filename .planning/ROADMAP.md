@@ -53,7 +53,7 @@ Plans:
 **Plans**: 4 plans
 Plans:
 - [x] 02-01-PLAN.md — Shared types, install deps, test stubs (Wave 1 — foundation)
-- [ ] 02-02-PLAN.md — Backend: room-store, POST /api/rooms, socket handlers (Wave 2)
+- [x] 02-02-PLAN.md — Backend: room-store, POST /api/rooms, socket handlers (Wave 2)
 - [ ] 02-03-PLAN.md — Frontend: home page, lobby page, useLobby hook (Wave 3)
 - [ ] 02-04-PLAN.md — Human verification: end-to-end lobby flow (Wave 4 — checkpoint)
 **UI hint**: yes
@@ -132,7 +132,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete   | 2026-04-02 |
-| 2. Room and Lobby | 1/4 | In Progress|  |
+| 2. Room and Lobby | 2/4 | In Progress|  |
 | 3. Game Engine (FSM) | 0/TBD | Not started | - |
 | 4. Basic Game Loop | 0/TBD | Not started | - |
 | 5. Character Actions and Reactions | 0/TBD | Not started | - |
