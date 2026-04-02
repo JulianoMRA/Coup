@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md — shared lobby types, backend deps, TDD stubs, shadcn components
-last_updated: "2026-04-02T18:38:13.776Z"
-last_activity: 2026-04-02
+stopped_at: Phase 2 UI-SPEC approved
+last_updated: "2026-04-02T18:33:09.972Z"
+last_activity: 2026-04-02 -- Phase 02 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
+  completed_plans: 5
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Amigos conseguem jogar Coup online de forma simples: cria sala, compartilha link, joga.
-**Current focus:** Phase 01 — foundation
+**Current focus:** Phase 02 — room-and-lobby
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Executing Phase 01
-Last activity: 2026-04-02
+Phase: 02 (room-and-lobby) — EXECUTING
+Plan: 1 of 4
+Status: Executing Phase 02
+Last activity: 2026-04-02 -- Phase 02 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -57,7 +57,6 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P03 | 6 | 2 tasks | 7 files |
 | Phase 01-foundation P04 | 10 | 2 tasks | 1 files |
 | Phase 01-foundation P05 | 24m | 1 tasks | 2 files |
-| Phase 02-room-and-lobby P01 | 15 | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -92,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T18:38:13.773Z
-Stopped at: Completed 02-01-PLAN.md — shared lobby types, backend deps, TDD stubs, shadcn components
-Resume file: None
+Last session: 2026-04-02T14:39:02.584Z
+Stopped at: Phase 2 UI-SPEC approved
+Resume file: .planning/phases/02-room-and-lobby/02-UI-SPEC.md
