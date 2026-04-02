@@ -54,7 +54,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Shared types, install deps, test stubs (Wave 1 — foundation)
 - [x] 02-02-PLAN.md — Backend: room-store, POST /api/rooms, socket handlers (Wave 2)
-- [ ] 02-03-PLAN.md — Frontend: home page, lobby page, useLobby hook (Wave 3)
+- [x] 02-03-PLAN.md — Frontend: home page, lobby page, useLobby hook (Wave 3)
 - [ ] 02-04-PLAN.md — Human verification: end-to-end lobby flow (Wave 4 — checkpoint)
 **UI hint**: yes
 
