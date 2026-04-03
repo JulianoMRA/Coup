@@ -391,3 +391,72 @@ describe("processAction — EXCHANGE enters AWAITING_REACTIONS (not AWAITING_EXC
     expect(result.state.deck.length).toBe(deckBefore)
   })
 })
+
+describe("processAction — EXCHANGE_CHOOSE (AWAITING_EXCHANGE)", () => {
+  it("should keep 2 chosen cards in player hand", () => {
+    const state = makeGameState({
+      phase: GamePhase.AWAITING_EXCHANGE,
+      pendingAction: {
+        type: "EXCHANGE",
+        playerId: "p1",
+        pendingReactions: {},
+        exchangeCards: [
+          { type: CardType.AMBASSADOR, revealed: false },
+          { type: CardType.DUKE, revealed: false },
+        ],
+      },
+    })
+    // p1 hand: [DUKE, CAPTAIN], exchangeCards: [AMBASSADOR, DUKE]
+    // allCards indices: 0=DUKE, 1=CAPTAIN, 2=AMBASSADOR, 3=DUKE
+    // Keep indices 0 and 2 → keep DUKE and AMBASSADOR
+    const result = processAction(state, { type: "EXCHANGE_CHOOSE", playerId: "p1", keptIndices: [0, 2] })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    const p1 = result.state.players.find(p => p.id === "p1")!
+    expect(p1.hand).toHaveLength(2)
+    expect(p1.hand.map(c => c.type)).toContain(CardType.DUKE)
+    expect(p1.hand.map(c => c.type)).toContain(CardType.AMBASSADOR)
+  })
+
+  it("should return unkept cards to the deck (deck grows by 2)", () => {
+    const deckBefore = [{ type: CardType.CONTESSA, revealed: false }]
+    const state = makeGameState({
+      phase: GamePhase.AWAITING_EXCHANGE,
+      deck: deckBefore,
+      pendingAction: {
+        type: "EXCHANGE",
+        playerId: "p1",
+        pendingReactions: {},
+        exchangeCards: [
+          { type: CardType.AMBASSADOR, revealed: false },
+          { type: CardType.DUKE, revealed: false },
+        ],
+      },
+    })
+    const result = processAction(state, { type: "EXCHANGE_CHOOSE", playerId: "p1", keptIndices: [0, 2] })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    // Returned 2 cards (CAPTAIN + DUKE at indices 1 and 3), deck was 1 → now 3
+    expect(result.state.deck).toHaveLength(3)
+  })
+
+  it("should advance to AWAITING_ACTION after exchange choice", () => {
+    const state = makeGameState({
+      phase: GamePhase.AWAITING_EXCHANGE,
+      pendingAction: {
+        type: "EXCHANGE",
+        playerId: "p1",
+        pendingReactions: {},
+        exchangeCards: [
+          { type: CardType.AMBASSADOR, revealed: false },
+          { type: CardType.DUKE, revealed: false },
+        ],
+      },
+    })
+    const result = processAction(state, { type: "EXCHANGE_CHOOSE", playerId: "p1", keptIndices: [0, 1] })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    expect(result.state.phase).toBe(GamePhase.AWAITING_ACTION)
+    expect(result.state.activePlayerId).toBe("p2")
+  })
+})

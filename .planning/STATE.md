@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-04-PLAN.md
-last_updated: "2026-04-03T21:24:32.887Z"
+stopped_at: Completed 03-05-PLAN.md
+last_updated: "2026-04-03T21:30:15.274Z"
 last_activity: 2026-04-03
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 9
-  completed_plans: 13
+  completed_plans: 14
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 ## Current Position
 
 Phase: 03 (game-engine-fsm) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-04-03
 
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-game-engine-fsm P02 | 4 | 1 tasks | 6 files |
 | Phase 03-game-engine-fsm P03 | 5 | 1 tasks | 1 files |
 | Phase 03 P04 | 8 | 1 tasks | 1 files |
+| Phase 03-game-engine-fsm P05 | 10 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,7 @@ Recent decisions affecting current work:
 - [Phase 03-game-engine-fsm]: Forced coup guard placed in processAction before handler lookup, scoped to AWAITING_ACTION phase only
 - [Phase 03]: pendingAction preserved after action resolution — reactions map stays for audit; null-ing deferred to next AWAITING_ACTION entry
 - [Phase 03]: LOSE_INFLUENCE in RESOLVING_CHALLENGE: pending.playerId identifies challenged player vs challenger to avoid wrong-player influence loss
+- [Phase 03-game-engine-fsm]: Shuffle deck after EXCHANGE_CHOOSE returns cards — prevents deck position from leaking information
 
 ### Pending Todos
 
@@ -107,6 +109,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-03T21:24:32.884Z
-Stopped at: Completed 03-04-PLAN.md
+Last session: 2026-04-03T21:30:15.270Z
+Stopped at: Completed 03-05-PLAN.md
 Resume file: None
