@@ -1,4 +1,5 @@
 import type { Card } from "./card"
+import { CardType } from "./card"
 
 export interface PlayerState {
   id: string
@@ -34,7 +35,25 @@ export interface PendingAction {
   type: string
   playerId: string
   targetId?: string
+  pendingReactions: Record<string, "WAITING" | "PASSED" | "CHALLENGED" | "BLOCKED">
+  blockerId?: string
+  blockerClaimedCard?: CardType
+  exchangeCards?: Card[]
 }
+
+export type GameAction =
+  | { type: "INCOME";           playerId: string }
+  | { type: "FOREIGN_AID";      playerId: string }
+  | { type: "TAX";              playerId: string }
+  | { type: "EXCHANGE";         playerId: string }
+  | { type: "STEAL";            playerId: string; targetId: string }
+  | { type: "ASSASSINATE";      playerId: string; targetId: string }
+  | { type: "COUP";             playerId: string; targetId: string }
+  | { type: "CHALLENGE";        playerId: string }
+  | { type: "BLOCK";            playerId: string; claimedCard: CardType }
+  | { type: "PASS";             playerId: string }
+  | { type: "LOSE_INFLUENCE";   playerId: string; cardIndex: number }
+  | { type: "EXCHANGE_CHOOSE";  playerId: string; keptIndices: [number, number] }
 
 export interface GameState {
   roomId: string
@@ -45,6 +64,8 @@ export interface GameState {
   deck: Card[]
   log: string[]
 }
+
+export type ActionResult = { ok: true; state: GameState } | { ok: false; error: string }
 
 export interface ClientGameState {
   myHand: Card[]
