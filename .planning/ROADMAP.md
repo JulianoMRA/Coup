@@ -12,7 +12,7 @@ independently verifiable before the next one begins.
 ## Phases
 
 - [x] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (gap closure in progress) (completed 2026-04-02)
-- [ ] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger
+- [x] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger (completed 2026-04-03)
 - [ ] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring
 - [ ] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log
 - [ ] **Phase 5: Character Actions and Reactions** - Full character action set, reaction window, challenge flow, block flow, Ambassador exchange
@@ -68,7 +68,13 @@ Plans:
   3. Unit tests cover illegal transition rejection (wrong player acting, wrong state input)
   4. A simulated 2-player game driven entirely by unit test inputs reaches GAME_OVER with correct winner detection
   5. The 15-card deck is shuffled server-side and per-player card assignments are never co-mingled in state
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 03-01-PLAN.md — Extend shared types (PendingAction + GameAction) + write all test stubs RED (Wave 0)
+- [ ] 03-02-PLAN.md — Implement initGame: deck build, Fisher-Yates shuffle, deal, turn order (Wave 1)
+- [ ] 03-03-PLAN.md — Implement processAction dispatcher + INCOME, FOREIGN_AID, COUP, LOSE_INFLUENCE handlers (Wave 2)
+- [ ] 03-04-PLAN.md — Implement reaction window: PASS, CHALLENGE, BLOCK, block-challenge resolution (Wave 3)
+- [ ] 03-05-PLAN.md — Implement Ambassador exchange + full 2-player game simulation to GAME_OVER (Wave 4)
 
 ### Phase 4: Basic Game Loop
 **Goal**: The FSM is wired to WebSocket and players can play a complete game using only Income, Foreign Aid, and Coup — coins are tracked, turn order is enforced, players are eliminated and may spectate, and a winner is declared in real time
@@ -132,8 +138,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete   | 2026-04-02 |
-| 2. Room and Lobby | 2/4 | In Progress|  |
-| 3. Game Engine (FSM) | 0/TBD | Not started | - |
+| 2. Room and Lobby | 4/4 | Complete   | 2026-04-03 |
+| 3. Game Engine (FSM) | 0/5 | Not started | - |
 | 4. Basic Game Loop | 0/TBD | Not started | - |
 | 5. Character Actions and Reactions | 0/TBD | Not started | - |
 | 6. Reconnection and Resilience | 0/TBD | Not started | - |
