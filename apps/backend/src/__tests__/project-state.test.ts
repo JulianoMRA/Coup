@@ -108,7 +108,7 @@ describe("projectStateForPlayer", () => {
   })
 
   it("preserves phase, activePlayerId, pendingAction, log from game state", () => {
-    const pendingAction = { type: "STEAL", playerId: "player-1", targetId: "player-2" }
+    const pendingAction = { type: "STEAL", playerId: "player-1", targetId: "player-2", pendingReactions: {} }
     const state = makeTestGameState({
       phase: GamePhase.AWAITING_REACTIONS,
       activePlayerId: "player-2",
