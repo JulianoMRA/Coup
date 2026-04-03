@@ -541,12 +541,14 @@ function handleExchangeChoose(state: GameState, action: Extract<GameAction, { ty
   const players = state.players.map(p =>
     p.id === action.playerId ? { ...p, hand: kept } : p
   )
+  const newDeck = [...state.deck, ...returned]
+  shuffleInPlace(newDeck)
   return {
     ok: true,
     state: {
       ...state,
       players,
-      deck: [...state.deck, ...returned],
+      deck: newDeck,
       phase: GamePhase.AWAITING_ACTION,
       activePlayerId: nextActivePlayer(state),
       pendingAction: null,
