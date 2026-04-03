@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-04-03T21:09:32.245Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-04-03T21:17:20.160Z"
 last_activity: 2026-04-03
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 14
-  completed_plans: 10
+  completed_plans: 12
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 ## Current Position
 
 Phase: 03 (game-engine-fsm) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-04-03
 
@@ -60,6 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-room-and-lobby P02 | 3min | 2 tasks | 5 files |
 | Phase 02-room-and-lobby P03 | 6 | 2 tasks | 5 files |
 | Phase 03-game-engine-fsm P02 | 4 | 1 tasks | 6 files |
+| Phase 03-game-engine-fsm P03 | 5 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions affecting current work:
 - [Phase 02-room-and-lobby]: class-variance-authority and lucide-react added to package.json — required by shadcn components and lobby page Copy icon
 - [Phase 03-game-engine-fsm]: shuffleInPlace uses Fisher-Yates (not sort-based) for unbiased shuffle
 - [Phase 03-game-engine-fsm]: pendingReactions field on PendingAction is required (not optional) — always present when PendingAction exists
+- [Phase 03-game-engine-fsm]: notImplemented stubs in transitionMap return predictable error while keeping map entry — lets wave-4 tests assert RED without 'missing from map' confusion
+- [Phase 03-game-engine-fsm]: Forced coup guard placed in processAction before handler lookup, scoped to AWAITING_ACTION phase only
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-03T21:09:32.242Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-04-03T21:17:20.155Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None
