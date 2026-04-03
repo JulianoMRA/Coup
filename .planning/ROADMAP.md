@@ -71,7 +71,7 @@ Plans:
 **Plans**: 5 plans
 Plans:
 - [ ] 03-01-PLAN.md — Extend shared types (PendingAction + GameAction) + write all test stubs RED (Wave 0)
-- [ ] 03-02-PLAN.md — Implement initGame: deck build, Fisher-Yates shuffle, deal, turn order (Wave 1)
+- [x] 03-02-PLAN.md — Implement initGame: deck build, Fisher-Yates shuffle, deal, turn order (Wave 1)
 - [ ] 03-03-PLAN.md — Implement processAction dispatcher + INCOME, FOREIGN_AID, COUP, LOSE_INFLUENCE handlers (Wave 2)
 - [ ] 03-04-PLAN.md — Implement reaction window: PASS, CHALLENGE, BLOCK, block-challenge resolution (Wave 3)
 - [ ] 03-05-PLAN.md — Implement Ambassador exchange + full 2-player game simulation to GAME_OVER (Wave 4)

@@ -16,10 +16,10 @@
 
 ### Game Initialization
 
-- [ ] **INIT-01**: Baralho de 15 cartas (3× Duke, Assassin, Captain, Ambassador, Contessa) é embaralhado no servidor
-- [ ] **INIT-02**: Cada jogador recebe 2 cartas de influência ocultas e 2 moedas ao iniciar
+- [x] **INIT-01**: Baralho de 15 cartas (3× Duke, Assassin, Captain, Ambassador, Contessa) é embaralhado no servidor
+- [x] **INIT-02**: Cada jogador recebe 2 cartas de influência ocultas e 2 moedas ao iniciar
 - [x] **INIT-03**: O servidor nunca envia cartas ocultas de um jogador para outros clientes
-- [ ] **INIT-04**: Ordem de turnos é definida aleatoriamente no início
+- [x] **INIT-04**: Ordem de turnos é definida aleatoriamente no início
 
 ### Turn Loop
 
@@ -118,10 +118,10 @@
 | ROOM-04 | Phase 1 | Complete |
 | ROOM-05 | Phase 2 | Complete |
 | ROOM-06 | Phase 2 | Complete |
-| INIT-01 | Phase 3 | Pending |
-| INIT-02 | Phase 3 | Pending |
+| INIT-01 | Phase 3 | Complete |
+| INIT-02 | Phase 3 | Complete |
 | INIT-03 | Phase 1 | Complete |
-| INIT-04 | Phase 3 | Pending |
+| INIT-04 | Phase 3 | Complete |
 | TURN-01 | Phase 4 | Pending |
 | TURN-02 | Phase 4 | Pending |
 | TURN-03 | Phase 4 | Pending |

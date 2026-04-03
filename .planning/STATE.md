@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-03T16:19:52.329Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-04-03T21:09:32.245Z"
 last_activity: 2026-04-03
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 14
+  completed_plans: 10
   percent: 0
 ---
 
@@ -21,12 +21,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Amigos conseguem jogar Coup online de forma simples: cria sala, compartilha link, joga.
-**Current focus:** Phase 02 — room-and-lobby
+**Current focus:** Phase 03 — game-engine-fsm
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 03 (game-engine-fsm) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
 Last activity: 2026-04-03
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P05 | 24m | 1 tasks | 2 files |
 | Phase 02-room-and-lobby P02 | 3min | 2 tasks | 5 files |
 | Phase 02-room-and-lobby P03 | 6 | 2 tasks | 5 files |
+| Phase 03-game-engine-fsm P02 | 4 | 1 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 02-room-and-lobby]: nanoid customAlphabet used for 8-char alphanumeric roomId (collision-resistant, URL-safe, not Math.random)
 - [Phase 02-room-and-lobby]: useLobby exports getPlayerName and savePlayerName as pure utility functions for testability
 - [Phase 02-room-and-lobby]: class-variance-authority and lucide-react added to package.json — required by shadcn components and lobby page Copy icon
+- [Phase 03-game-engine-fsm]: shuffleInPlace uses Fisher-Yates (not sort-based) for unbiased shuffle
+- [Phase 03-game-engine-fsm]: pendingReactions field on PendingAction is required (not optional) — always present when PendingAction exists
 
 ### Pending Todos
 
@@ -98,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T19:33:59.674Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-03T21:09:32.242Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
