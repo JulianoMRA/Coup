@@ -46,8 +46,8 @@
 ### Influence & Elimination
 
 - [x] **INFL-01**: Jogador perde influência ao perder desafio, ser assassinado ou sofrer Coup
-- [ ] **INFL-02**: Quando perde influência com 2 cartas, jogador escolhe qual carta revelar/descartar
-- [ ] **INFL-03**: Carta descartada é virada face-up visível a todos (identidade revelada)
+- [x] **INFL-02**: Quando perde influência com 2 cartas, jogador escolhe qual carta revelar/descartar
+- [x] **INFL-03**: Carta descartada é virada face-up visível a todos (identidade revelada)
 - [x] **INFL-04**: Jogador com 0 influência é eliminado e vira espectador (permanece na sala visualizando)
 - [x] **INFL-05**: Último jogador com influência é declarado vencedor
 
@@ -136,8 +136,8 @@
 | CHAL-04 | Phase 5 | Pending |
 | CHAL-05 | Phase 5 | Pending |
 | INFL-01 | Phase 4 | Complete |
-| INFL-02 | Phase 4 | Pending |
-| INFL-03 | Phase 4 | Pending |
+| INFL-02 | Phase 4 | Complete |
+| INFL-03 | Phase 4 | Complete |
 | INFL-04 | Phase 4 | Complete |
 | INFL-05 | Phase 4 | Complete |
 | AMBX-01 | Phase 4 | Pending |
