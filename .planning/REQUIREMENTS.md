@@ -23,10 +23,10 @@
 
 ### Turn Loop
 
-- [ ] **TURN-01**: Apenas o jogador ativo pode iniciar uma ação no seu turno
-- [ ] **TURN-02**: Ações disponíveis por estado de moedas: Income (+1), Foreign Aid (+2), Coup (7 moedas, obrigatório com 10+)
+- [x] **TURN-01**: Apenas o jogador ativo pode iniciar uma ação no seu turno
+- [x] **TURN-02**: Ações disponíveis por estado de moedas: Income (+1), Foreign Aid (+2), Coup (7 moedas, obrigatório com 10+)
 - [ ] **TURN-03**: Ações de personagem: Duke (Tax +3), Assassin (Assassinate, custa 3), Captain (Steal), Ambassador (Exchange)
-- [ ] **TURN-04**: Alvo deve ser selecionado para ações que requerem alvo (Coup, Assassinate, Steal)
+- [x] **TURN-04**: Alvo deve ser selecionado para ações que requerem alvo (Coup, Assassinate, Steal)
 
 ### Reaction Window
 
@@ -45,11 +45,11 @@
 
 ### Influence & Elimination
 
-- [ ] **INFL-01**: Jogador perde influência ao perder desafio, ser assassinado ou sofrer Coup
+- [x] **INFL-01**: Jogador perde influência ao perder desafio, ser assassinado ou sofrer Coup
 - [ ] **INFL-02**: Quando perde influência com 2 cartas, jogador escolhe qual carta revelar/descartar
 - [ ] **INFL-03**: Carta descartada é virada face-up visível a todos (identidade revelada)
-- [ ] **INFL-04**: Jogador com 0 influência é eliminado e vira espectador (permanece na sala visualizando)
-- [ ] **INFL-05**: Último jogador com influência é declarado vencedor
+- [x] **INFL-04**: Jogador com 0 influência é eliminado e vira espectador (permanece na sala visualizando)
+- [x] **INFL-05**: Último jogador com influência é declarado vencedor
 
 ### Ambassador Exchange
 
@@ -122,10 +122,10 @@
 | INIT-02 | Phase 3 | Complete |
 | INIT-03 | Phase 1 | Complete |
 | INIT-04 | Phase 3 | Complete |
-| TURN-01 | Phase 4 | Pending |
-| TURN-02 | Phase 4 | Pending |
+| TURN-01 | Phase 4 | Complete |
+| TURN-02 | Phase 4 | Complete |
 | TURN-03 | Phase 4 | Pending |
-| TURN-04 | Phase 4 | Pending |
+| TURN-04 | Phase 4 | Complete |
 | REAC-01 | Phase 5 | Pending |
 | REAC-02 | Phase 5 | Pending |
 | REAC-03 | Phase 5 | Pending |
@@ -135,11 +135,11 @@
 | CHAL-03 | Phase 5 | Pending |
 | CHAL-04 | Phase 5 | Pending |
 | CHAL-05 | Phase 5 | Pending |
-| INFL-01 | Phase 4 | Pending |
+| INFL-01 | Phase 4 | Complete |
 | INFL-02 | Phase 4 | Pending |
 | INFL-03 | Phase 4 | Pending |
-| INFL-04 | Phase 4 | Pending |
-| INFL-05 | Phase 4 | Pending |
+| INFL-04 | Phase 4 | Complete |
+| INFL-05 | Phase 4 | Complete |
 | AMBX-01 | Phase 4 | Pending |
 | AMBX-02 | Phase 4 | Pending |
 | AMBX-03 | Phase 4 | Pending |
