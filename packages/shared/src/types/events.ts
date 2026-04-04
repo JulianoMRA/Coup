@@ -1,4 +1,4 @@
-import type { ClientGameState } from "./game-state"
+import type { ClientGameState, GameAction } from "./game-state"
 import type { LobbyState } from "./lobby"
 
 export interface ServerToClientEvents {
@@ -15,4 +15,5 @@ export interface ClientToServerEvents {
   LEAVE_ROOM: (roomId: string) => void
   SET_READY: (roomId: string, isReady: boolean) => void
   START_GAME: (roomId: string) => void
+  GAME_ACTION: (roomId: string, action: GameAction) => void
 }
