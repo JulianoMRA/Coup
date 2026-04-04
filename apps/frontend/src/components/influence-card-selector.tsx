@@ -16,8 +16,8 @@ export function InfluenceCardSelector({
   playerId,
 }: InfluenceCardSelectorProps) {
   return (
-    <div className="p-4 flex flex-col gap-2">
-      <p className="text-sm font-semibold mb-2">Escolha uma carta para revelar:</p>
+    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-background border-t border-border flex flex-col gap-2">
+      <p className="text-sm font-semibold text-center">Escolha uma carta para revelar:</p>
       {myHand.map((card, originalIndex) => {
         if (card.revealed) return null
         return (

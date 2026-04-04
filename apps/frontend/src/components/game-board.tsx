@@ -68,13 +68,6 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
               ))}
             </CardContent>
           </UICard>
-          {needsInfluenceChoice && (
-            <InfluenceCardSelector
-              myHand={game.myHand}
-              roomId={roomId}
-              playerId={playerId}
-            />
-          )}
         </div>
         <div className="md:hidden">
           <Button
@@ -90,7 +83,13 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
         </div>
       </div>
       {error && <p className="text-sm text-destructive px-4">{error}</p>}
-      {selectingCoupTarget && game.phase === GamePhase.AWAITING_ACTION ? (
+      {needsInfluenceChoice ? (
+        <InfluenceCardSelector
+          myHand={game.myHand}
+          roomId={roomId}
+          playerId={playerId}
+        />
+      ) : selectingCoupTarget && game.phase === GamePhase.AWAITING_ACTION ? (
         <CoupTargetSelector
           players={game.players}
           myId={playerId}

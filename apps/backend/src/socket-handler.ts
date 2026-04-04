@@ -18,6 +18,8 @@ export function registerSocketHandlers(
     }
 
     console.log(`Player connected: ${playerId}`)
+    // Each player joins a private room so we can send personalised projections
+    socket.join(playerId)
 
     socket.on("PING", () => {
       socket.emit("PONG")
@@ -63,7 +65,7 @@ export function registerSocketHandlers(
 
       for (const player of initialState.players) {
         const projection = projectStateForPlayer(initialState, player.id)
-        io.to(roomId).emit("STATE_UPDATE", projection)
+        io.to(player.id).emit("STATE_UPDATE", projection)
       }
     })
 
@@ -84,7 +86,7 @@ export function registerSocketHandlers(
 
       for (const player of result.state.players) {
         const projection = projectStateForPlayer(result.state, player.id)
-        io.to(roomId).emit("STATE_UPDATE", projection)
+        io.to(player.id).emit("STATE_UPDATE", projection)
       }
     })
 
