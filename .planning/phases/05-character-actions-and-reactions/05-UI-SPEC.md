@@ -92,6 +92,12 @@ Color rules for new components:
 
 ---
 
+## Visuals
+
+Primary focal points: the active player's coin count displayed in the player list, and the primary CTA button in the bottom bar (Passar / Contestar / Confirmar Troca depending on phase). These are the two elements the player's eye must reach first in any game state.
+
+---
+
 ## Component Inventory
 
 All new components live in `apps/frontend/src/components/`.
@@ -160,7 +166,7 @@ When local player has already reacted: hide button row, show `"Você passou — 
 BlockClaimSelector (inline, replaces button row when "Bloquear" is clicked):
 - Prompt: `"Bloquear como:"` — `text-sm font-semibold text-center`
 - One button per valid claim card (Duke / Contessa / Captain / Ambassador as applicable): `variant="outline"`, clicking emits BLOCK immediately
-- Cancel link: `"Cancelar"` as `variant="ghost"` restores the Contestar / Bloquear / Passar row
+- Cancel link: `"Voltar"` as `variant="ghost"` restores the Contestar / Bloquear / Passar row
 
 ### BlockChallengeBar
 
@@ -206,7 +212,7 @@ Other players: no special UI. They wait silently. GameBoard shows default Action
 | ReactionBar pending indicator | Aguardando: [name1], [name2] |
 | ReactionBar already-passed state | Você passou — aguardando os demais |
 | BlockClaimSelector prompt | Bloquear como: |
-| BlockClaimSelector cancel | Cancelar |
+| BlockClaimSelector cancel | Voltar |
 | BlockChallengeBar banner | [Name] bloqueou com [Card] — Contestar? |
 | BlockChallengeBar waiting (non-active) | Aguardando [Name] decidir |
 | ExchangeSelector prompt | Escolha 2 cartas para manter: |
