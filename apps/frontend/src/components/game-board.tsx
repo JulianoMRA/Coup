@@ -1,26 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { ClientGameState } from "@coup/shared"
+import { GamePhase } from "@coup/shared"
 import { PlayerPanel } from "@/components/player-panel"
 import { ActionBar } from "@/components/action-bar"
 import { GameLog } from "@/components/game-log"
 import { ConnectionBadge } from "@/components/connection-badge"
+import { CoupTargetSelector } from "@/components/coup-target-selector"
+import { InfluenceCardSelector } from "@/components/influence-card-selector"
+import { WinnerOverlay } from "@/components/winner-overlay"
 import { Button } from "@/components/ui/button"
 
 interface GameBoardProps {
   game: ClientGameState
   playerId: string
   roomId: string
+  error?: string | null
 }
 
-export function GameBoard({ game, playerId, roomId }: GameBoardProps) {
+export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
   const [selectingCoupTarget, setSelectingCoupTarget] = useState(false)
   const [showMobileLog, setShowMobileLog] = useState(false)
 
   const isMyTurn = game.activePlayerId === playerId
   const myPlayer = game.players.find((p) => p.id === playerId)
   const myCoins = myPlayer?.coins ?? 0
+
+  const needsInfluenceChoice =
+    game.phase === GamePhase.AWAITING_COUP_TARGET &&
+    game.pendingAction?.targetId === playerId
+
+  useEffect(() => {
+    if (game.phase !== GamePhase.AWAITING_ACTION) {
+      setSelectingCoupTarget(false)
+    }
+  }, [game.phase])
 
   return (
     <div className="min-h-screen flex flex-col pb-16">
@@ -35,6 +50,13 @@ export function GameBoard({ game, playerId, roomId }: GameBoardProps) {
             activePlayerId={game.activePlayerId}
             myId={playerId}
           />
+          {needsInfluenceChoice && (
+            <InfluenceCardSelector
+              myHand={game.myHand}
+              roomId={roomId}
+              playerId={playerId}
+            />
+          )}
         </div>
         <div className="md:hidden">
           <Button
@@ -49,14 +71,28 @@ export function GameBoard({ game, playerId, roomId }: GameBoardProps) {
           <GameLog log={game.log} />
         </div>
       </div>
-      <ActionBar
-        roomId={roomId}
-        playerId={playerId}
-        isMyTurn={isMyTurn}
-        myCoins={myCoins}
-        phase={game.phase}
-        onSelectCoupTarget={() => setSelectingCoupTarget(true)}
-      />
+      {error && <p className="text-sm text-destructive px-4">{error}</p>}
+      {selectingCoupTarget && game.phase === GamePhase.AWAITING_ACTION ? (
+        <CoupTargetSelector
+          players={game.players}
+          myId={playerId}
+          roomId={roomId}
+          playerId={playerId}
+          onCancel={() => setSelectingCoupTarget(false)}
+        />
+      ) : (
+        <ActionBar
+          roomId={roomId}
+          playerId={playerId}
+          isMyTurn={isMyTurn}
+          myCoins={myCoins}
+          phase={game.phase}
+          onSelectCoupTarget={() => setSelectingCoupTarget(true)}
+        />
+      )}
+      {game.phase === GamePhase.GAME_OVER && (
+        <WinnerOverlay players={game.players} />
+      )}
     </div>
   )
 }

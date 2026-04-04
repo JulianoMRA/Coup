@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { ConnectionBadge } from "@/components/connection-badge"
 import { getOrCreatePlayerId } from "@/lib/session"
 import { getPlayerName, savePlayerName, useLobby } from "@/hooks/use-lobby"
+import { useGame } from "@/hooks/use-game"
+import { GameBoard } from "@/components/game-board"
 import { socket } from "@/lib/socket"
 import { cn } from "@/lib/utils"
 
@@ -22,6 +24,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   const [copied, setCopied] = useState(false)
   const [showFallback, setShowFallback] = useState(false)
   const [myReady, setMyReady] = useState(false)
+  const [gameActive, setGameActive] = useState(false)
 
   useEffect(() => {
     setPlayerId(getOrCreatePlayerId())
@@ -30,7 +33,14 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     socket.connect()
   }, [])
 
+  useEffect(() => {
+    function onGameStarted() { setGameActive(true) }
+    socket.on("GAME_STARTED", onGameStarted)
+    return () => { socket.off("GAME_STARTED", onGameStarted) }
+  }, [])
+
   const { lobby, error } = useLobby(roomId, playerId, playerName)
+  const { game, error: gameError } = useGame(roomId, playerId)
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!/[a-zA-Z0-9 -]/.test(e.key) && e.key.length === 1) {
@@ -63,6 +73,11 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
 
   function handleStartGame() {
     socket.emit("START_GAME", roomId)
+  }
+
+  // Game active — switch from lobby to game board
+  if (gameActive && game) {
+    return <GameBoard game={game} playerId={playerId} roomId={roomId} error={gameError} />
   }
 
   // Room not found
