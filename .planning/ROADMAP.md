@@ -79,7 +79,7 @@ Plans:
 ### Phase 4: Basic Game Loop
 **Goal**: The FSM is wired to WebSocket and players can play a complete game using only Income, Foreign Aid, and Coup — coins are tracked, turn order is enforced, players are eliminated and may spectate, and a winner is declared in real time
 **Depends on**: Phase 3
-**Requirements**: TURN-01, TURN-02, TURN-03, TURN-04, INFL-01, INFL-02, INFL-03, INFL-04, INFL-05, AMBX-01, AMBX-02, AMBX-03, LOG-01, LOG-02, LOG-03
+**Requirements**: TURN-01, TURN-02, TURN-03, TURN-04, INFL-01, INFL-02, INFL-03, INFL-04, INFL-05, LOG-01, LOG-02, LOG-03
 **Success Criteria** (what must be TRUE):
   1. Only the active player sees enabled action buttons; all other players' action buttons are disabled or hidden
   2. A player with 10+ coins is forced to Coup (no other action buttons are available)
@@ -98,7 +98,7 @@ Plans:
 ### Phase 5: Character Actions and Reactions
 **Goal**: The full Coup ruleset is playable end-to-end — all character actions work, any player can challenge or block in the reaction window, block-challenges resolve correctly, influence loss selection works, and Ambassador exchange completes
 **Depends on**: Phase 4
-**Requirements**: REAC-01, REAC-02, REAC-03, REAC-04, CHAL-01, CHAL-02, CHAL-03, CHAL-04, CHAL-05
+**Requirements**: REAC-01, REAC-02, REAC-03, REAC-04, CHAL-01, CHAL-02, CHAL-03, CHAL-04, CHAL-05, AMBX-01, AMBX-02, AMBX-03
 **Success Criteria** (what must be TRUE):
   1. After any character action is announced, all non-acting players see challenge and/or block buttons (where applicable by rule) and must click "Passar" or react before the action resolves
   2. The reaction window UI shows a clear indicator of which players have not yet responded
