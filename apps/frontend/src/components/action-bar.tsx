@@ -10,6 +10,7 @@ interface ActionBarProps {
   isMyTurn: boolean
   myCoins: number
   phase: GamePhase
+  pendingReactions?: Record<string, "WAITING" | "PASSED" | "CHALLENGED" | "BLOCKED"> | null
   onSelectCoupTarget: () => void
 }
 
@@ -19,12 +20,17 @@ export function ActionBar({
   isMyTurn,
   myCoins,
   phase,
+  pendingReactions,
   onSelectCoupTarget,
 }: ActionBarProps) {
   const isActionPhase = phase === GamePhase.AWAITING_ACTION
   const canAct = isMyTurn && isActionPhase
   const forcedCoup = canAct && myCoins >= 10
   const canCoup = myCoins >= 7
+
+  const needsReaction =
+    phase === GamePhase.AWAITING_REACTIONS &&
+    pendingReactions?.[playerId] === "WAITING"
 
   function handleIncome() {
     socket.emit("GAME_ACTION", roomId, { type: "INCOME", playerId })
@@ -36,6 +42,21 @@ export function ActionBar({
 
   function handleCoup() {
     onSelectCoupTarget()
+  }
+
+  function handlePass() {
+    socket.emit("GAME_ACTION", roomId, { type: "PASS", playerId })
+  }
+
+  if (needsReaction) {
+    return (
+      <div className="fixed bottom-0 left-0 right-0 h-16 px-6 flex items-center justify-center gap-4 bg-background border-t border-border">
+        <p className="text-sm text-muted-foreground">Ajuda Externa declarada —</p>
+        <Button variant="secondary" onClick={handlePass}>
+          Passar
+        </Button>
+      </div>
+    )
   }
 
   return (

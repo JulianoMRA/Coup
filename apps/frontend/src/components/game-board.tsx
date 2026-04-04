@@ -11,6 +11,8 @@ import { CoupTargetSelector } from "@/components/coup-target-selector"
 import { InfluenceCardSelector } from "@/components/influence-card-selector"
 import { WinnerOverlay } from "@/components/winner-overlay"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card as UICard, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface GameBoardProps {
   game: ClientGameState
@@ -44,12 +46,28 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
         <ConnectionBadge />
       </header>
       <div className="flex-1 flex flex-col md:flex-row gap-4 p-4">
-        <div className="w-full md:w-72 shrink-0">
+        <div className="w-full md:w-72 shrink-0 flex flex-col gap-3">
           <PlayerPanel
             players={game.players}
             activePlayerId={game.activePlayerId}
             myId={playerId}
           />
+          <UICard>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Minhas Cartas</CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-2 flex-wrap">
+              {game.myHand.map((card, idx) => (
+                <Badge
+                  key={idx}
+                  variant={card.revealed ? "outline" : "secondary"}
+                  className="text-sm px-3 py-1"
+                >
+                  {card.revealed ? `${card.type} (revelada)` : card.type}
+                </Badge>
+              ))}
+            </CardContent>
+          </UICard>
           {needsInfluenceChoice && (
             <InfluenceCardSelector
               myHand={game.myHand}
@@ -87,6 +105,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           isMyTurn={isMyTurn}
           myCoins={myCoins}
           phase={game.phase}
+          pendingReactions={game.pendingAction?.pendingReactions}
           onSelectCoupTarget={() => setSelectingCoupTarget(true)}
         />
       )}
