@@ -25,7 +25,7 @@
 
 - [x] **TURN-01**: Apenas o jogador ativo pode iniciar uma ação no seu turno
 - [x] **TURN-02**: Ações disponíveis por estado de moedas: Income (+1), Foreign Aid (+2), Coup (7 moedas, obrigatório com 10+)
-- [ ] **TURN-03**: Ações de personagem: Duke (Tax +3), Assassin (Assassinate, custa 3), Captain (Steal), Ambassador (Exchange)
+- [x] **TURN-03**: Ações de personagem: Duke (Tax +3), Assassin (Assassinate, custa 3), Captain (Steal), Ambassador (Exchange)
 - [x] **TURN-04**: Alvo deve ser selecionado para ações que requerem alvo (Coup, Assassinate, Steal)
 
 ### Reaction Window
@@ -59,9 +59,9 @@
 
 ### Game Log
 
-- [ ] **LOG-01**: Log de ações visível a todos exibe cada evento público em ordem cronológica
-- [ ] **LOG-02**: Log nunca expõe cartas ocultas (ex: "Jogador A perdeu uma influência" e não "Jogador A perdeu seu Duke")
-- [ ] **LOG-03**: Coins e contagem de influências de cada jogador são públicos e visíveis a todos
+- [x] **LOG-01**: Log de ações visível a todos exibe cada evento público em ordem cronológica
+- [x] **LOG-02**: Log nunca expõe cartas ocultas (ex: "Jogador A perdeu uma influência" e não "Jogador A perdeu seu Duke")
+- [x] **LOG-03**: Coins e contagem de influências de cada jogador são públicos e visíveis a todos
 
 ### Real-Time Sync
 
@@ -124,7 +124,7 @@
 | INIT-04 | Phase 3 | Complete |
 | TURN-01 | Phase 4 | Complete |
 | TURN-02 | Phase 4 | Complete |
-| TURN-03 | Phase 4 | Pending |
+| TURN-03 | Phase 4 | Complete |
 | TURN-04 | Phase 4 | Complete |
 | REAC-01 | Phase 5 | Pending |
 | REAC-02 | Phase 5 | Pending |
@@ -143,9 +143,9 @@
 | AMBX-01 | Phase 4 | Pending |
 | AMBX-02 | Phase 4 | Pending |
 | AMBX-03 | Phase 4 | Pending |
-| LOG-01 | Phase 4 | Pending |
-| LOG-02 | Phase 4 | Pending |
-| LOG-03 | Phase 4 | Pending |
+| LOG-01 | Phase 4 | Complete |
+| LOG-02 | Phase 4 | Complete |
+| LOG-03 | Phase 4 | Complete |
 | SYNC-01 | Phase 1 | Complete |
 | SYNC-02 | Phase 1 | Complete |
 | SYNC-03 | Phase 6 | Pending |
