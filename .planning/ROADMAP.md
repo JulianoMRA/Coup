@@ -14,7 +14,7 @@ independently verifiable before the next one begins.
 - [x] **Phase 1: Foundation** - Monorepo setup, two-service architecture, UUID session model, and the per-player state projection function (gap closure in progress) (completed 2026-04-02)
 - [x] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger (completed 2026-04-03)
 - [x] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring (completed 2026-04-03)
-- [ ] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log
+- [x] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log (completed 2026-04-04)
 - [ ] **Phase 5: Character Actions and Reactions** - Full character action set, reaction window, challenge flow, block flow, Ambassador exchange
 - [ ] **Phase 6: Reconnection and Resilience** - Mid-game reconnect, disconnect grace timers, rematch, spectator mode, room cleanup
 - [ ] **Phase 7: UX Polish and Deployment** - Visual indicators, responsive layout, Railway/Vercel deployment, production config
@@ -92,7 +92,7 @@ Plans:
 - [x] 04-01-PLAN.md — Shared events + game-store + socket handler GAME_ACTION wiring (Wave 1)
 - [x] 04-02-PLAN.md — useGame hook + PlayerPanel + ActionBar + GameLog + GameBoard components (Wave 2)
 - [x] 04-03-PLAN.md — CoupTargetSelector + InfluenceCardSelector + WinnerOverlay + room page integration (Wave 3)
-- [ ] 04-04-PLAN.md — Human verification: complete 2-player game flow (Wave 4 — checkpoint)
+- [x] 04-04-PLAN.md — Human verification: complete 2-player game flow (Wave 4 — checkpoint)
 **UI hint**: yes
 
 ### Phase 5: Character Actions and Reactions
@@ -106,7 +106,12 @@ Plans:
   4. A block can itself be challenged: if the block-challenge succeeds the original action resolves; if it fails the action is cancelled and the blocker survives
   5. A player successfully challenging another player's character claim draws a replacement card from the deck after shuffling the proven card back in
   6. When using Ambassador Exchange, a player sees 4 cards (their 2 plus 2 drawn), selects exactly 2 to keep, and the remaining 2 are shuffled back into the deck
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 05-01-PLAN.md — Backend CHAL-05 card swap + ActionBar row 2 character actions (Wave 1)
+- [ ] 05-02-PLAN.md — ReactionBar + BlockClaimSelector + BlockChallengeBar components (Wave 2)
+- [ ] 05-03-PLAN.md — ExchangeSelector + GameBoard full phase routing wiring (Wave 3)
+- [ ] 05-04-PLAN.md — Human verification: full Coup ruleset end-to-end (Wave 4 — checkpoint)
 **UI hint**: yes
 
 ### Phase 6: Reconnection and Resilience
@@ -145,7 +150,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 1. Foundation | 5/5 | Complete   | 2026-04-02 |
 | 2. Room and Lobby | 4/4 | Complete   | 2026-04-03 |
 | 3. Game Engine (FSM) | 5/5 | Complete   | 2026-04-03 |
-| 4. Basic Game Loop | 3/4 | In Progress|  |
-| 5. Character Actions and Reactions | 0/TBD | Not started | - |
+| 4. Basic Game Loop | 4/4 | Complete   | 2026-04-04 |
+| 5. Character Actions and Reactions | 0/4 | In progress | - |
 | 6. Reconnection and Resilience | 0/TBD | Not started | - |
 | 7. UX Polish and Deployment | 0/TBD | Not started | - |
