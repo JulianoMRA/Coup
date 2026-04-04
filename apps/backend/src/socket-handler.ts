@@ -1,6 +1,9 @@
 import type { Server } from "socket.io"
-import type { ClientToServerEvents, ServerToClientEvents } from "@coup/shared"
+import type { ClientToServerEvents, ServerToClientEvents, GameAction } from "@coup/shared"
 import { rooms, joinRoom, setReady, toLobbyState } from "./rooms/room-store"
+import { initGame, processAction } from "./game/game-engine"
+import { games, getGame, setGame } from "./game/game-store"
+import { projectStateForPlayer } from "./game/project-state"
 
 export function registerSocketHandlers(
   io: Server<ClientToServerEvents, ServerToClientEvents>
@@ -51,8 +54,38 @@ export function registerSocketHandlers(
       if (room.hostId !== playerId) { socket.emit("ERROR", "Only host can start"); return }
       if (room.players.length < 2) { socket.emit("ERROR", "Need at least 2 players"); return }
       if (!room.players.every((p) => p.isReady)) { socket.emit("ERROR", "Not all players are ready"); return }
+
+      const initialState = initGame(roomId, room.players)
+      setGame(roomId, initialState)
+
       room.status = "IN_GAME"
       io.to(roomId).emit("GAME_STARTED", roomId)
+
+      for (const player of initialState.players) {
+        const projection = projectStateForPlayer(initialState, player.id)
+        io.to(roomId).emit("STATE_UPDATE", projection)
+      }
+    })
+
+    socket.on("GAME_ACTION", (roomId: string, action: GameAction) => {
+      const state = getGame(roomId)
+      if (!state) {
+        socket.emit("ERROR", "Game not found")
+        return
+      }
+
+      const result = processAction(state, action)
+      if (!result.ok) {
+        socket.emit("ERROR", result.error)
+        return
+      }
+
+      setGame(roomId, result.state)
+
+      for (const player of result.state.players) {
+        const projection = projectStateForPlayer(result.state, player.id)
+        io.to(roomId).emit("STATE_UPDATE", projection)
+      }
     })
 
     socket.on("disconnect", () => {
