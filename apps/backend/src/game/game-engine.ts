@@ -400,12 +400,24 @@ function handleChallengeReaction(state: GameState, action: Extract<GameAction, {
 
   const updatedReactions = { ...reactions, [action.playerId]: "CHALLENGED" as const }
 
+  const claimedCardMap: Record<string, CardType> = {
+    TAX: CardType.DUKE,
+    STEAL: CardType.CAPTAIN,
+    ASSASSINATE: CardType.ASSASSIN,
+    EXCHANGE: CardType.AMBASSADOR,
+  }
+  const claimedCard = claimedCardMap[pending.type]
+  const challengedPlayer = state.players.find(p => p.id === pending.playerId)!
+  const hasCard = claimedCard !== undefined &&
+    challengedPlayer.hand.some(c => c.type === claimedCard && !c.revealed)
+  const losingPlayerId = hasCard ? action.playerId : pending.playerId
+
   return {
     ok: true,
     state: {
       ...state,
       phase: GamePhase.RESOLVING_CHALLENGE,
-      pendingAction: { ...pending, pendingReactions: updatedReactions },
+      pendingAction: { ...pending, pendingReactions: updatedReactions, losingPlayerId },
       log: [...state.log, `${action.playerId} challenges`],
     },
   }
@@ -475,6 +487,12 @@ function handlePassBlockChallenge(state: GameState, action: Extract<GameAction, 
 
 function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAction, { type: "CHALLENGE" }>): ActionResult {
   const pending = state.pendingAction!
+  const blockerId = pending.blockerId!
+
+  const blockerPlayer = state.players.find(p => p.id === blockerId)!
+  const hasCard = pending.blockerClaimedCard !== undefined &&
+    blockerPlayer.hand.some(c => c.type === pending.blockerClaimedCard && !c.revealed)
+  const losingPlayerId = hasCard ? action.playerId : blockerId
 
   return {
     ok: true,
@@ -484,6 +502,7 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
       pendingAction: {
         ...pending,
         pendingReactions: { ...pending.pendingReactions, [action.playerId]: "CHALLENGED" as const },
+        losingPlayerId,
       },
       log: [...state.log, `${action.playerId} challenges the block`],
     },
@@ -495,6 +514,10 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
 function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract<GameAction, { type: "LOSE_INFLUENCE" }>): ActionResult {
   const pending = state.pendingAction!
   const challengedPlayerId = pending.playerId
+
+  if (pending.losingPlayerId && action.playerId !== pending.losingPlayerId) {
+    return { ok: false, error: "You are not the player who must lose influence" }
+  }
 
   // The player losing influence is the challenged player (bluffing) → action cancelled
   if (action.playerId === challengedPlayerId) {
@@ -532,6 +555,10 @@ function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract
 function handleLoseInfluenceResolvingBlockChallenge(state: GameState, action: Extract<GameAction, { type: "LOSE_INFLUENCE" }>): ActionResult {
   const pending = state.pendingAction!
   const blockerId = pending.blockerId!
+
+  if (pending.losingPlayerId && action.playerId !== pending.losingPlayerId) {
+    return { ok: false, error: "You are not the player who must lose influence" }
+  }
 
   // Blocker is losing influence → blocker was bluffing, action resolves
   if (action.playerId === blockerId) {

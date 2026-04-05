@@ -39,6 +39,7 @@ export interface PendingAction {
   blockerId?: string
   blockerClaimedCard?: CardType
   exchangeCards?: Card[]
+  losingPlayerId?: string
 }
 
 export type GameAction =

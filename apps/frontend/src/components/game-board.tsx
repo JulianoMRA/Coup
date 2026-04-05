@@ -37,7 +37,9 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
   const hasUnrevealedCards = game.myHand.some(c => !c.revealed)
   const needsInfluenceChoice =
     ((game.phase === GamePhase.RESOLVING_CHALLENGE ||
-      game.phase === GamePhase.RESOLVING_BLOCK_CHALLENGE) && hasUnrevealedCards) ||
+      game.phase === GamePhase.RESOLVING_BLOCK_CHALLENGE) &&
+      hasUnrevealedCards &&
+      game.pendingAction?.losingPlayerId === playerId) ||
     (game.phase === GamePhase.AWAITING_COUP_TARGET &&
       game.pendingAction?.targetId === playerId)
 
