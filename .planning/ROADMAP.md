@@ -130,6 +130,16 @@ Plans:
 - [x] 06-02-PLAN.md — Frontend: REJOIN_ROOM emit, disconnect indicator, Revanche button (Wave 2)
 **UI hint**: yes
 
+### Phase 06.1: UI Redesign — Visual Game Interface (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 6
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 06.1 to break down)
+
 ### Phase 7: UX Polish and Deployment
 **Goal**: The app is deployed to production and accessible via a public URL; the UI is responsive on mobile browsers; visual indicators make the game state unambiguous; the app is ready for the friend group to use
 **Depends on**: Phase 6
@@ -142,7 +152,7 @@ Plans:
   5. Per-player coin counts and influence card counts are always visible to all players on the main game screen
 **Plans**: 2 plans
 Plans:
-- [ ] 07-01-PLAN.md — Backend build/start scripts, railway.json, ActionBar pending indicator, responsive GameLog (Wave 1)
+- [x] 07-01-PLAN.md — Backend build/start scripts, railway.json, ActionBar pending indicator, responsive GameLog (Wave 1)
 - [ ] 07-02-PLAN.md — Deploy to Railway + Vercel, verify all success criteria on live URL (Wave 2 — checkpoint)
 **UI hint**: yes
 

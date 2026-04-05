@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-04-05T15:32:03.374Z"
-last_activity: 2026-04-05 -- Phase 06 execution started
+last_updated: "2026-04-05T16:38:50.009Z"
+last_activity: 2026-04-05 -- Phase 07 execution started
 progress:
   total_phases: 7
-  completed_phases: 5
-  total_plans: 24
-  completed_plans: 22
+  completed_phases: 6
+  total_plans: 26
+  completed_plans: 24
   percent: 92
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Amigos conseguem jogar Coup online de forma simples: cria sala, compartilha link, joga.
-**Current focus:** Phase 06 — reconnection-and-resilience
+**Current focus:** Phase 07 — ux-polish-and-deployment
 
 ## Current Position
 
-Phase: 06 (reconnection-and-resilience) — EXECUTING
+Phase: 07 (ux-polish-and-deployment) — EXECUTING
 Plan: 1 of 2
-Status: Executing Phase 06
-Last activity: 2026-04-05 -- Phase 06 execution started
+Status: Executing Phase 07
+Last activity: 2026-04-05 -- Phase 07 execution started
 
 Progress: [███████░░░] 71%
 
@@ -103,6 +103,10 @@ Recent decisions affecting current work:
 - [Phase 04-basic-game-loop]: selectingCoupTarget state lives in GameBoard so Plan 03 can render CoupTargetSelector conditionally
 - [Phase 04-basic-game-loop]: WinnerOverlay has no client-side state so no 'use client' directive needed
 - [Phase 04-basic-game-loop]: useGame called unconditionally in room page to prevent race condition with GAME_STARTED event
+
+### Roadmap Evolution
+
+- Phase 06.1 inserted after Phase 6: UI Redesign — Visual Game Interface (INSERTED) — user requested proper game board UI before deployment
 
 ### Pending Todos
 
