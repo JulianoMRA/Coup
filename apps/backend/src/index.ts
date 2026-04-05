@@ -5,6 +5,7 @@ import { Server } from "socket.io"
 import type { ClientToServerEvents, ServerToClientEvents } from "@coup/shared"
 import { registerSocketHandlers } from "./socket-handler"
 import { createRoom } from "./rooms/room-store"
+import { startCleanupInterval } from "./cleanup"
 
 const app = express()
 export const httpServer = createServer(app)
@@ -30,6 +31,7 @@ export const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpSer
 })
 
 registerSocketHandlers(io)
+startCleanupInterval(io)
 
 const PORT = process.env["PORT"] ?? 3001
 

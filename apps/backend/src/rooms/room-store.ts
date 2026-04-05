@@ -1,7 +1,9 @@
 import { customAlphabet } from "nanoid"
 import type { LobbyPlayer, LobbyState } from "@coup/shared"
 
-export interface Room extends LobbyState {}
+export interface Room extends LobbyState {
+  lastActivityAt?: number
+}
 
 const generateRoomId = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 8)
 
@@ -15,6 +17,13 @@ function createUniqueRoomId(): string {
   return id
 }
 
+export function updateLastActivity(roomId: string): void {
+  const room = rooms.get(roomId)
+  if (room) {
+    room.lastActivityAt = Date.now()
+  }
+}
+
 export function createRoom(hostId: string, hostName: string): Room {
   const roomId = createUniqueRoomId()
   const host: LobbyPlayer = { playerId: hostId, name: hostName, isReady: false, joinOrder: 0 }
@@ -24,9 +33,18 @@ export function createRoom(hostId: string, hostName: string): Room {
     hostId,
     maxPlayers: 6,
     status: "LOBBY",
+    lastActivityAt: Date.now(),
   }
   rooms.set(roomId, room)
   return room
+}
+
+export function resetForRematch(roomId: string): void {
+  const room = rooms.get(roomId)
+  if (!room) return
+  room.status = "IN_GAME"
+  room.lastActivityAt = Date.now()
+  room.players = room.players.map(p => ({ ...p, isReady: false }))
 }
 
 type JoinResult = { ok: true } | { ok: false; error: string }
@@ -40,6 +58,7 @@ export function joinRoom(roomId: string, playerId: string, name: string): JoinRe
   if (room.players.length >= room.maxPlayers) return { ok: false, error: "Room full" }
   const player: LobbyPlayer = { playerId, name, isReady: false, joinOrder: room.players.length }
   room.players.push(player)
+  updateLastActivity(roomId)
   return { ok: true }
 }
 
