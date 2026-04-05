@@ -1,7 +1,8 @@
 ---
 phase: 7
 slug: ux-polish-and-deployment
-status: draft
+status: approved
+reviewed_at: 2026-04-05
 shadcn_initialized: true
 preset: default/zinc/dark (CSS-variables, rsc, tsx)
 created: 2026-04-05
