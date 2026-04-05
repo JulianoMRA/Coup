@@ -15,7 +15,7 @@ independently verifiable before the next one begins.
 - [x] **Phase 2: Room and Lobby** - Room creation, invite link, join by link, lobby ready check, and game start trigger (completed 2026-04-03)
 - [x] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring (completed 2026-04-03)
 - [x] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log (completed 2026-04-04)
-- [ ] **Phase 5: Character Actions and Reactions** - Full character action set, reaction window, challenge flow, block flow, Ambassador exchange
+- [x] **Phase 5: Character Actions and Reactions** - Full character action set, reaction window, challenge flow, block flow, Ambassador exchange (completed 2026-04-05)
 - [ ] **Phase 6: Reconnection and Resilience** - Mid-game reconnect, disconnect grace timers, rematch, spectator mode, room cleanup
 - [ ] **Phase 7: UX Polish and Deployment** - Visual indicators, responsive layout, Railway/Vercel deployment, production config
 
@@ -108,10 +108,10 @@ Plans:
   6. When using Ambassador Exchange, a player sees 4 cards (their 2 plus 2 drawn), selects exactly 2 to keep, and the remaining 2 are shuffled back into the deck
 **Plans**: 4 plans
 Plans:
-- [ ] 05-01-PLAN.md — Backend CHAL-05 card swap + ActionBar row 2 character actions (Wave 1)
-- [ ] 05-02-PLAN.md — ReactionBar + BlockClaimSelector + BlockChallengeBar components (Wave 2)
-- [ ] 05-03-PLAN.md — ExchangeSelector + GameBoard full phase routing wiring (Wave 3)
-- [ ] 05-04-PLAN.md — Human verification: full Coup ruleset end-to-end (Wave 4 — checkpoint)
+- [x] 05-01-PLAN.md — Backend CHAL-05 card swap + ActionBar row 2 character actions (Wave 1)
+- [x] 05-02-PLAN.md — ReactionBar + BlockClaimSelector + BlockChallengeBar components (Wave 2)
+- [x] 05-03-PLAN.md — ExchangeSelector + GameBoard full phase routing wiring (Wave 3)
+- [x] 05-04-PLAN.md — Human verification: full Coup ruleset end-to-end (Wave 4 — checkpoint)
 **UI hint**: yes
 
 ### Phase 6: Reconnection and Resilience
@@ -151,6 +151,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 2. Room and Lobby | 4/4 | Complete   | 2026-04-03 |
 | 3. Game Engine (FSM) | 5/5 | Complete   | 2026-04-03 |
 | 4. Basic Game Loop | 4/4 | Complete   | 2026-04-04 |
-| 5. Character Actions and Reactions | 0/4 | In progress | - |
+| 5. Character Actions and Reactions | 4/4 | Complete   | 2026-04-05 |
 | 6. Reconnection and Resilience | 0/TBD | Not started | - |
 | 7. UX Polish and Deployment | 0/TBD | Not started | - |
