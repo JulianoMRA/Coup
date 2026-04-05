@@ -84,6 +84,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             players={game.players}
             activePlayerId={game.activePlayerId}
             myId={playerId}
+            disconnectedPlayers={game.disconnectedPlayers ?? []}
           />
           <UICard>
             <CardHeader className="pb-2">
@@ -169,7 +170,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
         />
       )}
       {game.phase === GamePhase.GAME_OVER && (
-        <WinnerOverlay players={game.players} />
+        <WinnerOverlay players={game.players} roomId={roomId} />
       )}
     </div>
   )

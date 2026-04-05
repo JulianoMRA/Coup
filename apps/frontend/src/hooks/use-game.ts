@@ -19,13 +19,18 @@ export function useGame(
     function handleError(msg: string) {
       setError(msg)
     }
+    function handleConnect() {
+      socket.emit("REJOIN_ROOM", roomId)
+    }
 
     socket.on("STATE_UPDATE", handleStateUpdate)
     socket.on("ERROR", handleError)
+    socket.on("connect", handleConnect)
 
     return () => {
       socket.off("STATE_UPDATE", handleStateUpdate)
       socket.off("ERROR", handleError)
+      socket.off("connect", handleConnect)
     }
   }, [roomId, playerId])
 

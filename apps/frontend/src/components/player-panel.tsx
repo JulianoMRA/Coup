@@ -9,9 +9,10 @@ interface PlayerPanelProps {
   players: PublicPlayerState[]
   activePlayerId: string
   myId: string
+  disconnectedPlayers?: string[]
 }
 
-export function PlayerPanel({ players, activePlayerId, myId }: PlayerPanelProps) {
+export function PlayerPanel({ players, activePlayerId, myId, disconnectedPlayers = [] }: PlayerPanelProps) {
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -39,6 +40,9 @@ export function PlayerPanel({ players, activePlayerId, myId }: PlayerPanelProps)
                   {player.name}
                   {player.id === myId && (
                     <span className="ml-1 text-xs text-muted-foreground">(voce)</span>
+                  )}
+                  {disconnectedPlayers.includes(player.id) && (
+                    <span className="ml-1 text-xs text-muted-foreground">(desconectado)</span>
                   )}
                 </span>
                 <div className="flex items-center gap-1 flex-wrap justify-end">
