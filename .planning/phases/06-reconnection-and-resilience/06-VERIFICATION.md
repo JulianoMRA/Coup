@@ -1,7 +1,7 @@
 ---
 phase: 06-reconnection-and-resilience
 verified: 2026-04-05T13:00:00Z
-status: human_needed
+status: passed
 score: 5/5 must-haves verified
 human_verification:
   - test: "Refresh the browser page mid-game and confirm game state (hand, coins, log) is restored without rejoining"
