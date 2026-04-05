@@ -327,13 +327,19 @@ describe("processAction — PASS block (all pass -> action cancelled)", () => {
 })
 
 describe("processAction — LOSE_INFLUENCE in RESOLVING_CHALLENGE (bluff detected)", () => {
-  it("should cancel action and advance turn when challenged player loses", () => {
+  it("should cancel action and advance turn when challenged player reveals a non-Duke card (bluffing)", () => {
+    // p1 is bluffing TAX — their hand has CAPTAIN (not DUKE), so revealing card[0] confirms the bluff
     const state = makeGameState({
       phase: GamePhase.RESOLVING_CHALLENGE,
+      players: [
+        { id: "p1", name: "Alice", coins: 2, eliminated: false, hand: [{ type: CardType.CAPTAIN, revealed: false }, { type: CardType.CONTESSA, revealed: false }] },
+        { id: "p2", name: "Bob",   coins: 2, eliminated: false, hand: [{ type: CardType.ASSASSIN, revealed: false }, { type: CardType.CONTESSA, revealed: false }] },
+      ],
       pendingAction: {
         type: "TAX",
         playerId: "p1",
         pendingReactions: { p2: "CHALLENGED" },
+        losingPlayerId: "p1",
       },
     })
     const result = processAction(state, { type: "LOSE_INFLUENCE", playerId: "p1", cardIndex: 0 })

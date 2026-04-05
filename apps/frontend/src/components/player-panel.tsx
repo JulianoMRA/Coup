@@ -30,9 +30,6 @@ export function PlayerPanel({ players, activePlayerId, myId }: PlayerPanelProps)
               )}
             >
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-sm font-medium shrink-0">
-                  {player.name.charAt(0).toUpperCase()}
-                </div>
                 <span
                   className={cn(
                     "font-medium flex-1 truncate",

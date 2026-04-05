@@ -102,7 +102,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             </CardContent>
           </UICard>
         </div>
-        <div className="md:hidden">
+        <div className="flex-1">
           <Button
             variant="ghost"
             onClick={() => setShowMobileLog(!showMobileLog)}
@@ -110,9 +110,6 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             {showMobileLog ? "Ocultar Log" : "Ver Log"}
           </Button>
           {showMobileLog && <GameLog log={game.log} />}
-        </div>
-        <div className="hidden md:block flex-1">
-          <GameLog log={game.log} />
         </div>
       </div>
       {error && <p className="text-sm text-destructive px-4">{error}</p>}

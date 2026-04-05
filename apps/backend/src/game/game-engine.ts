@@ -400,17 +400,8 @@ function handleChallengeReaction(state: GameState, action: Extract<GameAction, {
 
   const updatedReactions = { ...reactions, [action.playerId]: "CHALLENGED" as const }
 
-  const claimedCardMap: Record<string, CardType> = {
-    TAX: CardType.DUKE,
-    STEAL: CardType.CAPTAIN,
-    ASSASSINATE: CardType.ASSASSIN,
-    EXCHANGE: CardType.AMBASSADOR,
-  }
-  const claimedCard = claimedCardMap[pending.type]
-  const challengedPlayer = state.players.find(p => p.id === pending.playerId)!
-  const hasCard = claimedCard !== undefined &&
-    challengedPlayer.hand.some(c => c.type === claimedCard && !c.revealed)
-  const losingPlayerId = hasCard ? action.playerId : pending.playerId
+  // Challenged player (who declared the action) always goes first to prove or admit bluff
+  const losingPlayerId = pending.playerId
 
   return {
     ok: true,
@@ -431,8 +422,8 @@ function handleBlockReaction(state: GameState, action: Extract<GameAction, { typ
     return { ok: false, error: "You are not in the reaction window" }
   }
 
-  const updatedReactions = { ...reactions, [action.playerId]: "BLOCKED" as const }
-  const blockChallengeReactions = buildPendingReactions(state, action.playerId)
+  // Only the action initiator (pending.playerId) decides whether to challenge or accept the block
+  const blockChallengeReactions: Record<string, "WAITING"> = { [pending.playerId]: "WAITING" }
 
   return {
     ok: true,
@@ -441,7 +432,7 @@ function handleBlockReaction(state: GameState, action: Extract<GameAction, { typ
       phase: GamePhase.AWAITING_BLOCK_CHALLENGE,
       pendingAction: {
         ...pending,
-        pendingReactions: updatedReactions,
+        pendingReactions: blockChallengeReactions,
         blockerId: action.playerId,
         blockerClaimedCard: action.claimedCard,
       },
@@ -489,11 +480,7 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
   const pending = state.pendingAction!
   const blockerId = pending.blockerId!
 
-  const blockerPlayer = state.players.find(p => p.id === blockerId)!
-  const hasCard = pending.blockerClaimedCard !== undefined &&
-    blockerPlayer.hand.some(c => c.type === pending.blockerClaimedCard && !c.revealed)
-  const losingPlayerId = hasCard ? action.playerId : blockerId
-
+  // Blocker always goes first to prove their card (or admit bluff)
   return {
     ok: true,
     state: {
@@ -502,7 +489,7 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
       pendingAction: {
         ...pending,
         pendingReactions: { ...pending.pendingReactions, [action.playerId]: "CHALLENGED" as const },
-        losingPlayerId,
+        losingPlayerId: blockerId,
       },
       log: [...state.log, `${action.playerId} challenges the block`],
     },
@@ -510,6 +497,13 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
 }
 
 // ─── LOSE_INFLUENCE resolution handlers ──────────────────────────────────
+
+const CLAIMED_CARD_MAP: Record<string, CardType> = {
+  TAX: CardType.DUKE,
+  STEAL: CardType.CAPTAIN,
+  ASSASSINATE: CardType.ASSASSIN,
+  EXCHANGE: CardType.AMBASSADOR,
+}
 
 function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract<GameAction, { type: "LOSE_INFLUENCE" }>): ActionResult {
   const pending = state.pendingAction!
@@ -519,36 +513,51 @@ function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract
     return { ok: false, error: "You are not the player who must lose influence" }
   }
 
-  // The player losing influence is the challenged player (bluffing) → action cancelled
+  // ── Step 1: challenged player selects a card to prove (or admit bluff) ──
   if (action.playerId === challengedPlayerId) {
-    let next = revealCard(state, action.playerId, action.cardIndex)
-    next = { ...next, pendingAction: null }
-    next = checkGameOver(next)
-    if (next.phase !== GamePhase.GAME_OVER) {
-      next = { ...next, phase: GamePhase.AWAITING_ACTION, activePlayerId: nextActivePlayer(state) }
+    const player = state.players.find(p => p.id === challengedPlayerId)!
+    const selectedCard = player.hand[action.cardIndex]
+    const claimedCard = CLAIMED_CARD_MAP[pending.type]
+
+    if (!selectedCard || selectedCard.revealed) {
+      return { ok: false, error: "Invalid card index" }
     }
-    return { ok: true, state: next }
+
+    // Bluffing: selected card is not the claimed type → lose it, action cancelled
+    if (!claimedCard || selectedCard.type !== claimedCard) {
+      let next = revealCard(state, challengedPlayerId, action.cardIndex)
+      next = { ...next, pendingAction: null }
+      next = checkGameOver(next)
+      if (next.phase !== GamePhase.GAME_OVER) {
+        next = { ...next, phase: GamePhase.AWAITING_ACTION, activePlayerId: nextActivePlayer(state) }
+      }
+      return { ok: true, state: next }
+    }
+
+    // Proved: replace the proven card with a deck card, now challenger must lose a card
+    let next = replaceProvenCard(state, challengedPlayerId, claimedCard)
+    const challengerId = Object.entries(pending.pendingReactions)
+      .find(([, v]) => v === "CHALLENGED")?.[0]
+    if (!challengerId) {
+      return { ok: false, error: "Cannot find challenger" }
+    }
+    return {
+      ok: true,
+      state: {
+        ...next,
+        phase: GamePhase.RESOLVING_CHALLENGE,
+        pendingAction: { ...pending, losingPlayerId: challengerId },
+        log: [...next.log, `${challengedPlayerId} proved their card — ${challengerId} must lose influence`],
+      },
+    }
   }
 
-  // The player losing influence is the challenger → they lost, action resolves
+  // ── Step 2: challenger loses a card after proof ──
   let next = revealCard(state, action.playerId, action.cardIndex)
   next = checkGameOver(next)
   if (next.phase === GamePhase.GAME_OVER) {
     return { ok: true, state: { ...next, pendingAction: null } }
   }
-
-  // Challenged player proved their card — swap it with a new deck card
-  const claimedCardMap: Record<string, CardType> = {
-    TAX: CardType.DUKE,
-    STEAL: CardType.CAPTAIN,
-    ASSASSINATE: CardType.ASSASSIN,
-    EXCHANGE: CardType.AMBASSADOR,
-  }
-  const claimedCard = claimedCardMap[pending.type]
-  if (claimedCard) {
-    next = replaceProvenCard(next, challengedPlayerId, claimedCard)
-  }
-
   return resolveAction(next)
 }
 
@@ -560,20 +569,45 @@ function handleLoseInfluenceResolvingBlockChallenge(state: GameState, action: Ex
     return { ok: false, error: "You are not the player who must lose influence" }
   }
 
-  // Blocker is losing influence → blocker was bluffing, action resolves
+  // ── Step 1: blocker selects a card to prove (or admit bluff) ──
   if (action.playerId === blockerId) {
-    let next = revealCard(state, action.playerId, action.cardIndex)
-    next = checkGameOver(next)
-    if (next.phase === GamePhase.GAME_OVER) {
-      return { ok: true, state: { ...next, pendingAction: null } }
+    const player = state.players.find(p => p.id === blockerId)!
+    const selectedCard = player.hand[action.cardIndex]
+
+    if (!selectedCard || selectedCard.revealed) {
+      return { ok: false, error: "Invalid card index" }
     }
-    return resolveAction(next)
+
+    // Bluffing: selected card is not the claimed type → lose it, action resolves
+    if (!pending.blockerClaimedCard || selectedCard.type !== pending.blockerClaimedCard) {
+      let next = revealCard(state, blockerId, action.cardIndex)
+      next = checkGameOver(next)
+      if (next.phase === GamePhase.GAME_OVER) {
+        return { ok: true, state: { ...next, pendingAction: null } }
+      }
+      return resolveAction(next)
+    }
+
+    // Proved: replace the proven card, now the block challenger must lose a card
+    let next = replaceProvenCard(state, blockerId, pending.blockerClaimedCard)
+    const blockChallengerId = Object.entries(pending.pendingReactions)
+      .find(([, v]) => v === "CHALLENGED")?.[0]
+    if (!blockChallengerId) {
+      return { ok: false, error: "Cannot find block challenger" }
+    }
+    return {
+      ok: true,
+      state: {
+        ...next,
+        phase: GamePhase.RESOLVING_BLOCK_CHALLENGE,
+        pendingAction: { ...pending, losingPlayerId: blockChallengerId },
+        log: [...next.log, `${blockerId} proved their block — ${blockChallengerId} must lose influence`],
+      },
+    }
   }
 
-  // Challenger is losing influence → block proven, action cancelled
+  // ── Step 2: block challenger loses a card, block stands, action cancelled ──
   let next = revealCard(state, action.playerId, action.cardIndex)
-  // Blocker proved their card — swap it with a new deck card
-  next = replaceProvenCard(next, blockerId, pending.blockerClaimedCard!)
   next = { ...next, pendingAction: null }
   next = checkGameOver(next)
   if (next.phase !== GamePhase.GAME_OVER) {
