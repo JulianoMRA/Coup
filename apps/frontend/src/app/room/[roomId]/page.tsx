@@ -24,19 +24,12 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   const [copied, setCopied] = useState(false)
   const [showFallback, setShowFallback] = useState(false)
   const [myReady, setMyReady] = useState(false)
-  const [gameActive, setGameActive] = useState(false)
 
   useEffect(() => {
     setPlayerId(getOrCreatePlayerId())
     const saved = getPlayerName()
     if (saved) setPlayerName(saved)
     socket.connect()
-  }, [])
-
-  useEffect(() => {
-    function onGameStarted() { setGameActive(true) }
-    socket.on("GAME_STARTED", onGameStarted)
-    return () => { socket.off("GAME_STARTED", onGameStarted) }
   }, [])
 
   const { lobby, error } = useLobby(roomId, playerId, playerName)
@@ -75,8 +68,8 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     socket.emit("START_GAME", roomId)
   }
 
-  // Game active — switch from lobby to game board
-  if (gameActive && game) {
+  // Game active — switch from lobby to game board (also handles reconnect where only STATE_UPDATE arrives, not GAME_STARTED)
+  if (game) {
     return <GameBoard game={game} playerId={playerId} roomId={roomId} error={gameError} />
   }
 
