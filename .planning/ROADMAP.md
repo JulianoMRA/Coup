@@ -124,7 +124,10 @@ Plans:
   3. If the active player disconnects, a grace period elapses and their turn advances automatically so the game does not stall
   4. After game over, clicking "Rematch" resets game state and starts a new game with the same players without generating a new invite link
   5. The winner is displayed clearly on the game over screen to all players including spectators
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [x] 06-01-PLAN.md — Shared types + backend reconnect, grace timers, rematch, cleanup (Wave 1)
+- [x] 06-02-PLAN.md — Frontend: REJOIN_ROOM emit, disconnect indicator, Revanche button (Wave 2)
 **UI hint**: yes
 
 ### Phase 7: UX Polish and Deployment
@@ -152,5 +155,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 3. Game Engine (FSM) | 5/5 | Complete   | 2026-04-03 |
 | 4. Basic Game Loop | 4/4 | Complete   | 2026-04-04 |
 | 5. Character Actions and Reactions | 4/4 | Complete   | 2026-04-05 |
-| 6. Reconnection and Resilience | 0/TBD | Not started | - |
+| 6. Reconnection and Resilience | 0/2 | Not started | - |
 | 7. UX Polish and Deployment | 0/TBD | Not started | - |
