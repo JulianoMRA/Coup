@@ -81,6 +81,18 @@ function checkGameOver(state: GameState): GameState {
   return state
 }
 
+function replaceProvenCard(state: GameState, playerId: string, claimedCard: CardType): GameState {
+  const player = state.players.find(p => p.id === playerId)!
+  const provenCardIndex = player.hand.findIndex(c => c.type === claimedCard && !c.revealed)
+  if (provenCardIndex === -1 || state.deck.length === 0) return state
+  const newDeck = [...state.deck, player.hand[provenCardIndex]]
+  shuffleInPlace(newDeck)
+  const newCard = newDeck.pop()!
+  const newHand = player.hand.map((c, i) => i === provenCardIndex ? newCard : c)
+  const players = state.players.map(p => p.id === playerId ? { ...p, hand: newHand } : p)
+  return { ...state, players, deck: newDeck }
+}
+
 // ─── action handlers ───────────────────────────────────────────────────────
 
 type Handler = (state: GameState, action: GameAction) => ActionResult
@@ -502,6 +514,18 @@ function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract
     return { ok: true, state: { ...next, pendingAction: null } }
   }
 
+  // Challenged player proved their card — swap it with a new deck card
+  const claimedCardMap: Record<string, CardType> = {
+    TAX: CardType.DUKE,
+    STEAL: CardType.CAPTAIN,
+    ASSASSINATE: CardType.ASSASSIN,
+    EXCHANGE: CardType.AMBASSADOR,
+  }
+  const claimedCard = claimedCardMap[pending.type]
+  if (claimedCard) {
+    next = replaceProvenCard(next, challengedPlayerId, claimedCard)
+  }
+
   return resolveAction(next)
 }
 
@@ -521,6 +545,8 @@ function handleLoseInfluenceResolvingBlockChallenge(state: GameState, action: Ex
 
   // Challenger is losing influence → block proven, action cancelled
   let next = revealCard(state, action.playerId, action.cardIndex)
+  // Blocker proved their card — swap it with a new deck card
+  next = replaceProvenCard(next, blockerId, pending.blockerClaimedCard!)
   next = { ...next, pendingAction: null }
   next = checkGameOver(next)
   if (next.phase !== GamePhase.GAME_OVER) {
