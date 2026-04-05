@@ -392,6 +392,180 @@ describe("processAction — EXCHANGE enters AWAITING_REACTIONS (not AWAITING_EXC
   })
 })
 
+describe("CHAL-05: card replacement after proven challenge", () => {
+  it("Test 1: challenger loses in RESOLVING_CHALLENGE — proven card is swapped and deck length unchanged", () => {
+    const state = makeGameState({
+      phase: GamePhase.RESOLVING_CHALLENGE,
+      players: [
+        {
+          id: "p1",
+          name: "Alice",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.DUKE, revealed: false },
+            { type: CardType.CAPTAIN, revealed: false },
+          ],
+        },
+        {
+          id: "p2",
+          name: "Bob",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.ASSASSIN, revealed: false },
+            { type: CardType.CONTESSA, revealed: false },
+          ],
+        },
+      ],
+      deck: [{ type: CardType.AMBASSADOR, revealed: false }],
+      pendingAction: {
+        type: "TAX",
+        playerId: "p1",
+        pendingReactions: { p2: "CHALLENGED" },
+      },
+    })
+    // p2 challenged p1's TAX but p1 has DUKE — p2 loses influence
+    const result = processAction(state, { type: "LOSE_INFLUENCE", playerId: "p2", cardIndex: 0 })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    const p1 = result.state.players.find(p => p.id === "p1")!
+    // p1's DUKE at index 0 should have been replaced
+    expect(p1.hand[0].type).not.toBe(CardType.DUKE)
+    // deck length: DUKE returned, AMBASSADOR drawn = still 1
+    expect(result.state.deck).toHaveLength(1)
+  })
+
+  it("Test 2: challenger loses in RESOLVING_BLOCK_CHALLENGE — blocker's proven card is swapped and deck length unchanged", () => {
+    const state = makeGameState({
+      phase: GamePhase.RESOLVING_BLOCK_CHALLENGE,
+      players: [
+        {
+          id: "p1",
+          name: "Alice",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.DUKE, revealed: false },
+            { type: CardType.CAPTAIN, revealed: false },
+          ],
+        },
+        {
+          id: "p2",
+          name: "Bob",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.DUKE, revealed: false },
+            { type: CardType.CONTESSA, revealed: false },
+          ],
+        },
+      ],
+      deck: [{ type: CardType.AMBASSADOR, revealed: false }],
+      pendingAction: {
+        type: "FOREIGN_AID",
+        playerId: "p1",
+        pendingReactions: { p1: "CHALLENGED" },
+        blockerId: "p2",
+        blockerClaimedCard: CardType.DUKE,
+      },
+    })
+    // p1 challenged p2's block (DUKE) but p2 actually has DUKE — p1 loses influence
+    const result = processAction(state, { type: "LOSE_INFLUENCE", playerId: "p1", cardIndex: 0 })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    const p2 = result.state.players.find(p => p.id === "p2")!
+    // p2's DUKE at index 0 should have been replaced
+    expect(p2.hand[0].type).not.toBe(CardType.DUKE)
+    // deck length: DUKE returned, AMBASSADOR drawn = still 1
+    expect(result.state.deck).toHaveLength(1)
+  })
+
+  it("Test 3: challenged player bluffing — no card swap occurs", () => {
+    const state = makeGameState({
+      phase: GamePhase.RESOLVING_CHALLENGE,
+      players: [
+        {
+          id: "p1",
+          name: "Alice",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.CAPTAIN, revealed: false },
+            { type: CardType.CAPTAIN, revealed: false },
+          ],
+        },
+        {
+          id: "p2",
+          name: "Bob",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.ASSASSIN, revealed: false },
+            { type: CardType.CONTESSA, revealed: false },
+          ],
+        },
+      ],
+      deck: [{ type: CardType.AMBASSADOR, revealed: false }],
+      pendingAction: {
+        type: "TAX",
+        playerId: "p1",
+        pendingReactions: { p2: "CHALLENGED" },
+      },
+    })
+    // p2 challenged p1's TAX, p1 does NOT have DUKE — p1 loses influence (bluffing)
+    const result = processAction(state, { type: "LOSE_INFLUENCE", playerId: "p1", cardIndex: 0 })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    const p1 = result.state.players.find(p => p.id === "p1")!
+    // remaining unrevealed card is still CAPTAIN (no swap)
+    const unrevealed = p1.hand.filter(c => !c.revealed)
+    expect(unrevealed.every(c => c.type === CardType.CAPTAIN)).toBe(true)
+  })
+
+  it("Test 4: replaceProvenCard is a no-op when deck is empty", () => {
+    const state = makeGameState({
+      phase: GamePhase.RESOLVING_CHALLENGE,
+      players: [
+        {
+          id: "p1",
+          name: "Alice",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.DUKE, revealed: false },
+            { type: CardType.CAPTAIN, revealed: false },
+          ],
+        },
+        {
+          id: "p2",
+          name: "Bob",
+          coins: 2,
+          eliminated: false,
+          hand: [
+            { type: CardType.ASSASSIN, revealed: false },
+            { type: CardType.CONTESSA, revealed: false },
+          ],
+        },
+      ],
+      deck: [],
+      pendingAction: {
+        type: "TAX",
+        playerId: "p1",
+        pendingReactions: { p2: "CHALLENGED" },
+      },
+    })
+    // p2 challenged p1's TAX but p1 has DUKE — deck empty, no crash
+    const result = processAction(state, { type: "LOSE_INFLUENCE", playerId: "p2", cardIndex: 0 })
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    const p1 = result.state.players.find(p => p.id === "p1")!
+    // hand unchanged since deck is empty
+    expect(p1.hand[0].type).toBe(CardType.DUKE)
+    expect(result.state.deck).toHaveLength(0)
+  })
+})
+
 describe("processAction — EXCHANGE_CHOOSE (AWAITING_EXCHANGE)", () => {
   it("should keep 2 chosen cards in player hand", () => {
     const state = makeGameState({

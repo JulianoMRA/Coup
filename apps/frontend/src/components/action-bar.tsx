@@ -12,6 +12,8 @@ interface ActionBarProps {
   phase: GamePhase
   pendingReactions?: Record<string, "WAITING" | "PASSED" | "CHALLENGED" | "BLOCKED"> | null
   onSelectCoupTarget: () => void
+  onSelectStealTarget: () => void
+  onSelectAssassinateTarget: () => void
 }
 
 export function ActionBar({
@@ -20,17 +22,14 @@ export function ActionBar({
   isMyTurn,
   myCoins,
   phase,
-  pendingReactions,
   onSelectCoupTarget,
+  onSelectStealTarget,
+  onSelectAssassinateTarget,
 }: ActionBarProps) {
   const isActionPhase = phase === GamePhase.AWAITING_ACTION
   const canAct = isMyTurn && isActionPhase
   const forcedCoup = canAct && myCoins >= 10
   const canCoup = myCoins >= 7
-
-  const needsReaction =
-    phase === GamePhase.AWAITING_REACTIONS &&
-    pendingReactions?.[playerId] === "WAITING"
 
   function handleIncome() {
     socket.emit("GAME_ACTION", roomId, { type: "INCOME", playerId })
@@ -44,24 +43,25 @@ export function ActionBar({
     onSelectCoupTarget()
   }
 
-  function handlePass() {
-    socket.emit("GAME_ACTION", roomId, { type: "PASS", playerId })
+  function handleTax() {
+    socket.emit("GAME_ACTION", roomId, { type: "TAX", playerId })
   }
 
-  if (needsReaction) {
-    return (
-      <div className="fixed bottom-0 left-0 right-0 h-16 px-6 flex items-center justify-center gap-4 bg-background border-t border-border">
-        <p className="text-sm text-muted-foreground">Ajuda Externa declarada —</p>
-        <Button variant="secondary" onClick={handlePass}>
-          Passar
-        </Button>
-      </div>
-    )
+  function handleSteal() {
+    onSelectStealTarget()
+  }
+
+  function handleAssassinate() {
+    onSelectAssassinateTarget()
+  }
+
+  function handleExchange() {
+    socket.emit("GAME_ACTION", roomId, { type: "EXCHANGE", playerId })
   }
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 h-16 px-6 flex flex-col items-center justify-center gap-1 bg-background border-t border-border"
+      className="fixed bottom-0 left-0 right-0 h-auto py-3 px-6 flex flex-col items-center justify-center gap-2 bg-background border-t border-border"
       aria-label={!isMyTurn ? "Aguardando sua vez" : undefined}
     >
       {forcedCoup && (
@@ -90,6 +90,20 @@ export function ActionBar({
           onClick={handleCoup}
         >
           Golpe
+        </Button>
+      </div>
+      <div className="flex items-center justify-center gap-4">
+        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleTax}>
+          Imposto (Duque)
+        </Button>
+        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleSteal}>
+          Roubar (Capitao)
+        </Button>
+        <Button variant="destructive" disabled={!canAct || forcedCoup || myCoins < 3} onClick={handleAssassinate}>
+          Assassinar (Assassino)
+        </Button>
+        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleExchange}>
+          Embaixador
         </Button>
       </div>
     </div>
