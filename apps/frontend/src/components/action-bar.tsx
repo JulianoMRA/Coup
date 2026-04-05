@@ -2,6 +2,7 @@
 
 import { socket } from "@/lib/socket"
 import { GamePhase } from "@coup/shared"
+import type { PublicPlayerState } from "@coup/shared"
 import { Button } from "@/components/ui/button"
 
 interface ActionBarProps {
@@ -11,6 +12,7 @@ interface ActionBarProps {
   myCoins: number
   phase: GamePhase
   pendingReactions?: Record<string, "WAITING" | "PASSED" | "CHALLENGED" | "BLOCKED"> | null
+  players: PublicPlayerState[]
   onSelectCoupTarget: () => void
   onSelectStealTarget: () => void
   onSelectAssassinateTarget: () => void
@@ -22,6 +24,8 @@ export function ActionBar({
   isMyTurn,
   myCoins,
   phase,
+  pendingReactions,
+  players,
   onSelectCoupTarget,
   onSelectStealTarget,
   onSelectAssassinateTarget,
@@ -30,6 +34,11 @@ export function ActionBar({
   const canAct = isMyTurn && isActionPhase
   const forcedCoup = canAct && myCoins >= 10
   const canCoup = myCoins >= 7
+
+  const waitingNames = Object.entries(pendingReactions ?? {})
+    .filter(([, status]) => status === "WAITING")
+    .map(([id]) => players.find((p) => p.id === id)?.name ?? id)
+    .join(", ")
 
   function handleIncome() {
     socket.emit("GAME_ACTION", roomId, { type: "INCOME", playerId })
@@ -67,6 +76,11 @@ export function ActionBar({
       {forcedCoup && (
         <p className="text-sm text-muted-foreground text-center">
           Voce deve Golpear (10+ moedas)
+        </p>
+      )}
+      {waitingNames && (
+        <p className="text-xs text-muted-foreground text-center">
+          Aguardando: {waitingNames}
         </p>
       )}
       <div className="flex items-center justify-center gap-4">

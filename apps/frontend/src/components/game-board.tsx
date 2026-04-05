@@ -104,13 +104,17 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           </UICard>
         </div>
         <div className="flex-1">
-          <Button
-            variant="ghost"
-            onClick={() => setShowMobileLog(!showMobileLog)}
-          >
-            {showMobileLog ? "Ocultar Log" : "Ver Log"}
-          </Button>
-          {showMobileLog && <GameLog log={game.log} />}
+          {/* Mobile toggle — hidden on md+ */}
+          <div className="md:hidden">
+            <Button variant="ghost" onClick={() => setShowMobileLog(!showMobileLog)}>
+              {showMobileLog ? "Ocultar Log" : "Ver Log"}
+            </Button>
+            {showMobileLog && <GameLog log={game.log} />}
+          </div>
+          {/* Desktop always-visible — hidden on mobile */}
+          <div className="hidden md:block">
+            <GameLog log={game.log} />
+          </div>
         </div>
       </div>
       {error && <p className="text-sm text-destructive px-4">{error}</p>}
@@ -164,6 +168,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           myCoins={myCoins}
           phase={game.phase}
           pendingReactions={game.pendingAction?.pendingReactions}
+          players={game.players}
           onSelectCoupTarget={() => setSelectingCoupTarget(true)}
           onSelectStealTarget={() => setSelectingStealTarget(true)}
           onSelectAssassinateTarget={() => setSelectingAssassinateTarget(true)}
