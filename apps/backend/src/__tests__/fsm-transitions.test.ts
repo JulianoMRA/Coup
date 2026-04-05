@@ -646,3 +646,83 @@ describe("processAction — EXCHANGE_CHOOSE (AWAITING_EXCHANGE)", () => {
     expect(result.state.activePlayerId).toBe("p2")
   })
 })
+
+describe("INTEGRATION — Foreign Aid → Block → Challenge block → Blocker proves → Challenger loses", () => {
+  it("should complete full block-challenge flow when blocker has Duke", () => {
+    // p2 blocks foreign aid with Duke, p1 challenges the block, p2 proves Duke, p1 loses card
+    const state0 = makeGameState({
+      players: [
+        { id: "p1", name: "Alice", coins: 2, eliminated: false,
+          hand: [{ type: CardType.CAPTAIN, revealed: false }, { type: CardType.CONTESSA, revealed: false }] },
+        { id: "p2", name: "Bob",   coins: 2, eliminated: false,
+          hand: [{ type: CardType.DUKE, revealed: false }, { type: CardType.ASSASSIN, revealed: false }] },
+      ],
+    })
+
+    // Step 1: p1 declares Foreign Aid
+    const r1 = processAction(state0, { type: "FOREIGN_AID", playerId: "p1" })
+    expect(r1.ok).toBe(true)
+    if (!r1.ok) return
+    expect(r1.state.phase).toBe(GamePhase.AWAITING_REACTIONS)
+    expect(r1.state.pendingAction?.pendingReactions).toEqual({ p2: "WAITING" })
+
+    // Step 2: p2 blocks with Duke
+    const r2 = processAction(r1.state, { type: "BLOCK", playerId: "p2", claimedCard: CardType.DUKE })
+    expect(r2.ok).toBe(true)
+    if (!r2.ok) return
+    expect(r2.state.phase).toBe(GamePhase.AWAITING_BLOCK_CHALLENGE)
+    expect(r2.state.pendingAction?.pendingReactions).toEqual({ p1: "WAITING" })
+    expect(r2.state.pendingAction?.blockerId).toBe("p2")
+
+    // Step 3: p1 challenges the block
+    const r3 = processAction(r2.state, { type: "CHALLENGE", playerId: "p1" })
+    expect(r3.ok).toBe(true)
+    if (!r3.ok) return
+    expect(r3.state.phase).toBe(GamePhase.RESOLVING_BLOCK_CHALLENGE)
+    expect(r3.state.pendingAction?.losingPlayerId).toBe("p2")
+
+    // Step 4: p2 proves they have Duke (card index 0)
+    const r4 = processAction(r3.state, { type: "LOSE_INFLUENCE", playerId: "p2", cardIndex: 0 })
+    expect(r4.ok).toBe(true)
+    if (!r4.ok) return
+    // After proof, p1 (challenger) must now lose a card
+    expect(r4.state.phase).toBe(GamePhase.RESOLVING_BLOCK_CHALLENGE)
+    expect(r4.state.pendingAction?.losingPlayerId).toBe("p1")
+
+    // Step 5: p1 loses a card
+    const r5 = processAction(r4.state, { type: "LOSE_INFLUENCE", playerId: "p1", cardIndex: 0 })
+    expect(r5.ok).toBe(true)
+    if (!r5.ok) return
+    // Block stands, action cancelled, next turn (p2's turn)
+    expect(r5.state.phase).toBe(GamePhase.AWAITING_ACTION)
+  })
+
+  it("should complete flow when blocker is bluffing (no Duke)", () => {
+    // p2 blocks foreign aid with Duke but is bluffing, p1 challenges, p2 loses card, p1 gains FA
+    const state0 = makeGameState({
+      players: [
+        { id: "p1", name: "Alice", coins: 2, eliminated: false,
+          hand: [{ type: CardType.CAPTAIN, revealed: false }, { type: CardType.CONTESSA, revealed: false }] },
+        { id: "p2", name: "Bob",   coins: 2, eliminated: false,
+          hand: [{ type: CardType.ASSASSIN, revealed: false }, { type: CardType.CONTESSA, revealed: false }] },
+      ],
+    })
+
+    const r1 = processAction(state0, { type: "FOREIGN_AID", playerId: "p1" })
+    expect(r1.ok).toBe(true); if (!r1.ok) return
+
+    const r2 = processAction(r1.state, { type: "BLOCK", playerId: "p2", claimedCard: CardType.DUKE })
+    expect(r2.ok).toBe(true); if (!r2.ok) return
+
+    const r3 = processAction(r2.state, { type: "CHALLENGE", playerId: "p1" })
+    expect(r3.ok).toBe(true); if (!r3.ok) return
+    expect(r3.state.pendingAction?.losingPlayerId).toBe("p2")
+
+    // p2 selects card (not Duke — bluffing!)
+    const r4 = processAction(r3.state, { type: "LOSE_INFLUENCE", playerId: "p2", cardIndex: 0 })
+    expect(r4.ok).toBe(true); if (!r4.ok) return
+    // Bluff caught: p2 loses card, action resolves (p1 gains FA)
+    expect(r4.state.phase).toBe(GamePhase.AWAITING_ACTION)
+    expect(r4.state.players.find(p => p.id === "p1")!.coins).toBe(4) // 2 + 2
+  })
+})
