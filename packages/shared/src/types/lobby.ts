@@ -10,5 +10,5 @@ export interface LobbyState {
   players: LobbyPlayer[]
   hostId: string
   maxPlayers: number
-  status: "LOBBY" | "IN_GAME"
+  status: "LOBBY" | "IN_GAME" | "GAME_OVER"
 }

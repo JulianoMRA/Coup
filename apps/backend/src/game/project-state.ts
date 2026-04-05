@@ -2,7 +2,8 @@ import type { GameState, ClientGameState, PublicPlayerState } from "@coup/shared
 
 export function projectStateForPlayer(
   gameState: GameState,
-  playerId: string
+  playerId: string,
+  disconnectedPlayers: string[] = []
 ): ClientGameState {
   const myPlayer = gameState.players.find((p) => p.id === playerId)
 
@@ -22,5 +23,6 @@ export function projectStateForPlayer(
     activePlayerId: gameState.activePlayerId,
     pendingAction: gameState.pendingAction,
     log: gameState.log,
+    disconnectedPlayers,
   }
 }

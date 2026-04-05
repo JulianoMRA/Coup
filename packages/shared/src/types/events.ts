@@ -16,4 +16,6 @@ export interface ClientToServerEvents {
   SET_READY: (roomId: string, isReady: boolean) => void
   START_GAME: (roomId: string) => void
   GAME_ACTION: (roomId: string, action: GameAction) => void
+  REJOIN_ROOM: (roomId: string) => void
+  REMATCH: (roomId: string) => void
 }

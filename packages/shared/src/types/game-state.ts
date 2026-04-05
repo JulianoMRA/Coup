@@ -75,4 +75,5 @@ export interface ClientGameState {
   activePlayerId: string
   pendingAction: PendingAction | null
   log: string[]
+  disconnectedPlayers: string[]
 }
