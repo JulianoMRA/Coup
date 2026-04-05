@@ -3,38 +3,33 @@ import { CharacterCard } from "../character-card"
 
 describe("CharacterCard", () => {
   it("renders face-up Duke card with Crown icon and Duque label", () => {
-    render(<CharacterCard type="DUKE" revealed={false} showFace={true} />)
+    const { container } = render(<CharacterCard type="DUKE" revealed={false} showFace={true} />)
     expect(screen.getByText("Duque")).toBeInTheDocument()
-    const container = screen.getByText("Duque").closest("div")
-    expect(container?.parentElement?.className ?? "").toContain("character-duke")
+    expect((container.firstChild as HTMLElement).className).toContain("character-duke")
   })
 
   it("renders face-up Captain card with Anchor icon and Capitao label", () => {
-    render(<CharacterCard type="CAPTAIN" revealed={false} showFace={true} />)
+    const { container } = render(<CharacterCard type="CAPTAIN" revealed={false} showFace={true} />)
     expect(screen.getByText("Capitao")).toBeInTheDocument()
-    const container = screen.getByText("Capitao").closest("div")
-    expect(container?.parentElement?.className ?? "").toContain("character-captain")
+    expect((container.firstChild as HTMLElement).className).toContain("character-captain")
   })
 
   it("renders face-up Assassin card with Sword icon and Assassino label", () => {
-    render(<CharacterCard type="ASSASSIN" revealed={false} showFace={true} />)
+    const { container } = render(<CharacterCard type="ASSASSIN" revealed={false} showFace={true} />)
     expect(screen.getByText("Assassino")).toBeInTheDocument()
-    const container = screen.getByText("Assassino").closest("div")
-    expect(container?.parentElement?.className ?? "").toContain("character-assassin")
+    expect((container.firstChild as HTMLElement).className).toContain("character-assassin")
   })
 
   it("renders face-up Ambassador card with Globe icon and Embaixador label", () => {
-    render(<CharacterCard type="AMBASSADOR" revealed={false} showFace={true} />)
+    const { container } = render(<CharacterCard type="AMBASSADOR" revealed={false} showFace={true} />)
     expect(screen.getByText("Embaixador")).toBeInTheDocument()
-    const container = screen.getByText("Embaixador").closest("div")
-    expect(container?.parentElement?.className ?? "").toContain("character-ambassador")
+    expect((container.firstChild as HTMLElement).className).toContain("character-ambassador")
   })
 
   it("renders face-up Countess card with Gem icon and Condessa label", () => {
-    render(<CharacterCard type="CONTESSA" revealed={false} showFace={true} />)
+    const { container } = render(<CharacterCard type="CONTESSA" revealed={false} showFace={true} />)
     expect(screen.getByText("Condessa")).toBeInTheDocument()
-    const container = screen.getByText("Condessa").closest("div")
-    expect(container?.parentElement?.className ?? "").toContain("character-countess")
+    expect((container.firstChild as HTMLElement).className).toContain("character-countess")
   })
 
   it("renders revealed/eliminated card with opacity-40 and grayscale classes", () => {
