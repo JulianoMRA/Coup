@@ -10,6 +10,8 @@ interface CoupTargetSelectorProps {
   roomId: string
   playerId: string
   onCancel: () => void
+  actionType?: string
+  label?: string
 }
 
 export function CoupTargetSelector({
@@ -18,18 +20,20 @@ export function CoupTargetSelector({
   roomId,
   playerId,
   onCancel,
+  actionType = "COUP",
+  label = "Selecionar alvo para o Golpe",
 }: CoupTargetSelectorProps) {
   const targets = players.filter((p) => !p.eliminated && p.id !== myId)
 
   function handleSelectTarget(targetId: string) {
-    socket.emit("GAME_ACTION", roomId, { type: "COUP", playerId, targetId })
+    socket.emit("GAME_ACTION", roomId, { type: actionType as "COUP" | "STEAL" | "ASSASSINATE", playerId, targetId })
     onCancel()
   }
 
   return (
     <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-background border-t border-border flex flex-col gap-2">
       <p className="text-sm font-semibold text-center mb-4">
-        Selecionar alvo para o Golpe
+        {label}
       </p>
       {targets.map((target) => (
         <Button

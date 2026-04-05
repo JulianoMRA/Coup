@@ -23,6 +23,8 @@ interface GameBoardProps {
 
 export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
   const [selectingCoupTarget, setSelectingCoupTarget] = useState(false)
+  const [selectingStealTarget, setSelectingStealTarget] = useState(false)
+  const [selectingAssassinateTarget, setSelectingAssassinateTarget] = useState(false)
   const [showMobileLog, setShowMobileLog] = useState(false)
 
   const isMyTurn = game.activePlayerId === playerId
@@ -33,9 +35,20 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
     game.phase === GamePhase.AWAITING_COUP_TARGET &&
     game.pendingAction?.targetId === playerId
 
+  const selectingTarget = selectingCoupTarget || selectingStealTarget || selectingAssassinateTarget
+
+  const targetActionType = selectingCoupTarget ? "COUP" : selectingStealTarget ? "STEAL" : "ASSASSINATE"
+  const targetLabel = selectingCoupTarget
+    ? "Selecionar alvo para o Golpe"
+    : selectingStealTarget
+    ? "Selecionar alvo para Roubar"
+    : "Selecionar alvo para Assassinar"
+
   useEffect(() => {
     if (game.phase !== GamePhase.AWAITING_ACTION) {
       setSelectingCoupTarget(false)
+      setSelectingStealTarget(false)
+      setSelectingAssassinateTarget(false)
     }
   }, [game.phase])
 
@@ -89,13 +102,19 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           roomId={roomId}
           playerId={playerId}
         />
-      ) : selectingCoupTarget && game.phase === GamePhase.AWAITING_ACTION ? (
+      ) : selectingTarget && game.phase === GamePhase.AWAITING_ACTION ? (
         <CoupTargetSelector
           players={game.players}
           myId={playerId}
           roomId={roomId}
           playerId={playerId}
-          onCancel={() => setSelectingCoupTarget(false)}
+          actionType={targetActionType}
+          label={targetLabel}
+          onCancel={() => {
+            setSelectingCoupTarget(false)
+            setSelectingStealTarget(false)
+            setSelectingAssassinateTarget(false)
+          }}
         />
       ) : (
         <ActionBar
@@ -106,6 +125,8 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           phase={game.phase}
           pendingReactions={game.pendingAction?.pendingReactions}
           onSelectCoupTarget={() => setSelectingCoupTarget(true)}
+          onSelectStealTarget={() => setSelectingStealTarget(true)}
+          onSelectAssassinateTarget={() => setSelectingAssassinateTarget(true)}
         />
       )}
       {game.phase === GamePhase.GAME_OVER && (
