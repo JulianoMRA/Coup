@@ -16,7 +16,7 @@ independently verifiable before the next one begins.
 - [x] **Phase 3: Game Engine (FSM)** - Pure TypeScript state machine with all Coup states, fully unit-tested before any WebSocket wiring (completed 2026-04-03)
 - [x] **Phase 4: Basic Game Loop** - Wire FSM to WebSocket: turn loop, coin economy, influence loss, elimination, win detection, game log (completed 2026-04-04)
 - [x] **Phase 5: Character Actions and Reactions** - Full character action set, reaction window, challenge flow, block flow, Ambassador exchange (completed 2026-04-05)
-- [ ] **Phase 6: Reconnection and Resilience** - Mid-game reconnect, disconnect grace timers, rematch, spectator mode, room cleanup
+- [x] **Phase 6: Reconnection and Resilience** - Mid-game reconnect, disconnect grace timers, rematch, spectator mode, room cleanup (completed 2026-04-05)
 - [ ] **Phase 7: UX Polish and Deployment** - Visual indicators, responsive layout, Railway/Vercel deployment, production config
 
 ## Phase Details
