@@ -430,10 +430,13 @@ describe("CHAL-05: card replacement after proven challenge", () => {
     expect(result.ok).toBe(true)
     if (!result.ok) return
     const p1 = result.state.players.find(p => p.id === "p1")!
-    // p1's DUKE at index 0 should have been replaced
-    expect(p1.hand[0].type).not.toBe(CardType.DUKE)
-    // deck length: DUKE returned, AMBASSADOR drawn = still 1
+    // p1 still has 2 cards (swap did not lose a card)
+    expect(p1.hand).toHaveLength(2)
+    // deck length unchanged: one card returned, one drawn = still 1
     expect(result.state.deck).toHaveLength(1)
+    // the combined set of p1's hand + deck still contains exactly one DUKE
+    const allCards = [...p1.hand, ...result.state.deck]
+    expect(allCards.filter(c => c.type === CardType.DUKE)).toHaveLength(1)
   })
 
   it("Test 2: challenger loses in RESOLVING_BLOCK_CHALLENGE — blocker's proven card is swapped and deck length unchanged", () => {
@@ -475,10 +478,13 @@ describe("CHAL-05: card replacement after proven challenge", () => {
     expect(result.ok).toBe(true)
     if (!result.ok) return
     const p2 = result.state.players.find(p => p.id === "p2")!
-    // p2's DUKE at index 0 should have been replaced
-    expect(p2.hand[0].type).not.toBe(CardType.DUKE)
-    // deck length: DUKE returned, AMBASSADOR drawn = still 1
+    // p2 still has 2 cards (swap did not lose a card)
+    expect(p2.hand).toHaveLength(2)
+    // deck length unchanged: one card returned, one drawn = still 1
     expect(result.state.deck).toHaveLength(1)
+    // the combined set of p2's hand + deck still contains exactly one DUKE (p2's proven DUKE)
+    const allCards = [...p2.hand, ...result.state.deck]
+    expect(allCards.filter(c => c.type === CardType.DUKE)).toHaveLength(1)
   })
 
   it("Test 3: challenged player bluffing — no card swap occurs", () => {

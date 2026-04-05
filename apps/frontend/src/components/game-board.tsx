@@ -10,6 +10,9 @@ import { ConnectionBadge } from "@/components/connection-badge"
 import { CoupTargetSelector } from "@/components/coup-target-selector"
 import { InfluenceCardSelector } from "@/components/influence-card-selector"
 import { WinnerOverlay } from "@/components/winner-overlay"
+import { ReactionBar } from "@/components/reaction-bar"
+import { BlockChallengeBar } from "@/components/block-challenge-bar"
+import { ExchangeSelector } from "@/components/exchange-selector"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card as UICard, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -31,9 +34,24 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
   const myPlayer = game.players.find((p) => p.id === playerId)
   const myCoins = myPlayer?.coins ?? 0
 
+  const hasUnrevealedCards = game.myHand.some(c => !c.revealed)
   const needsInfluenceChoice =
-    game.phase === GamePhase.AWAITING_COUP_TARGET &&
-    game.pendingAction?.targetId === playerId
+    ((game.phase === GamePhase.RESOLVING_CHALLENGE ||
+      game.phase === GamePhase.RESOLVING_BLOCK_CHALLENGE) && hasUnrevealedCards) ||
+    (game.phase === GamePhase.AWAITING_COUP_TARGET &&
+      game.pendingAction?.targetId === playerId)
+
+  const needsExchange =
+    game.phase === GamePhase.AWAITING_EXCHANGE &&
+    game.pendingAction?.playerId === playerId
+
+  const needsReaction =
+    game.phase === GamePhase.AWAITING_REACTIONS &&
+    game.pendingAction?.pendingReactions?.[playerId] !== undefined
+
+  const needsBlockChallenge =
+    game.phase === GamePhase.AWAITING_BLOCK_CHALLENGE &&
+    game.pendingAction?.pendingReactions?.[playerId] !== undefined
 
   const selectingTarget = selectingCoupTarget || selectingStealTarget || selectingAssassinateTarget
 
@@ -102,6 +120,13 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           roomId={roomId}
           playerId={playerId}
         />
+      ) : needsExchange ? (
+        <ExchangeSelector
+          myHand={game.myHand}
+          exchangeCards={game.pendingAction?.exchangeCards ?? []}
+          roomId={roomId}
+          playerId={playerId}
+        />
       ) : selectingTarget && game.phase === GamePhase.AWAITING_ACTION ? (
         <CoupTargetSelector
           players={game.players}
@@ -115,6 +140,21 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             setSelectingStealTarget(false)
             setSelectingAssassinateTarget(false)
           }}
+        />
+      ) : needsReaction && game.pendingAction ? (
+        <ReactionBar
+          pendingAction={game.pendingAction}
+          players={game.players}
+          playerId={playerId}
+          roomId={roomId}
+        />
+      ) : needsBlockChallenge && game.pendingAction ? (
+        <BlockChallengeBar
+          pendingAction={game.pendingAction}
+          players={game.players}
+          playerId={playerId}
+          activePlayerId={game.activePlayerId}
+          roomId={roomId}
         />
       ) : (
         <ActionBar
