@@ -140,7 +140,10 @@ Plans:
   3. Active and eliminated players are visually distinct at a glance (e.g., greyed out, crossed name)
   4. The reaction window "who hasn't decided" indicator correctly reflects pending players in real time with no extra latency visible to users
   5. Per-player coin counts and influence card counts are always visible to all players on the main game screen
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 07-01-PLAN.md — Backend build/start scripts, railway.json, ActionBar pending indicator, responsive GameLog (Wave 1)
+- [ ] 07-02-PLAN.md — Deploy to Railway + Vercel, verify all success criteria on live URL (Wave 2 — checkpoint)
 **UI hint**: yes
 
 ## Progress
@@ -155,5 +158,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 3. Game Engine (FSM) | 5/5 | Complete   | 2026-04-03 |
 | 4. Basic Game Loop | 4/4 | Complete   | 2026-04-04 |
 | 5. Character Actions and Reactions | 4/4 | Complete   | 2026-04-05 |
-| 6. Reconnection and Resilience | 0/2 | Not started | - |
-| 7. UX Polish and Deployment | 0/TBD | Not started | - |
+| 6. Reconnection and Resilience | 2/2 | Complete   | 2026-04-05 |
+| 7. UX Polish and Deployment | 0/2 | Not started | - |
