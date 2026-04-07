@@ -21,6 +21,13 @@
   --color-input: hsl(240 3.7% 15.9%);
   --color-ring: hsl(240 4.9% 83.9%);
   --radius: 0.5rem;
+
+  /* Character card accent colors */
+  --color-character-duke: hsl(271 76% 53%);
+  --color-character-captain: hsl(217 91% 60%);
+  --color-character-assassin: hsl(0 84% 60%);
+  --color-character-ambassador: hsl(142 71% 45%);
+  --color-character-countess: hsl(330 80% 65%);
 }
 
 @layer base {
