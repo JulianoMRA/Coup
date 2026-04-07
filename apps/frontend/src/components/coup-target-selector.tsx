@@ -31,7 +31,7 @@ export function CoupTargetSelector({
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-background border-t border-border flex flex-col gap-2">
+    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800 flex flex-col gap-2">
       <p className="text-sm font-semibold text-center mb-4">
         {label}
       </p>
@@ -39,16 +39,16 @@ export function CoupTargetSelector({
         <Button
           key={target.id}
           variant="outline"
-          className="w-full justify-start gap-3 ring-2 ring-destructive"
+          className="w-full justify-start gap-3 bg-zinc-900 border border-zinc-700 hover:border-destructive hover:bg-zinc-800"
           onClick={() => handleSelectTarget(target.id)}
         >
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted text-muted-foreground text-sm font-semibold shrink-0">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-zinc-800 text-zinc-300 text-sm font-semibold shrink-0">
             {target.name.charAt(0).toUpperCase()}
           </span>
           {target.name}
         </Button>
       ))}
-      <Button variant="ghost" className="w-full" onClick={onCancel}>
+      <Button variant="ghost" className="w-full text-zinc-500 hover:text-zinc-300" onClick={onCancel}>
         Cancelar Golpe
       </Button>
     </div>

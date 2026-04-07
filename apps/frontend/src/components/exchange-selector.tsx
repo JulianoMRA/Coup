@@ -4,7 +4,7 @@ import { useState } from "react"
 import type { Card } from "@coup/shared"
 import { socket } from "@/lib/socket"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { CharacterCard } from "@/components/character-card"
 
 interface ExchangeSelectorProps {
   myHand: Card[]
@@ -41,23 +41,20 @@ export function ExchangeSelector({
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-background border-t border-border flex flex-col gap-2">
+    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800 flex flex-col gap-2">
       <p className="text-sm font-semibold text-center">Escolha 2 cartas para manter:</p>
       <div className="flex flex-wrap items-center justify-center gap-2">
         {allCards.map((card, index) => {
           if (card.revealed) return null
           const isSelected = selectedIndices.includes(index)
           return (
-            <Badge
+            <div
               key={index}
-              variant="secondary"
-              className={`cursor-pointer min-h-[44px] px-4 py-2 text-sm ${
-                isSelected ? "ring-2 ring-primary opacity-100" : "opacity-50"
-              }`}
+              className={`cursor-pointer rounded-lg ${isSelected ? "ring-2 ring-primary" : "opacity-50"}`}
               onClick={() => toggleCard(index)}
             >
-              {card.type}
-            </Badge>
+              <CharacterCard type={card.type} revealed={false} showFace={true} size="md" />
+            </div>
           )
         })}
       </div>
@@ -68,7 +65,7 @@ export function ExchangeSelector({
         variant="default"
         disabled={selectedIndices.length !== 2}
         onClick={handleConfirm}
-        className="w-full"
+        className="w-full min-h-[44px]"
       >
         Confirmar Troca ({selectedIndices.length}/2)
       </Button>
