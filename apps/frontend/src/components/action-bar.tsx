@@ -1,9 +1,11 @@
 "use client"
 
+import { Crown, Anchor, Sword, Globe, Coins as CoinsIcon } from "lucide-react"
 import { socket } from "@/lib/socket"
 import { GamePhase } from "@coup/shared"
 import type { PublicPlayerState } from "@coup/shared"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface ActionBarProps {
   roomId: string
@@ -70,53 +72,104 @@ export function ActionBar({
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 h-auto py-3 px-6 flex flex-col items-center justify-center gap-2 bg-background border-t border-border"
+      className="fixed bottom-0 left-0 right-0 h-auto py-3 px-6 flex flex-col items-center justify-center gap-2 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800"
       aria-label={!isMyTurn ? "Aguardando sua vez" : undefined}
     >
       {forcedCoup && (
-        <p className="text-sm text-muted-foreground text-center">
-          Voce deve Golpear (10+ moedas)
-        </p>
+        <div className="bg-destructive/10 border border-destructive/30 rounded-md px-3 py-1.5">
+          <p className="text-sm text-destructive font-medium text-center">
+            Voce deve Golpear (10+ moedas)
+          </p>
+        </div>
       )}
       {waitingNames && (
-        <p className="text-xs text-muted-foreground text-center">
+        <p className="text-xs text-zinc-500 text-center">
           Aguardando: {waitingNames}
         </p>
       )}
-      <div className="flex items-center justify-center gap-4">
+      <div className="grid grid-cols-3 gap-2 w-full max-w-lg mx-auto">
         <Button
-          variant="secondary"
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] border border-zinc-700 hover:bg-zinc-800",
+            (!canAct || forcedCoup) && "opacity-40"
+          )}
           disabled={!canAct || forcedCoup}
           onClick={handleIncome}
         >
+          <CoinsIcon className="h-4 w-4 mr-1" />
           Renda
         </Button>
         <Button
-          variant="secondary"
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] border border-zinc-700 hover:bg-zinc-800",
+            (!canAct || forcedCoup) && "opacity-40"
+          )}
           disabled={!canAct || forcedCoup}
           onClick={handleForeignAid}
         >
           Ajuda Externa
         </Button>
         <Button
-          variant="destructive"
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] border border-destructive/60 text-destructive hover:bg-destructive/10",
+            (!canAct || !canCoup) && "opacity-40"
+          )}
           disabled={!canAct || !canCoup}
           onClick={handleCoup}
         >
           Golpe
         </Button>
       </div>
-      <div className="flex items-center justify-center gap-4">
-        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleTax}>
-          Imposto (Duque)
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-lg mx-auto">
+        <Button
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] gap-1.5 border border-character-duke/50 text-character-duke hover:bg-character-duke/10",
+            (!canAct || forcedCoup) && "opacity-40"
+          )}
+          disabled={!canAct || forcedCoup}
+          onClick={handleTax}
+        >
+          <Crown className="h-4 w-4" />
+          Imposto
         </Button>
-        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleSteal}>
-          Roubar (Capitao)
+        <Button
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] gap-1.5 border border-character-captain/50 text-character-captain hover:bg-character-captain/10",
+            (!canAct || forcedCoup) && "opacity-40"
+          )}
+          disabled={!canAct || forcedCoup}
+          onClick={handleSteal}
+        >
+          <Anchor className="h-4 w-4" />
+          Roubar
         </Button>
-        <Button variant="destructive" disabled={!canAct || forcedCoup || myCoins < 3} onClick={handleAssassinate}>
-          Assassinar (Assassino)
+        <Button
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] gap-1.5 border border-character-assassin/50 text-character-assassin hover:bg-character-assassin/10",
+            (!canAct || forcedCoup || myCoins < 3) && "opacity-40"
+          )}
+          disabled={!canAct || forcedCoup || myCoins < 3}
+          onClick={handleAssassinate}
+        >
+          <Sword className="h-4 w-4" />
+          Assassinar
         </Button>
-        <Button variant="secondary" disabled={!canAct || forcedCoup} onClick={handleExchange}>
+        <Button
+          variant="ghost"
+          className={cn(
+            "min-h-[44px] gap-1.5 border border-character-ambassador/50 text-character-ambassador hover:bg-character-ambassador/10",
+            (!canAct || forcedCoup) && "opacity-40"
+          )}
+          disabled={!canAct || forcedCoup}
+          onClick={handleExchange}
+        >
+          <Globe className="h-4 w-4" />
           Embaixador
         </Button>
       </div>

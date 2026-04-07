@@ -5,6 +5,7 @@ import type { PendingAction, PublicPlayerState } from "@coup/shared"
 import { CardType } from "@coup/shared"
 import { socket } from "@/lib/socket"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { BlockClaimSelector } from "./block-claim-selector"
 
 const ACTION_LABELS: Record<string, string> = {
@@ -66,17 +67,17 @@ export function ReactionBar({
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-background border-t border-border flex flex-col gap-2">
-      <p className="text-sm text-muted-foreground text-center">
+    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800 flex flex-col gap-2">
+      <p className="text-sm text-zinc-300 font-medium text-center">
         {actorName} declarou {ACTION_LABELS[pendingAction.type] ?? pendingAction.type}
       </p>
       {pendingPlayerNames && (
-        <p className="text-xs text-muted-foreground text-center">
+        <p className="text-xs text-zinc-500 text-center">
           Aguardando: {pendingPlayerNames}
         </p>
       )}
       {myReactionStatus !== "WAITING" ? (
-        <p className="text-sm text-muted-foreground text-center">
+        <p className={cn("text-sm text-center", "text-zinc-500")}>
           Voce passou — aguardando os demais
         </p>
       ) : showBlockClaim ? (
@@ -89,16 +90,28 @@ export function ReactionBar({
       ) : (
         <div className="flex items-center justify-center gap-4">
           {canChallenge && (
-            <Button variant="destructive" onClick={handleChallenge}>
+            <Button
+              variant="ghost"
+              className="border border-destructive/50 text-destructive hover:bg-destructive/10 min-h-[44px]"
+              onClick={handleChallenge}
+            >
               Contestar
             </Button>
           )}
           {blockResult.canBlock && (
-            <Button variant="outline" onClick={() => setShowBlockClaim(true)}>
+            <Button
+              variant="ghost"
+              className="border border-zinc-600 hover:bg-zinc-800 min-h-[44px]"
+              onClick={() => setShowBlockClaim(true)}
+            >
               Bloquear
             </Button>
           )}
-          <Button variant="secondary" onClick={handlePass}>
+          <Button
+            variant="ghost"
+            className="border border-zinc-700 text-zinc-400 hover:bg-zinc-800 min-h-[44px]"
+            onClick={handlePass}
+          >
             Passar
           </Button>
         </div>
