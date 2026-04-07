@@ -27,7 +27,7 @@ export function ConnectionBadge() {
   const status = useSocketStatus()
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-1 px-2 py-1 rounded-md bg-card">
+    <div className="flex items-center gap-1.5 px-2 py-1 rounded-md">
       <span className={dotClass[status]} />
       <span className={labelClass[status]}>{labelText[status]}</span>
     </div>

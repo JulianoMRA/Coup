@@ -13,8 +13,8 @@ import { WinnerOverlay } from "@/components/winner-overlay"
 import { ReactionBar } from "@/components/reaction-bar"
 import { BlockChallengeBar } from "@/components/block-challenge-bar"
 import { ExchangeSelector } from "@/components/exchange-selector"
+import { CharacterCard } from "@/components/character-card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Card as UICard, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface GameBoardProps {
@@ -73,8 +73,8 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
   }, [game.phase])
 
   return (
-    <div className="min-h-screen flex flex-col pb-16">
-      <header className="h-14 px-6 flex items-center justify-between border-b border-border">
+    <div className="min-h-screen flex flex-col pb-20">
+      <header className="h-14 px-6 flex items-center justify-between border-b border-zinc-800 bg-zinc-950">
         <h1 className="text-[20px] font-semibold">Sala: {roomId}</h1>
         <ConnectionBadge />
       </header>
@@ -86,24 +86,24 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             myId={playerId}
             disconnectedPlayers={game.disconnectedPlayers ?? []}
           />
-          <UICard>
+          <UICard className="bg-zinc-900/50 border-zinc-800">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Minhas Cartas</CardTitle>
             </CardHeader>
             <CardContent className="flex gap-2 flex-wrap">
               {game.myHand.map((card, idx) => (
-                <Badge
+                <CharacterCard
                   key={idx}
-                  variant={card.revealed ? "outline" : "secondary"}
-                  className="text-sm px-3 py-1"
-                >
-                  {card.revealed ? `${card.type} (revelada)` : card.type}
-                </Badge>
+                  type={card.type}
+                  revealed={card.revealed}
+                  showFace={true}
+                  size="sm"
+                />
               ))}
             </CardContent>
           </UICard>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col min-h-0">
           {/* Mobile toggle — hidden on md+ */}
           <div className="md:hidden">
             <Button variant="ghost" onClick={() => setShowMobileLog(!showMobileLog)}>
@@ -112,7 +112,7 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
             {showMobileLog && <GameLog log={game.log} />}
           </div>
           {/* Desktop always-visible — hidden on mobile */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex flex-col flex-1 min-h-0">
             <GameLog log={game.log} />
           </div>
         </div>
