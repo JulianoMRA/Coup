@@ -77,7 +77,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   if (error === "Room not found") {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-xl font-semibold">Sala não encontrada.</p>
+        <p className="text-xl font-semibold text-zinc-300">Sala não encontrada.</p>
         <Button onClick={() => router.push("/")}>Voltar ao início</Button>
       </main>
     )
@@ -89,28 +89,31 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
       <main className="min-h-screen flex flex-col items-center justify-center p-8">
         <div className="w-full max-w-[400px] flex flex-col gap-4">
           <ConnectionBadge />
-          <h1 className="text-[20px] font-semibold">Entrar na Sala</h1>
-          <p className="text-sm text-muted-foreground">Sala: {roomId}</p>
-          {error && error !== "Room not found" && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
-          <Input
-            placeholder="Seu nome"
-            value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            maxLength={16}
-          />
-          <p className="text-xs text-muted-foreground">
-            Apenas letras, números, espaços e hífens. Máximo 16 caracteres.
-          </p>
-          <Button
-            onClick={handleJoin}
-            disabled={nameInput.trim().length === 0}
-            className="w-full"
-          >
-            Entrar na Sala
-          </Button>
+          <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-8 shadow-2xl flex flex-col gap-4">
+            <h1 className="text-xl font-semibold text-zinc-100">Entrar na Sala</h1>
+            <p className="text-sm text-zinc-500">Sala: {roomId}</p>
+            {error && error !== "Room not found" && (
+              <p className="text-sm text-destructive">{error}</p>
+            )}
+            <Input
+              placeholder="Seu nome"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              maxLength={16}
+              className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500"
+            />
+            <p className="text-xs text-zinc-500">
+              Apenas letras, números, espaços e hífens. Máximo 16 caracteres.
+            </p>
+            <Button
+              onClick={handleJoin}
+              disabled={nameInput.trim().length === 0}
+              className="w-full min-h-[44px]"
+            >
+              Entrar na Sala
+            </Button>
+          </div>
         </div>
       </main>
     )
@@ -131,31 +134,35 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     <main className="min-h-screen flex flex-col items-center py-8 px-4">
       <div className="w-full max-w-[480px] flex flex-col gap-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-[20px] font-semibold">Sala de Espera</h1>
+          <h1 className="text-[20px] font-semibold text-zinc-100">Sala de Espera</h1>
           <ConnectionBadge />
         </div>
 
         {error && <p className="text-sm text-destructive">{error}</p>}
 
         {/* Card 1: Invite link */}
-        <Card>
+        <Card className="bg-zinc-900/60 border-zinc-800">
           <CardHeader className="pb-2">
-            <p className="text-sm font-semibold text-muted-foreground">Convite</p>
+            <p className="text-sm font-semibold text-zinc-500">Convite</p>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             {showFallback ? (
               <div className="flex flex-col gap-1">
-                <p className="text-xs text-muted-foreground">Copie o link manualmente</p>
-                <p className="text-sm font-mono break-all select-all">
+                <p className="text-xs text-zinc-500">Copie o link manualmente</p>
+                <p className="text-sm font-mono break-all select-all text-zinc-400">
                   {typeof window !== "undefined" ? window.location.href : ""}
                 </p>
               </div>
             ) : (
-              <p className="text-sm font-mono truncate">
+              <p className="text-sm font-mono truncate text-zinc-400">
                 {typeof window !== "undefined" ? window.location.href : ""}
               </p>
             )}
-            <Button variant="secondary" className="w-full gap-2" onClick={handleCopyLink}>
+            <Button
+              variant="secondary"
+              className="w-full gap-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 min-h-[44px]"
+              onClick={handleCopyLink}
+            >
               <Copy className="h-4 w-4" />
               {copied ? "Copiado!" : "Copiar link"}
             </Button>
@@ -163,25 +170,25 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
         </Card>
 
         {/* Card 2: Players */}
-        <Card>
+        <Card className="bg-zinc-900/60 border-zinc-800">
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="text-base text-zinc-300">
               Jogadores ({lobby?.players.length ?? 0}/6)
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {!lobby || lobby.players.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aguardando outros jogadores...</p>
+              <p className="text-sm text-zinc-500">Aguardando outros jogadores...</p>
             ) : (
               lobby.players.map((player) => (
                 <div key={player.playerId} className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-sm font-semibold shrink-0">
+                  <div className="h-8 w-8 rounded-full bg-zinc-700 text-zinc-300 flex items-center justify-center text-sm font-semibold shrink-0">
                     {player.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="flex-1 text-base">
+                  <span className="flex-1 text-base text-zinc-200">
                     {player.name}
                     {player.playerId === lobby.hostId && (
-                      <span className="text-sm text-muted-foreground ml-1">(anfitrião)</span>
+                      <span className="text-sm text-zinc-500 ml-1">(anfitrião)</span>
                     )}
                   </span>
                   <Badge
@@ -189,7 +196,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
                       "text-xs",
                       player.isReady
                         ? "bg-emerald-500 text-white hover:bg-emerald-500"
-                        : "bg-secondary text-muted-foreground"
+                        : "bg-zinc-800 text-zinc-500 border border-zinc-700"
                     )}
                   >
                     {player.isReady ? "Pronto" : "Aguardando"}
@@ -201,14 +208,18 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
         </Card>
 
         {/* Ready toggle — all players */}
-        <Button variant={myReady ? "outline" : "default"} className="w-full" onClick={handleReadyToggle}>
+        <Button
+          variant={myReady ? "outline" : "default"}
+          className="w-full min-h-[44px]"
+          onClick={handleReadyToggle}
+        >
           {myReady ? "Cancelar Prontidão" : "Estou Pronto!"}
         </Button>
 
         {/* Start button — host only */}
         {isHost && (
           <Button
-            className="w-full"
+            className="w-full min-h-[44px]"
             disabled={!allReady}
             title={startDisabledReason ?? undefined}
             onClick={handleStartGame}
