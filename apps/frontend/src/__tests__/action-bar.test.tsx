@@ -11,14 +11,13 @@ vi.mock("@/lib/socket", () => ({
 }))
 
 const makePlayers = (overrides: Partial<PublicPlayerState>[] = []): PublicPlayerState[] =>
-  overrides.map((o, i) => ({
-    id: `player-${i}`,
-    name: `Player ${i}`,
-    coins: 2,
-    influenceCount: 2,
-    revealedCards: [],
-    isEliminated: false,
-    ...o,
+  overrides.map((o, i): PublicPlayerState => ({
+    id: o.id ?? `player-${i}`,
+    name: o.name ?? `Player ${i}`,
+    coins: o.coins ?? 2,
+    cardCount: o.cardCount ?? 2,
+    revealedCards: o.revealedCards ?? [],
+    eliminated: o.eliminated ?? false,
   }))
 
 const baseProps = {
