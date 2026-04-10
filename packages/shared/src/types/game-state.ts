@@ -76,4 +76,5 @@ export interface ClientGameState {
   pendingAction: PendingAction | null
   log: string[]
   disconnectedPlayers: string[]
+  deckCount: number
 }

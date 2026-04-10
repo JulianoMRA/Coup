@@ -24,5 +24,6 @@ export function projectStateForPlayer(
     pendingAction: gameState.pendingAction,
     log: gameState.log,
     disconnectedPlayers,
+    deckCount: gameState.deck.length,
   }
 }
