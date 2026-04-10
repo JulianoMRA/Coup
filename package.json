@@ -7,8 +7,6 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=apps/frontend\" \"npm run dev --workspace=apps/backend\"",
-    "build": "npm run build --workspace=apps/backend",
-    "start": "node apps/backend/dist/index.js",
     "typecheck": "tsc --noEmit -p apps/frontend/tsconfig.json && tsc --noEmit -p apps/backend/tsconfig.json && tsc --noEmit -p packages/shared/tsconfig.json",
     "test": "vitest run"
   },
