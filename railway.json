@@ -1,0 +1,9 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "buildCommand": "npm install && npm run build --workspace=apps/backend"
+  },
+  "deploy": {
+    "startCommand": "node apps/backend/dist/index.js"
+  }
+}
