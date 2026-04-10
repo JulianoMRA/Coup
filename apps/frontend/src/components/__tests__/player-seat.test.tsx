@@ -45,8 +45,8 @@ describe("PlayerSeat", () => {
     expect(screen.getByText("3")).toBeTruthy()
   })
 
-  it("renders card count with Shield icon present", () => {
-    render(
+  it("renders card count as stacked card backs", () => {
+    const { container } = render(
       <PlayerSeat
         player={basePlayer}
         isActive={false}
@@ -54,7 +54,8 @@ describe("PlayerSeat", () => {
         isDisconnected={false}
       />
     )
-    expect(screen.getByText("2")).toBeTruthy()
+    const cardBacks = container.querySelectorAll('div[style*="repeating-linear-gradient"]')
+    expect(cardBacks.length).toBe(2)
   })
 
   it("active player has ring-2 class applied", () => {
