@@ -4,6 +4,6 @@
     "buildCommand": "npm run build"
   },
   "deploy": {
-    "startCommand": "npm start"
+    "startCommand": "node apps/backend/dist/index.js"
   }
 }
