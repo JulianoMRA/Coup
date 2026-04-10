@@ -6,11 +6,17 @@ import type { ClientToServerEvents, ServerToClientEvents } from "@coup/shared"
 import { registerSocketHandlers } from "./socket-handler"
 import { createRoom } from "./rooms/room-store"
 import { startCleanupInterval } from "./cleanup"
+import { parseAllowedOrigins } from "./cors-origins"
 
 const app = express()
 export const httpServer = createServer(app)
 
-app.use(cors({ origin: process.env["FRONTEND_URL"] ?? "http://localhost:3000" }))
+const allowedOrigins = parseAllowedOrigins(
+  process.env["FRONTEND_URL"],
+  "http://localhost:3000",
+)
+
+app.use(cors({ origin: allowedOrigins }))
 app.use(express.json())
 
 app.post("/api/rooms", (req, res) => {
@@ -25,7 +31,7 @@ app.post("/api/rooms", (req, res) => {
 
 export const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: process.env["FRONTEND_URL"] ?? "http://localhost:3000",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
 })
