@@ -16,14 +16,16 @@ export function WinnerOverlay({ players, roomId }: WinnerOverlayProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/95 backdrop-blur-md">
-      <Card className="w-80 text-center p-8 bg-zinc-900 border-zinc-700 shadow-2xl">
-        <Trophy className="h-12 w-12 text-yellow-400 mx-auto mb-2" />
-        <h2 className="text-[28px] font-semibold">Fim de Jogo</h2>
-        <p className="text-sm text-muted-foreground mt-2">Vencedor!</p>
-        <p className="text-[20px] font-semibold mt-4 text-zinc-100">{winner?.name ?? "Desconhecido"}</p>
+      <Card className="w-80 text-center p-8 bg-zinc-900/90 border-zinc-700/60 shadow-2xl shadow-black/60">
+        <Trophy className="h-12 w-12 text-yellow-400 mx-auto mb-3" />
+        <h2 className="text-[26px] font-bold font-cinzel tracking-widest text-zinc-100">Fim de Jogo</h2>
+        <p className="text-xs text-zinc-500 mt-2 tracking-[0.2em] uppercase font-cinzel">Vencedor</p>
+        <p className="text-[22px] font-bold mt-3 text-zinc-100 font-cinzel tracking-wide">
+          {winner?.name ?? "Desconhecido"}
+        </p>
         <Button
           variant="default"
-          className="w-full mt-6 min-h-[44px]"
+          className="w-full mt-6 min-h-[44px] font-cinzel tracking-widest"
           onClick={() => socket.emit("REMATCH", roomId)}
         >
           Revanche

@@ -54,11 +54,11 @@ export default function Home() {
         <ConnectionBadge />
         <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-8 shadow-2xl flex flex-col gap-4">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <Swords className="h-8 w-8 text-zinc-400" />
-            <h1 className="text-3xl font-bold tracking-wider text-zinc-100">COUP</h1>
-            <Swords className="h-8 w-8 text-zinc-400 -scale-x-100" />
+            <Swords className="h-7 w-7 text-zinc-400" />
+            <h1 className="text-4xl font-bold tracking-[0.25em] text-zinc-100 font-cinzel">COUP</h1>
+            <Swords className="h-7 w-7 text-zinc-400 -scale-x-100" />
           </div>
-          <p className="text-sm text-zinc-500 text-center tracking-wide mb-4">Online</p>
+          <p className="text-xs text-zinc-500 text-center tracking-[0.3em] uppercase font-cinzel mb-4">Online</p>
           <Input
             placeholder="Seu nome"
             value={username}

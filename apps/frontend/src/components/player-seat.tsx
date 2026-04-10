@@ -1,6 +1,6 @@
 "use client"
 
-import { Coins, Shield } from "lucide-react"
+import { Coins } from "lucide-react"
 import type { PublicPlayerState } from "@coup/shared"
 import { cn } from "@/lib/utils"
 import { CharacterCard } from "./character-card"
@@ -35,7 +35,7 @@ export function PlayerSeat({ player, isActive, isMe, isDisconnected }: PlayerSea
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className={cn("text-sm font-medium truncate", player.eliminated && "line-through")}>
+          <p className={cn("text-sm font-medium truncate font-cinzel tracking-wide", player.eliminated && "line-through")}>
             {player.name}
           </p>
           {isMe && (
@@ -46,15 +46,32 @@ export function PlayerSeat({ player, isActive, isMe, isDisconnected }: PlayerSea
           )}
         </div>
 
-        <div className="shrink-0 flex items-center gap-2">
-          <span className="flex items-center gap-0.5 text-xs text-yellow-400">
+        <div className="shrink-0 flex items-center gap-2.5">
+          <span className="flex items-center gap-0.5 text-xs text-yellow-400 font-semibold">
             <Coins className="h-3.5 w-3.5 text-yellow-400" />
             {player.coins}
           </span>
-          <span className="flex items-center gap-0.5 text-xs text-zinc-400">
-            <Shield className="h-3.5 w-3.5 text-zinc-400" />
-            {player.cardCount}
-          </span>
+          {/* Mini card back stack */}
+          <div className="flex items-end relative h-6">
+            {Array.from({ length: Math.max(0, player.cardCount) }).map((_, i) => (
+              <div
+                key={i}
+                className="w-[14px] h-[20px] rounded-[2px] border border-zinc-500/70 shadow-sm"
+                style={{
+                  background:
+                    "repeating-linear-gradient(45deg,#3f3f46 0,#3f3f46 1px,transparent 0,transparent 50%)," +
+                    "repeating-linear-gradient(-45deg,#3f3f46 0,#3f3f46 1px,transparent 0,transparent 50%)",
+                  backgroundSize: "4px 4px",
+                  backgroundColor: "#27272a",
+                  marginLeft: i > 0 ? "-5px" : "0",
+                  zIndex: i,
+                  position: "relative",
+                  transform: `rotate(${(i - (player.cardCount - 1) / 2) * 6}deg)`,
+                  transformOrigin: "bottom center",
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

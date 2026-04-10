@@ -16,6 +16,7 @@ import { ExchangeSelector } from "@/components/exchange-selector"
 import { CharacterCard } from "@/components/character-card"
 import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Layers } from "lucide-react"
 
 interface GameBoardProps {
   game: ClientGameState
@@ -74,8 +75,12 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
 
   return (
     <div className="min-h-screen flex flex-col pb-20">
-      <header className="h-14 px-6 flex items-center justify-between border-b border-zinc-800 bg-zinc-950">
-        <h1 className="text-[20px] font-semibold">Sala: {roomId}</h1>
+      <header className="h-14 px-6 flex items-center justify-between border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <h1 className="text-[22px] font-bold tracking-widest font-cinzel text-zinc-100">COUP</h1>
+          <span className="text-zinc-500 text-sm">·</span>
+          <span className="text-sm text-zinc-400 font-cinzel tracking-wide">{roomId}</span>
+        </div>
         <ConnectionBadge />
       </header>
       <div className="flex-1 flex flex-col md:flex-row gap-4 p-4">
@@ -88,28 +93,61 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
           />
           <UICard className="bg-zinc-900/50 border-zinc-800">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Minhas Cartas</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-cinzel tracking-wide">Minhas Cartas</CardTitle>
+                <span className="flex items-center gap-1 text-xs text-zinc-500">
+                  <Layers className="h-3.5 w-3.5" />
+                  Baralho: {game.deckCount}
+                </span>
+              </div>
             </CardHeader>
-            <CardContent className="flex gap-2 flex-wrap">
-              {game.myHand.map((card, idx) => (
-                <CharacterCard
-                  key={idx}
-                  type={card.type}
-                  revealed={card.revealed}
-                  showFace={true}
-                  size="sm"
-                />
-              ))}
+            <CardContent className="flex items-end justify-center min-h-[6.5rem] pb-3 pt-1">
+              {game.myHand.map((card, idx) => {
+                const total = game.myHand.length
+                const center = (total - 1) / 2
+                const offset = idx - center
+                const rotation = total > 1 ? offset * 14 : 0
+                const yShift = total > 1 ? Math.abs(offset) * 6 : 0
+                return (
+                  <div
+                    key={idx}
+                    className="transition-all duration-200 hover:-translate-y-2 cursor-default"
+                    style={{
+                      marginLeft: idx > 0 ? "-10px" : "0",
+                      zIndex: idx,
+                      position: "relative",
+                    }}
+                  >
+                    <div
+                      style={{
+                        transform: `rotate(${rotation}deg) translateY(${yShift}px)`,
+                        transformOrigin: "bottom center",
+                      }}
+                    >
+                      <CharacterCard
+                        type={card.type}
+                        revealed={card.revealed}
+                        showFace={true}
+                        size="sm"
+                      />
+                    </div>
+                  </div>
+                )
+              })}
             </CardContent>
           </UICard>
         </div>
         <div className="flex-1 flex flex-col min-h-0">
           {/* Mobile toggle — hidden on md+ */}
-          <div className="md:hidden">
-            <Button variant="ghost" onClick={() => setShowMobileLog(!showMobileLog)}>
+          <div className="md:hidden flex flex-col gap-2">
+            <Button variant="ghost" size="sm" className="self-start" onClick={() => setShowMobileLog(!showMobileLog)}>
               {showMobileLog ? "Ocultar Log" : "Ver Log"}
             </Button>
-            {showMobileLog && <GameLog log={game.log} />}
+            {showMobileLog && (
+              <div className="h-48 flex flex-col">
+                <GameLog log={game.log} />
+              </div>
+            )}
           </div>
           {/* Desktop always-visible — hidden on mobile */}
           <div className="hidden md:flex flex-col flex-1 min-h-0">
