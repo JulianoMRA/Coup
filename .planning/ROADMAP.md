@@ -135,10 +135,10 @@ Plans:
 **Goal:** [Urgent work - to be planned]
 **Requirements**: TBD
 **Depends on:** Phase 6
-**Plans:** 0 plans
+**Plans:** 3/3 plans complete
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 06.1 to break down)
+- [x] TBD (run /gsd-plan-phase 06.1 to break down) (completed 2026-04-07)
 
 ### Phase 7: UX Polish and Deployment
 **Goal**: The app is deployed to production and accessible via a public URL; the UI is responsive on mobile browsers; visual indicators make the game state unambiguous; the app is ready for the friend group to use
