@@ -43,11 +43,23 @@ export function initGame(roomId: string, lobbyPlayers: LobbyPlayer[]): GameState
     activePlayerId: players[0].id,
     pendingAction: null,
     deck,
-    log: ["Game started"],
+    log: ["Jogo iniciado"],
   }
 }
 
 // ─── helpers ──────────────────────────────────────────────────────────────
+
+const CARD_PT: Record<string, string> = {
+  DUKE: "Duque",
+  CAPTAIN: "Capitão",
+  ASSASSIN: "Assassino",
+  AMBASSADOR: "Embaixador",
+  CONTESSA: "Condessa",
+}
+
+function pname(state: GameState, id: string): string {
+  return state.players.find(p => p.id === id)?.name ?? id
+}
 
 function nextActivePlayer(state: GameState): string {
   const alive = state.players.filter(p => !p.eliminated)
@@ -76,7 +88,7 @@ function revealCard(state: GameState, playerId: string, cardIndex: number): Game
 function checkGameOver(state: GameState): GameState {
   const alive = state.players.filter(p => !p.eliminated)
   if (alive.length === 1) {
-    return { ...state, phase: GamePhase.GAME_OVER, log: [...state.log, `${alive[0].name} wins!`] }
+    return { ...state, phase: GamePhase.GAME_OVER, log: [...state.log, `${alive[0].name} venceu!`] }
   }
   return state
 }
@@ -112,7 +124,7 @@ function handleIncome(state: GameState, action: Extract<GameAction, { type: "INC
       phase: GamePhase.AWAITING_ACTION,
       activePlayerId: nextActivePlayer(state),
       pendingAction: null,
-      log: [...state.log, `${action.playerId} takes income`],
+      log: [...state.log, `${pname(state, action.playerId)} recebeu renda (+1)`],
     },
   }
 }
@@ -131,7 +143,7 @@ function handleForeignAid(state: GameState, action: Extract<GameAction, { type: 
         playerId: action.playerId,
         pendingReactions: buildPendingReactions(state, action.playerId),
       },
-      log: [...state.log, `${action.playerId} declares Foreign Aid`],
+      log: [...state.log, `${pname(state, action.playerId)} declarou Ajuda Externa`],
     },
   }
 }
@@ -159,7 +171,7 @@ function handleCoup(state: GameState, action: Extract<GameAction, { type: "COUP"
         targetId: action.targetId,
         pendingReactions: {},
       },
-      log: [...state.log, `${action.playerId} launches Coup on ${action.targetId}`],
+      log: [...state.log, `${pname(state, action.playerId)} deu Golpe em ${pname(state, action.targetId)}`],
     },
   }
 }
@@ -194,7 +206,7 @@ function handleTax(state: GameState, action: Extract<GameAction, { type: "TAX" }
         playerId: action.playerId,
         pendingReactions: buildPendingReactions(state, action.playerId),
       },
-      log: [...state.log, `${action.playerId} declares Tax`],
+      log: [...state.log, `${pname(state, action.playerId)} declarou Imposto (Duque)`],
     },
   }
 }
@@ -214,7 +226,7 @@ function handleSteal(state: GameState, action: Extract<GameAction, { type: "STEA
         targetId: action.targetId,
         pendingReactions: buildPendingReactions(state, action.playerId),
       },
-      log: [...state.log, `${action.playerId} declares Steal on ${action.targetId}`],
+      log: [...state.log, `${pname(state, action.playerId)} declarou Roubo em ${pname(state, action.targetId)}`],
     },
   }
 }
@@ -242,7 +254,7 @@ function handleAssassinate(state: GameState, action: Extract<GameAction, { type:
         targetId: action.targetId,
         pendingReactions: buildPendingReactions(state, action.playerId),
       },
-      log: [...state.log, `${action.playerId} declares Assassinate on ${action.targetId}`],
+      log: [...state.log, `${pname(state, action.playerId)} declarou Assassinato em ${pname(state, action.targetId)}`],
     },
   }
 }
@@ -261,7 +273,7 @@ function handleExchange(state: GameState, action: Extract<GameAction, { type: "E
         playerId: action.playerId,
         pendingReactions: buildPendingReactions(state, action.playerId),
       },
-      log: [...state.log, `${action.playerId} declares Exchange`],
+      log: [...state.log, `${pname(state, action.playerId)} declarou Troca (Embaixador)`],
     },
   }
 }
@@ -282,7 +294,7 @@ function resolveAction(state: GameState): ActionResult {
           players,
           phase: GamePhase.AWAITING_ACTION,
           activePlayerId: nextActivePlayer(state),
-          log: [...state.log, `${pending.playerId} gains Foreign Aid (+2 coins)`],
+          log: [...state.log, `${pname(state, pending.playerId)} recebeu Ajuda Externa (+2)`],
         },
       }
     }
@@ -297,7 +309,7 @@ function resolveAction(state: GameState): ActionResult {
           players,
           phase: GamePhase.AWAITING_ACTION,
           activePlayerId: nextActivePlayer(state),
-          log: [...state.log, `${pending.playerId} gains Tax (+3 coins)`],
+          log: [...state.log, `${pname(state, pending.playerId)} recebeu Imposto (+3)`],
         },
       }
     }
@@ -316,7 +328,7 @@ function resolveAction(state: GameState): ActionResult {
           players,
           phase: GamePhase.AWAITING_ACTION,
           activePlayerId: nextActivePlayer(state),
-          log: [...state.log, `${pending.playerId} steals from ${pending.targetId}`],
+          log: [...state.log, `${pname(state, pending.playerId)} roubou de ${pname(state, pending.targetId!)}`],
         },
       }
     }
@@ -329,7 +341,7 @@ function resolveAction(state: GameState): ActionResult {
           pendingAction: {
             ...pending,
           },
-          log: [...state.log, `${pending.playerId} assassinates ${pending.targetId} — awaiting card choice`],
+          log: [...state.log, `${pname(state, pending.playerId)} assassinou ${pname(state, pending.targetId!)} — aguardando escolha da carta`],
         },
       }
     }
@@ -347,7 +359,7 @@ function resolveAction(state: GameState): ActionResult {
             ...pending,
             exchangeCards: [card1, card2],
           },
-          log: [...state.log, `${pending.playerId} draws exchange cards`],
+          log: [...state.log, `${pname(state, pending.playerId)} comprou cartas para troca`],
         },
       }
     }
@@ -378,7 +390,7 @@ function handlePassReaction(state: GameState, action: Extract<GameAction, { type
       state: {
         ...state,
         pendingAction: { ...pending, pendingReactions: updatedReactions },
-        log: [...state.log, `${action.playerId} passes`],
+        log: [...state.log, `${pname(state, action.playerId)} passou`],
       },
     }
   }
@@ -386,7 +398,7 @@ function handlePassReaction(state: GameState, action: Extract<GameAction, { type
   return resolveAction({
     ...state,
     pendingAction: { ...pending, pendingReactions: updatedReactions },
-    log: [...state.log, `${action.playerId} passes`],
+    log: [...state.log, `${pname(state, action.playerId)} passou`],
   })
 }
 
@@ -409,7 +421,7 @@ function handleChallengeReaction(state: GameState, action: Extract<GameAction, {
       ...state,
       phase: GamePhase.RESOLVING_CHALLENGE,
       pendingAction: { ...pending, pendingReactions: updatedReactions, losingPlayerId },
-      log: [...state.log, `${action.playerId} challenges`],
+      log: [...state.log, `${pname(state, action.playerId)} desafiou`],
     },
   }
 }
@@ -436,7 +448,7 @@ function handleBlockReaction(state: GameState, action: Extract<GameAction, { typ
         blockerId: action.playerId,
         blockerClaimedCard: action.claimedCard,
       },
-      log: [...state.log, `${action.playerId} blocks claiming ${action.claimedCard}`],
+      log: [...state.log, `${pname(state, action.playerId)} bloqueou (reivindicando ${CARD_PT[action.claimedCard] ?? action.claimedCard})`],
     },
   }
 }
@@ -458,7 +470,7 @@ function handlePassBlockChallenge(state: GameState, action: Extract<GameAction, 
       state: {
         ...state,
         pendingAction: { ...pending, pendingReactions: updatedReactions },
-        log: [...state.log, `${action.playerId} passes block challenge`],
+        log: [...state.log, `${pname(state, action.playerId)} passou (não desafiou o bloqueio)`],
       },
     }
   }
@@ -471,7 +483,7 @@ function handlePassBlockChallenge(state: GameState, action: Extract<GameAction, 
       phase: GamePhase.AWAITING_ACTION,
       activePlayerId: nextActivePlayer(state),
       pendingAction: null,
-      log: [...state.log, `${action.playerId} passes — block stands, action cancelled`],
+      log: [...state.log, `${pname(state, action.playerId)} passou — bloqueio aceito, ação cancelada`],
     },
   }
 }
@@ -491,7 +503,7 @@ function handleChallengeBlockChallenge(state: GameState, action: Extract<GameAct
         pendingReactions: { ...pending.pendingReactions, [action.playerId]: "CHALLENGED" as const },
         losingPlayerId: blockerId,
       },
-      log: [...state.log, `${action.playerId} challenges the block`],
+      log: [...state.log, `${pname(state, action.playerId)} desafiou o bloqueio`],
     },
   }
 }
@@ -547,7 +559,7 @@ function handleLoseInfluenceResolvingChallenge(state: GameState, action: Extract
         ...next,
         phase: GamePhase.RESOLVING_CHALLENGE,
         pendingAction: { ...pending, losingPlayerId: challengerId },
-        log: [...next.log, `${challengedPlayerId} proved their card — ${challengerId} must lose influence`],
+        log: [...next.log, `${pname(next, challengedPlayerId)} provou a carta — ${pname(next, challengerId)} deve perder influência`],
       },
     }
   }
@@ -601,7 +613,7 @@ function handleLoseInfluenceResolvingBlockChallenge(state: GameState, action: Ex
         ...next,
         phase: GamePhase.RESOLVING_BLOCK_CHALLENGE,
         pendingAction: { ...pending, losingPlayerId: blockChallengerId },
-        log: [...next.log, `${blockerId} proved their block — ${blockChallengerId} must lose influence`],
+        log: [...next.log, `${pname(next, blockerId)} provou o bloqueio — ${pname(next, blockChallengerId)} deve perder influência`],
       },
     }
   }
@@ -639,7 +651,7 @@ function handleExchangeChoose(state: GameState, action: Extract<GameAction, { ty
       phase: GamePhase.AWAITING_ACTION,
       activePlayerId: nextActivePlayer(state),
       pendingAction: null,
-      log: [...state.log, `${action.playerId} completes exchange`],
+      log: [...state.log, `${pname(state, action.playerId)} concluiu a troca`],
     },
   }
 }
