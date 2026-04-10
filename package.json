@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run dev --workspace=apps/frontend\" \"npm run dev --workspace=apps/backend\"",
     "build": "npm run build --workspace=packages/shared && npm run build --workspace=apps/backend",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit -p apps/frontend/tsconfig.json && tsc --noEmit -p apps/backend/tsconfig.json && tsc --noEmit -p packages/shared/tsconfig.json",
+    "typecheck": "npm run build --workspace=packages/shared && tsc --noEmit -p apps/frontend/tsconfig.json && tsc --noEmit -p apps/backend/tsconfig.json && tsc --noEmit -p packages/shared/tsconfig.json",
     "test": "vitest run"
   },
   "devDependencies": {
