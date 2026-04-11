@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ConnectionBadge } from "@/components/connection-badge"
 import { getOrCreatePlayerId } from "@/lib/session"
+import { getBackendUrl } from "@/lib/backend-url"
 import { getPlayerName, savePlayerName } from "@/hooks/use-lobby"
 
 export default function Home() {
@@ -32,7 +33,7 @@ export default function Home() {
     setIsCreating(true)
     try {
       const res = await fetch(
-        (process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:3001") + "/api/rooms",
+        getBackendUrl() + "/api/rooms",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
