@@ -138,7 +138,7 @@ Plans:
 **Plans:** 3/3 plans complete
 
 Plans:
-- [x] TBD (run /gsd-plan-phase 06.1 to break down) (completed 2026-04-07)
+- [x] TBD (run /gsd-plan-phase 06.1 to break down) (completed 2026-04-07)
 
 ### Phase 7: UX Polish and Deployment
 **Goal**: The app is deployed to production and accessible via a public URL; the UI is responsive on mobile browsers; visual indicators make the game state unambiguous; the app is ready for the friend group to use
@@ -170,3 +170,24 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 5. Character Actions and Reactions | 4/4 | Complete   | 2026-04-05 |
 | 6. Reconnection and Resilience | 2/2 | Complete   | 2026-04-05 |
 | 7. UX Polish and Deployment | 0/2 | Not started | - |
+
+### Phase 8: Auditoria de seguranca e limpeza do repositorio para torna-lo publico
+
+**Goal:** Repositorio auditado, limpo e protegido para ser tornado publico: arquivos indesejados removidos do tracking, .gitignore completo, .env.example verificado, secretlint + husky configurados para prevencao futura, e features de seguranca do GitHub habilitadas
+**Requirements**: TBD
+**Depends on:** Phase 7
+**Plans:** 2 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Limpeza: remover .clone/ do tracking, atualizar .gitignore, verificar .env.example e private:true (Wave 1)
+- [ ] 08-02-PLAN.md — Prevencao: instalar secretlint + husky, pre-commit hook, habilitar GitHub Security Features (Wave 2)
+
+### Phase 9: Documentacao do projeto: README principal com visao geral, instrucoes de instalacao e execucao local, variaveis de ambiente necessarias, arquitetura do sistema, como contribuir e como fazer deploy
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 8
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 9 to break down)
