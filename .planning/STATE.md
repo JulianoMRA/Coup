@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-04-05T16:38:50.009Z"
-last_activity: 2026-04-05 -- Phase 07 execution started
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-04-13T19:30:00.000Z"
+last_activity: 2026-04-13 -- Phase 08 all plans complete, pending verification
 progress:
-  total_phases: 7
-  completed_phases: 6
-  total_plans: 26
-  completed_plans: 24
-  percent: 92
+  total_phases: 10
+  completed_phases: 7
+  total_plans: 31
+  completed_plans: 30
+  percent: 97
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Amigos conseguem jogar Coup online de forma simples: cria sala, compartilha link, joga.
-**Current focus:** Phase 07 — ux-polish-and-deployment
+**Current focus:** Phase 08 — auditoria-de-seguran-a-e-limpeza-do-reposit-rio-para-torn-lo
 
 ## Current Position
 
-Phase: 07 (ux-polish-and-deployment) — EXECUTING
-Plan: 1 of 2
-Status: Executing Phase 07
-Last activity: 2026-04-05 -- Phase 07 execution started
+Phase: 08 (auditoria-de-seguran-a-e-limpeza-do-reposit-rio-para-torn-lo) — COMPLETE
+Plan: 2 of 2
+Status: Phase 08 complete — all plans executed, verification pending
+Last activity: 2026-04-13 -- Phase 08 all plans complete
 
 Progress: [███████░░░] 71%
 
@@ -107,6 +107,8 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 06.1 inserted after Phase 6: UI Redesign — Visual Game Interface (INSERTED) — user requested proper game board UI before deployment
+- Phase 8 added: Auditoria de segurança e limpeza do repositório para torná-lo público — verificar arquivos sensíveis, garantir .gitignore completo, revisar variáveis de ambiente expostas, adicionar .env.example e preparar o repo para ser público
+- Phase 9 added: Documentação do projeto — README principal com visão geral, instalação local, variáveis de ambiente, arquitetura, como contribuir e como fazer deploy
 
 ### Pending Todos
 
