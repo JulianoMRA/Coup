@@ -1,4 +1,4 @@
 STAGED=$(git diff --cached --name-only --diff-filter=ACMR)
 if [ -n "$STAGED" ]; then
-  npx secretlint --secretlintrcFilePath .secretlintrc.json $STAGED
+  npx secretlint --secretlintrc .secretlintrc.json $STAGED
 fi
