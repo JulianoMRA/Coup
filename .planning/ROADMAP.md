@@ -184,10 +184,11 @@ Plans:
 
 ### Phase 9: Documentacao do projeto: README principal com visao geral, instrucoes de instalacao e execucao local, variaveis de ambiente necessarias, arquitetura do sistema, como contribuir e como fazer deploy
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Documentacao completa do projeto em PT-BR: README raiz com visao geral e links rapidos, mais docs/ com guias dedicados de instalacao local, arquitetura do sistema (diagrama Mermaid), como contribuir e como fazer deploy (Railway + Vercel)
+**Requirements**: DOC-INSTALL, DOC-ARCH, DOC-CONTRIB, DOC-DEPLOY, DOC-README
 **Depends on:** Phase 8
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 9 to break down)
+- [ ] 09-01-PLAN.md — docs/INSTALL.md + docs/ARCHITECTURE.md (Wave 1)
+- [ ] 09-02-PLAN.md — docs/CONTRIBUTING.md + docs/DEPLOY.md + README.md (Wave 1)
