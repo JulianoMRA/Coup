@@ -29,29 +29,24 @@ decisions:
 metrics:
   duration: "10min"
   completed: "2026-04-13"
-  tasks_completed: 1
+  tasks_completed: 2
   tasks_total: 2
   files_changed: 4
-status: PARTIAL — awaiting checkpoint Task 2 (human verification of GitHub Security Features)
+status: COMPLETE
 ---
 
 # Phase 08 Plan 02: Secretlint, Husky e GitHub Security Features Summary
 
-Secretlint installed with recommended preset, husky pre-commit hook configured to scan staged files before each commit, and `scan:secrets` npm script added for manual full-codebase scanning — full scan exits 0 with no alerts.
+Secretlint installed with recommended preset, husky pre-commit hook configured to scan staged files before each commit, and `scan:secrets` npm script added for manual full-codebase scanning — full scan exits 0 with no alerts. GitHub Security Features enabled by user (human checkpoint approved).
 
 ## Tasks Completed
 
 | Task | Name | Commit | Files |
 |------|------|--------|-------|
 | 1 | Instalar secretlint e husky, configurar pre-commit hook e script de varredura | ba8e2f8 | package.json, package-lock.json, .secretlintrc.json, .husky/pre-commit |
+| 2 | Habilitar GitHub Security Features e verificacao final | human-verified | GitHub Settings UI |
 
-## Tasks Pending
-
-| Task | Name | Type | Status |
-|------|------|------|--------|
-| 2 | Habilitar GitHub Security Features e verificacao final | checkpoint:human-verify | Awaiting human action |
-
-## Verification Results (Task 1)
+## Verification Results
 
 | Check | Result |
 |-------|--------|
@@ -61,6 +56,9 @@ Secretlint installed with recommended preset, husky pre-commit hook configured t
 | `package.json` contains `secretlint` in devDependencies | PASS |
 | `package.json` contains `husky` in devDependencies | PASS |
 | `npx secretlint "**/*"` exits 0 (no alerts) | PASS |
+| `npm run scan:secrets` exits 0 (no alerts) | PASS |
+| `git ls-files \| grep ".clone"` returns 0 lines | PASS |
+| GitHub Security Features enabled by user | APPROVED |
 
 ## Deviations from Plan
 
