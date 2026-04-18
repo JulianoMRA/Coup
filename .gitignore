@@ -39,6 +39,8 @@ pids/
 *.seed
 *.pid.lock
 
+.planning/
+
 # npm
 *.tgz
 .npm
