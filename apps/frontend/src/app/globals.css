@@ -352,6 +352,169 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   to   { opacity: 0; transform: translateY(-60px) scale(1.4); }
 }
 
+/* ====== Character card ====== */
+.coup-card {
+  position: relative;
+  width: 120px; height: 176px;
+  border-radius: var(--radius-card);
+  background: var(--parchment);
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease;
+}
+.coup-card.lg { width: 180px; height: 264px; }
+.coup-card.sm { width: 78px; height: 114px; }
+.coup-card.xs { width: 44px; height: 64px; }
+
+.coup-card .card-face,
+.coup-card .card-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.coup-card .card-face {
+  background:
+    radial-gradient(ellipse at 50% 30%, oklch(0.96 0.02 85) 0%, oklch(0.88 0.05 75) 80%),
+    var(--parchment);
+  display: flex; flex-direction: column;
+  padding: 7%;
+  border: 1px solid oklch(0 0 0 / 0.2);
+}
+.coup-card .card-face::before {
+  content: "";
+  position: absolute; inset: 5px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  opacity: 0.55;
+  pointer-events: none;
+  color: var(--house, var(--gold-deep));
+}
+.coup-card .card-face::after {
+  content: "";
+  position: absolute; inset: 10px;
+  border: 1px solid currentColor;
+  opacity: 0.18;
+  pointer-events: none;
+  color: var(--house, var(--gold-deep));
+}
+
+.coup-card.revealed .card-face {
+  filter: grayscale(0.85) brightness(0.75);
+}
+.coup-card.revealed::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(45deg, transparent 48%, oklch(0.35 0.16 25 / 0.75) 49% 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, oklch(0.35 0.16 25 / 0.75) 49% 51%, transparent 52%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.coup-card .card-back {
+  background:
+    radial-gradient(ellipse at 30% 30%, oklch(0.32 0.13 22) 0%, oklch(0.22 0.10 22) 70%),
+    var(--wine-deep);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid oklch(0 0 0 / 0.5);
+}
+.coup-card .card-back::before {
+  content: "";
+  position: absolute; inset: 6px;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  opacity: 0.55;
+}
+.coup-card .card-back::after {
+  content: "";
+  position: absolute; inset: 10px;
+  background-image:
+    repeating-linear-gradient(45deg, oklch(0.76 0.13 82 / 0.12) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-45deg, oklch(0.76 0.13 82 / 0.12) 0 1px, transparent 1px 6px);
+  opacity: 0.8;
+}
+.coup-card .card-back .back-crest {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-family: var(--font-display);
+}
+
+.coup-card.flipper { perspective: 1000px; background: transparent; box-shadow: none; }
+.coup-card.flipper .flip-inner {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(.2,.8,.2,1);
+}
+.coup-card.flipper.flipped .flip-inner { transform: rotateY(180deg); }
+.coup-card.flipper .card-face { transform: rotateY(180deg); }
+
+.coup-card.interactive:hover { transform: translateY(-8px) !important; box-shadow: var(--shadow-card-lift); }
+
+/* Card internal layout (portrait, name banner, corners) */
+.portrait {
+  width: 100%;
+  aspect-ratio: 100 / 130;
+  display: flex; align-items: center; justify-content: center;
+}
+.portrait-svg { width: 100%; height: 100%; display: block; }
+
+.card-corner {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  font-family: var(--font-display);
+  line-height: 1;
+  z-index: 2;
+}
+.card-corner.tl { top: 8%; left: 8%; }
+.card-corner.br { bottom: 8%; right: 8%; transform: rotate(180deg); }
+
+.coup-card.sm .card-corner { top: 4px; left: 4px; }
+.coup-card.sm .card-corner.br { top: auto; left: auto; bottom: 4px; right: 4px; }
+
+.corner-initial { font-weight: 700; font-size: 13px; }
+.corner-symbol  { font-size: 11px; opacity: 0.85; }
+.coup-card.sm .corner-initial { font-size: 10px; }
+.coup-card.sm .corner-symbol  { font-size: 8px; }
+.coup-card.lg .corner-initial { font-size: 18px; }
+.coup-card.lg .corner-symbol  { font-size: 14px; }
+
+.card-center {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 10% 6% 12%;
+  position: relative;
+  z-index: 1;
+}
+.coup-card.sm .card-center { padding: 14% 8% 12%; gap: 2px; }
+
+.card-name-banner {
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-align: center;
+}
+.coup-card.sm .card-name-banner { padding: 1px 4px; font-size: 10px; border-width: 0.5px; }
+.coup-card.lg .card-name-banner { font-size: 22px; padding: 5px 14px; }
+.card-name-banner.tiny { padding: 1px 4px; }
+
+.card-subtitle {
+  font-size: 8px;
+  margin-top: 2px;
+}
+.coup-card.lg .card-subtitle { font-size: 11px; }
+
 /* ====== Scrollbar ====== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
