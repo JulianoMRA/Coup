@@ -1,54 +1,359 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Cinzel injected by next/font as --cinzel-font on the body */
-  --font-cinzel: var(--cinzel-font), "Cinzel", serif;
+  --font-display: var(--cormorant-font), "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  --font-sc: var(--cormorant-sc-font), "Cormorant SC", "Cormorant Garamond", Georgia, serif;
+  --font-ui: var(--inter-font), -apple-system, system-ui, sans-serif;
+  /* Transitional alias — components ainda referenciam font-cinzel; remover ao concluir fases 3–8 */
+  --font-cinzel: var(--cormorant-font), "Cormorant Garamond", Georgia, serif;
 }
 
 @theme {
-  /* Dark green felt table */
-  --color-background: hsl(152 32% 6%);
-  --color-foreground: hsl(0 0% 95%);
-  --color-card: hsl(152 14% 9%);
-  --color-card-foreground: hsl(0 0% 95%);
-  --color-popover: hsl(152 14% 9%);
-  --color-popover-foreground: hsl(0 0% 95%);
-  --color-primary: hsl(0 0% 95%);
-  --color-primary-foreground: hsl(240 5.9% 10%);
-  --color-secondary: hsl(152 10% 16%);
-  --color-secondary-foreground: hsl(0 0% 95%);
-  --color-muted: hsl(152 10% 16%);
-  --color-muted-foreground: hsl(152 5% 58%);
-  --color-accent: hsl(152 10% 16%);
-  --color-accent-foreground: hsl(0 0% 95%);
-  --color-destructive: hsl(0 62.8% 30.6%);
-  --color-destructive-foreground: hsl(0 0% 95%);
-  --color-border: hsl(152 8% 15%);
-  --color-input: hsl(152 8% 15%);
-  --color-ring: hsl(152 15% 65%);
-  --radius: 0.5rem;
+  /* ====== Coup design tokens (OKLCH) ====== */
 
-  /* Character card accent colors */
-  --color-character-duke: hsl(271 76% 53%);
-  --color-character-captain: hsl(217 91% 60%);
-  --color-character-assassin: hsl(0 84% 60%);
-  --color-character-ambassador: hsl(142 71% 45%);
-  --color-character-countess: hsl(330 80% 65%);
+  /* Parchment */
+  --color-parchment: oklch(0.94 0.03 85);
+  --color-parchment-2: oklch(0.90 0.04 82);
+  --color-parchment-3: oklch(0.86 0.05 78);
+
+  /* Ink */
+  --color-ink: oklch(0.18 0.02 60);
+  --color-ink-soft: oklch(0.30 0.02 60);
+  --color-ink-mute: oklch(0.46 0.02 60);
+
+  /* Gold */
+  --color-gold: oklch(0.76 0.13 82);
+  --color-gold-2: oklch(0.66 0.14 70);
+  --color-gold-deep: oklch(0.50 0.12 60);
+
+  /* Wine */
+  --color-wine: oklch(0.38 0.14 25);
+  --color-wine-2: oklch(0.28 0.13 22);
+  --color-wine-deep: oklch(0.22 0.10 20);
+
+  /* Felt */
+  --color-felt: oklch(0.24 0.05 150);
+  --color-felt-2: oklch(0.20 0.05 150);
+  --color-felt-deep: oklch(0.14 0.04 150);
+
+  /* Heraldic */
+  --color-house-duke: oklch(0.40 0.14 300);
+  --color-house-captain: oklch(0.42 0.14 240);
+  --color-house-assassin: oklch(0.35 0.16 25);
+  --color-house-ambassador: oklch(0.42 0.12 155);
+  --color-house-contessa: oklch(0.45 0.14 15);
+
+  /* shadcn-compat tokens (mapped to new palette so existing components don't break before reskin) */
+  --color-background: oklch(0.14 0.04 150);
+  --color-foreground: oklch(0.94 0.03 85);
+  --color-card: oklch(0.20 0.05 150);
+  --color-card-foreground: oklch(0.94 0.03 85);
+  --color-popover: oklch(0.20 0.05 150);
+  --color-popover-foreground: oklch(0.94 0.03 85);
+  --color-primary: oklch(0.38 0.14 25);
+  --color-primary-foreground: oklch(0.94 0.03 85);
+  --color-secondary: oklch(0.24 0.05 150);
+  --color-secondary-foreground: oklch(0.94 0.03 85);
+  --color-muted: oklch(0.24 0.05 150);
+  --color-muted-foreground: oklch(0.66 0.02 60);
+  --color-accent: oklch(0.76 0.13 82);
+  --color-accent-foreground: oklch(0.22 0.10 20);
+  --color-destructive: oklch(0.42 0.20 25);
+  --color-destructive-foreground: oklch(0.94 0.03 85);
+  --color-border: oklch(0.76 0.13 82 / 0.25);
+  --color-input: oklch(0.20 0.05 150);
+  --color-ring: oklch(0.76 0.13 82);
+  --radius: 0.25rem;
 }
 
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
-  body {
-    background-color: var(--color-background);
-    /* Radial vignette: lighter center, darker edges — like a real card table lamp */
-    background-image:
-      radial-gradient(
-        ellipse 100% 60% at 50% 0%,
-        hsl(152 35% 11%) 0%,
-        transparent 70%
-      );
-    color: var(--color-foreground);
-  }
+:root {
+  --parchment: oklch(0.94 0.03 85);
+  --parchment-2: oklch(0.90 0.04 82);
+  --parchment-3: oklch(0.86 0.05 78);
+  --ink: oklch(0.18 0.02 60);
+  --ink-soft: oklch(0.30 0.02 60);
+  --ink-mute: oklch(0.46 0.02 60);
+
+  --gold: oklch(0.76 0.13 82);
+  --gold-2: oklch(0.66 0.14 70);
+  --gold-deep: oklch(0.50 0.12 60);
+
+  --wine: oklch(0.38 0.14 25);
+  --wine-2: oklch(0.28 0.13 22);
+  --wine-deep: oklch(0.22 0.10 20);
+
+  --felt: oklch(0.24 0.05 150);
+  --felt-2: oklch(0.20 0.05 150);
+  --felt-deep: oklch(0.14 0.04 150);
+
+  --house-duke: oklch(0.40 0.14 300);
+  --house-captain: oklch(0.42 0.14 240);
+  --house-assassin: oklch(0.35 0.16 25);
+  --house-ambassador: oklch(0.42 0.12 155);
+  --house-contessa: oklch(0.45 0.14 15);
+
+  --radius-card: 6px;
+  --radius-lg: 14px;
+
+  --shadow-table: 0 40px 120px -20px oklch(0 0 0 / 0.7);
+  --shadow-card: 0 8px 20px -6px oklch(0 0 0 / 0.55), 0 2px 4px oklch(0 0 0 / 0.4);
+  --shadow-card-lift: 0 24px 50px -14px oklch(0 0 0 / 0.7), 0 6px 14px oklch(0 0 0 / 0.5);
 }
+
+/* ====== Base ====== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  color: var(--parchment);
+  background: var(--felt-deep);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ====== Decorative utilities ====== */
+.sc {
+  font-family: var(--font-sc);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-sc);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.9;
+}
+.title-xl { font-family: var(--font-display); font-size: 96px; line-height: 0.95; letter-spacing: 0.04em; font-weight: 500; }
+.title-lg { font-family: var(--font-display); font-size: 56px; line-height: 1; letter-spacing: 0.04em; font-weight: 500; }
+.title-md { font-family: var(--font-display); font-size: 32px; line-height: 1.1; font-weight: 500; }
+
+/* ====== Surfaces ====== */
+.parchment {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, oklch(0.96 0.02 85 / 0.6), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, oklch(0.82 0.04 60 / 0.5), transparent 65%),
+    repeating-linear-gradient(32deg, oklch(0.88 0.04 70 / 0.06) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-18deg, oklch(0.88 0.04 70 / 0.05) 0 1px, transparent 1px 4px);
+}
+
+.felt {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 40%,
+      oklch(0.28 0.06 150) 0%,
+      oklch(0.22 0.05 150) 40%,
+      oklch(0.14 0.04 150) 85%,
+      oklch(0.08 0.03 150) 100%),
+    var(--felt-deep);
+  position: relative;
+}
+.felt::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, oklch(0 0 0 / 0.08) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, oklch(0 0 0 / 0.05) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.felt::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 40% at 50% 40%, oklch(0.88 0.08 85 / 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.filigree {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--gold);
+}
+.filigree::before, .filigree::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor 30%, currentColor 70%, transparent);
+  opacity: 0.7;
+}
+.filigree .ornament {
+  font-size: 14px; letter-spacing: 0.4em;
+}
+
+.frame {
+  position: relative;
+  border: 1px solid oklch(0.76 0.13 82 / 0.55);
+  box-shadow:
+    inset 0 0 0 1px oklch(0 0 0 / 0.3),
+    inset 0 0 0 4px oklch(0.76 0.13 82 / 0.12);
+}
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--gold);
+  pointer-events: none;
+}
+.frame::before { top: -5px; left: -5px; border-right: none; border-bottom: none; }
+.frame::after  { bottom: -5px; right: -5px; border-left: none; border-top: none; }
+.frame > .frame-corner-tr,
+.frame > .frame-corner-bl {
+  position: absolute; width: 18px; height: 18px;
+  border: 1.5px solid var(--gold); pointer-events: none;
+}
+.frame > .frame-corner-tr { top: -5px; right: -5px; border-left: none; border-bottom: none; }
+.frame > .frame-corner-bl { bottom: -5px; left: -5px; border-right: none; border-top: none; }
+
+/* ====== Inputs ====== */
+.coup-input {
+  background: oklch(0.96 0.02 85);
+  color: var(--ink);
+  border: 1px solid oklch(0.50 0.12 60 / 0.5);
+  padding: 14px 18px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  border-radius: 4px;
+  width: 100%;
+  letter-spacing: 0.02em;
+}
+.coup-input:focus-visible {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px oklch(0.76 0.13 82 / 0.25);
+}
+.coup-input::placeholder { color: oklch(0.55 0.03 60); font-style: italic; }
+
+/* ====== Buttons ====== */
+.btn {
+  font-family: var(--font-sc);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, oklch(0.93 0.03 85), oklch(0.84 0.04 75));
+  color: var(--wine-deep);
+  border: 1px solid oklch(0.50 0.12 60 / 0.5);
+  box-shadow: 0 2px 0 oklch(0 0 0 / 0.4), inset 0 1px 0 oklch(1 0 0 / 0.3);
+  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 3px 0 oklch(0 0 0 / 0.4), inset 0 1px 0 oklch(1 0 0 / 0.4);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 oklch(0 0 0 / 0.4);
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn.primary {
+  background: linear-gradient(180deg, oklch(0.48 0.15 25), oklch(0.32 0.13 22));
+  color: var(--parchment);
+  border-color: var(--gold);
+  text-shadow: 0 1px 0 oklch(0 0 0 / 0.5);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--parchment);
+  border-color: oklch(0.76 0.13 82 / 0.4);
+  box-shadow: none;
+}
+.btn.ghost:hover:not(:disabled) {
+  background: oklch(0.76 0.13 82 / 0.08);
+  border-color: var(--gold);
+}
+.btn.danger {
+  background: linear-gradient(180deg, oklch(0.42 0.20 25), oklch(0.28 0.18 22));
+  color: var(--parchment);
+  border-color: oklch(0.65 0.18 25 / 0.7);
+}
+.btn.gold {
+  background: linear-gradient(180deg, oklch(0.80 0.14 82), oklch(0.62 0.14 70));
+  color: var(--wine-deep);
+  border-color: oklch(0.40 0.10 60);
+}
+.btn.lg { padding: 16px 28px; font-size: 13px; }
+.btn.sm { padding: 8px 14px; font-size: 11px; min-height: 34px; }
+
+.btn.house { color: var(--parchment); text-shadow: 0 1px 0 oklch(0 0 0 / 0.5); }
+.btn.house-duke       { background: linear-gradient(180deg, oklch(0.48 0.14 300), oklch(0.32 0.12 300)); border-color: oklch(0.70 0.15 300 / 0.5); color: var(--parchment); }
+.btn.house-captain    { background: linear-gradient(180deg, oklch(0.46 0.14 240), oklch(0.30 0.12 240)); border-color: oklch(0.66 0.15 240 / 0.5); color: var(--parchment); }
+.btn.house-assassin   { background: linear-gradient(180deg, oklch(0.42 0.17 25),  oklch(0.26 0.14 22));  border-color: oklch(0.65 0.18 25 / 0.5);  color: var(--parchment); }
+.btn.house-ambassador { background: linear-gradient(180deg, oklch(0.44 0.12 155), oklch(0.28 0.10 155)); border-color: oklch(0.60 0.14 155 / 0.5); color: var(--parchment); }
+.btn.house-contessa   { background: linear-gradient(180deg, oklch(0.50 0.15 15),  oklch(0.34 0.13 15));  border-color: oklch(0.68 0.16 15 / 0.5);  color: var(--parchment); }
+
+/* ====== Animations ====== */
+@keyframes sway {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  48%      { opacity: 0.85; }
+  52%      { opacity: 1.05; }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 oklch(0.76 0.13 82 / 0.6); }
+  70%  { box-shadow: 0 0 0 18px oklch(0.76 0.13 82 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.76 0.13 82 / 0); }
+}
+.pulse { animation: pulse-ring 1.8s infinite; }
+
+@keyframes coin-fly {
+  from { transform: translate(0, 0) scale(0.8); opacity: 0; }
+  20%  { opacity: 1; }
+  to   { transform: var(--fly-to) scale(1); opacity: 0; }
+}
+.coin-fly { animation: coin-fly 1s ease-out forwards; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25%      { transform: translateX(-4px) rotate(-1deg); }
+  75%      { transform: translateX(4px) rotate(1deg); }
+}
+
+@keyframes deal-in {
+  from { transform: translate(var(--deal-from-x, 0), var(--deal-from-y, -200px)) rotate(var(--deal-rot, -30deg)); opacity: 0; }
+  to   { transform: translate(0, 0) rotate(var(--deal-to-rot, 0deg)); opacity: 1; }
+}
+.deal-in { animation: deal-in 0.7s cubic-bezier(.2, .9, .2, 1) backwards; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.5s ease-out backwards; }
+
+@keyframes blade {
+  from { transform: translateX(-120%) rotate(-15deg); opacity: 0; }
+  50%  { opacity: 1; }
+  to   { transform: translateX(120%) rotate(-15deg); opacity: 0; }
+}
+
+@keyframes smoke {
+  from { opacity: 0; transform: translateY(20px) scale(0.8); }
+  50%  { opacity: 0.7; }
+  to   { opacity: 0; transform: translateY(-60px) scale(1.4); }
+}
+
+/* ====== Scrollbar ====== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: oklch(0.76 0.13 82 / 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.76 0.13 82 / 0.5); }

@@ -1,14 +1,26 @@
 import type { Metadata } from "next"
-import { Inter, Cinzel } from "next/font/google"
+import { Inter, Cormorant_Garamond, Cormorant_SC } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
-
-const cinzel = Cinzel({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--cinzel-font",
+  variable: "--inter-font",
   display: "swap",
-  weight: ["400", "600", "700"],
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--cormorant-font",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+})
+
+const cormorantSC = Cormorant_SC({
+  subsets: ["latin"],
+  variable: "--cormorant-sc-font",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -23,7 +35,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className={`${inter.className} ${cinzel.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${cormorant.variable} ${cormorantSC.variable}`}>
+        {children}
+      </body>
     </html>
   )
 }
