@@ -46,7 +46,7 @@ describe("PlayerSeat", () => {
   })
 
   it("renders card count as stacked card backs", () => {
-    const { container } = render(
+    render(
       <PlayerSeat
         player={basePlayer}
         isActive={false}
@@ -54,11 +54,11 @@ describe("PlayerSeat", () => {
         isDisconnected={false}
       />
     )
-    const cardBacks = container.querySelectorAll('div[style*="repeating-linear-gradient"]')
+    const cardBacks = screen.getAllByTestId("character-card-")
     expect(cardBacks.length).toBe(2)
   })
 
-  it("active player has ring-2 class applied", () => {
+  it("active player has .active class applied", () => {
     const { container } = render(
       <PlayerSeat
         player={basePlayer}
@@ -68,10 +68,10 @@ describe("PlayerSeat", () => {
       />
     )
     const outerDiv = container.firstChild as HTMLElement
-    expect(outerDiv.className).toContain("ring-2")
+    expect(outerDiv.className).toContain("active")
   })
 
-  it("eliminated player has opacity-40 class and Eliminado badge text", () => {
+  it("eliminated player has .eliminated class and EXILADO badge text", () => {
     const eliminatedPlayer = { ...basePlayer, eliminated: true }
     const { container } = render(
       <PlayerSeat
@@ -82,12 +82,12 @@ describe("PlayerSeat", () => {
       />
     )
     const outerDiv = container.firstChild as HTMLElement
-    expect(outerDiv.className).toContain("opacity-40")
-    expect(screen.getByText("Eliminado")).toBeTruthy()
+    expect(outerDiv.className).toContain("eliminated")
+    expect(screen.getByText("EXILADO")).toBeTruthy()
   })
 
-  it("isMe player shows (voce) text", () => {
-    render(
+  it("isMe player has .is-me class", () => {
+    const { container } = render(
       <PlayerSeat
         player={basePlayer}
         isActive={false}
@@ -95,10 +95,11 @@ describe("PlayerSeat", () => {
         isDisconnected={false}
       />
     )
-    expect(screen.getByText("(voce)")).toBeTruthy()
+    const outerDiv = container.firstChild as HTMLElement
+    expect(outerDiv.className).toContain("is-me")
   })
 
-  it("disconnected player shows (desconectado) text", () => {
+  it("disconnected player shows AUSENTE badge", () => {
     render(
       <PlayerSeat
         player={basePlayer}
@@ -107,7 +108,7 @@ describe("PlayerSeat", () => {
         isDisconnected={true}
       />
     )
-    expect(screen.getByText("(desconectado)")).toBeTruthy()
+    expect(screen.getByText("AUSENTE")).toBeTruthy()
   })
 
   it("renders revealed cards with CharacterCard components", () => {

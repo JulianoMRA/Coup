@@ -53,7 +53,7 @@ Trocar de modelo via `/model` antes de iniciar a fase, ou passar `model` ao spaw
 - [x] Fase 6 — Mesa (refator estrutural)
 - [x] Fase 7 — Action panel + reaction bar com cores heráldicas
 - [x] Fase 8 — Overlays dramáticos
-- [ ] Fase 9 — Atualização de testes
+- [x] Fase 9 — Atualização de testes
 - [ ] Fase 10 — Verificação visual e UX (opcional)
 
 > **Convenção**: ao concluir uma fase, marcar `[x]` aqui e adicionar bloco `**Status**: ✅ Concluída em YYYY-MM-DD — commit \`<hash>\`` no fim da seção da fase correspondente. Anotar desvios do plano se houver.
@@ -266,6 +266,8 @@ Cada fase = 1 commit no padrão Conventional Commits, sem co-authored-by. Após 
 
 **Agente recomendado**: nenhum — execução direta.
 **Modelo recomendado**: **Sonnet 4.6** — ajustar asserts a uma estrutura nova exige interpretar saída de testes e iterar.
+
+**Status**: ✅ Concluída em 2026-04-30 — 141/141 testes passando. Desvios: `"Capitao"` → `"Capitão"` (nome correto com til); classe `"character-duke"` → `"coup-card"`; `"opacity-40"/"grayscale"` → `"revealed"`; `"?"` → `.card-back`; `"ring-2"` → `"active"`; `"Eliminado"` → `"EXILADO"`; `"(voce)"` → `"is-me"`; `"(desconectado)"` → `"AUSENTE"`. Teste de card backs ajustado para usar `getAllByTestId("character-card-")`.
 
 ---
 

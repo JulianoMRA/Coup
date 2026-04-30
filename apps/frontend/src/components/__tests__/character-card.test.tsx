@@ -2,59 +2,59 @@ import { render, screen } from "@testing-library/react"
 import { CharacterCard } from "../character-card"
 
 describe("CharacterCard", () => {
-  it("renders face-up Duke card with Crown icon and Duque label", () => {
+  it("renders face-up Duke card with .coup-card class and Duque label", () => {
     const { container } = render(<CharacterCard type="DUKE" revealed={false} showFace={true} />)
     expect(screen.getByText("Duque")).toBeInTheDocument()
-    expect((container.firstChild as HTMLElement).className).toContain("character-duke")
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
   })
 
-  it("renders face-up Captain card with Anchor icon and Capitao label", () => {
+  it("renders face-up Captain card with .coup-card class and Capitão label", () => {
     const { container } = render(<CharacterCard type="CAPTAIN" revealed={false} showFace={true} />)
-    expect(screen.getByText("Capitao")).toBeInTheDocument()
-    expect((container.firstChild as HTMLElement).className).toContain("character-captain")
+    expect(screen.getByText("Capitão")).toBeInTheDocument()
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
   })
 
-  it("renders face-up Assassin card with Sword icon and Assassino label", () => {
+  it("renders face-up Assassin card with .coup-card class and Assassino label", () => {
     const { container } = render(<CharacterCard type="ASSASSIN" revealed={false} showFace={true} />)
     expect(screen.getByText("Assassino")).toBeInTheDocument()
-    expect((container.firstChild as HTMLElement).className).toContain("character-assassin")
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
   })
 
-  it("renders face-up Ambassador card with Globe icon and Embaixador label", () => {
+  it("renders face-up Ambassador card with .coup-card class and Embaixador label", () => {
     const { container } = render(<CharacterCard type="AMBASSADOR" revealed={false} showFace={true} />)
     expect(screen.getByText("Embaixador")).toBeInTheDocument()
-    expect((container.firstChild as HTMLElement).className).toContain("character-ambassador")
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
   })
 
-  it("renders face-up Countess card with Gem icon and Condessa label", () => {
+  it("renders face-up Countess card with .coup-card class and Condessa label", () => {
     const { container } = render(<CharacterCard type="CONTESSA" revealed={false} showFace={true} />)
     expect(screen.getByText("Condessa")).toBeInTheDocument()
-    expect((container.firstChild as HTMLElement).className).toContain("character-countess")
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
   })
 
-  it("renders revealed/eliminated card with opacity-40 and grayscale classes", () => {
+  it("renders revealed card with .revealed class", () => {
     const { container } = render(<CharacterCard type="DUKE" revealed={true} showFace={true} />)
     const card = container.firstChild as HTMLElement
-    expect(card.className).toContain("opacity-40")
-    expect(card.className).toContain("grayscale")
+    expect(card.className).toContain("coup-card")
+    expect(card.className).toContain("revealed")
   })
 
-  it("renders card back when showFace is false with ? text and no character name", () => {
-    render(<CharacterCard type="DUKE" revealed={false} showFace={false} />)
-    expect(screen.getByText("?")).toBeInTheDocument()
+  it("renders card back when showFace is false with COUP crest and no character name", () => {
+    const { container } = render(<CharacterCard type="DUKE" revealed={false} showFace={false} />)
+    expect(container.querySelector(".card-back")).toBeTruthy()
     expect(screen.queryByText("Duque")).not.toBeInTheDocument()
   })
 
-  it("renders different sizes with appropriate dimension classes", () => {
+  it("renders different sizes with appropriate size classes", () => {
     const { rerender, container } = render(
       <CharacterCard type="DUKE" revealed={false} showFace={true} size="sm" />
     )
-    expect((container.firstChild as HTMLElement).className).toContain("w-16")
+    expect((container.firstChild as HTMLElement).className).toContain("sm")
 
     rerender(<CharacterCard type="DUKE" revealed={false} showFace={true} size="md" />)
-    expect((container.firstChild as HTMLElement).className).toContain("w-20")
+    expect((container.firstChild as HTMLElement).className).toContain("coup-card")
 
     rerender(<CharacterCard type="DUKE" revealed={false} showFace={true} size="lg" />)
-    expect((container.firstChild as HTMLElement).className).toContain("w-24")
+    expect((container.firstChild as HTMLElement).className).toContain("lg")
   })
 })
