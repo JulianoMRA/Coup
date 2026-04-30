@@ -62,25 +62,6 @@ export const CHARACTERS: Record<string, CharacterDef> = {
   },
 }
 
-/* Backwards-compat shim — block-claim-selector still imports CHARACTER_CONFIG; remove when Phase 7 reskins it */
-export const CHARACTER_CONFIG: Record<string, {
-  label: string
-  initial: string
-  colorClass: string
-  borderClass: string
-  Icon: React.ComponentType<{ className?: string }>
-}> = Object.fromEntries(
-  Object.entries(CHARACTERS).map(([key, c]) => [
-    key,
-    {
-      label: c.name,
-      initial: c.initial,
-      colorClass: "",
-      borderClass: "",
-      Icon: () => <span style={{ color: c.color }}>{c.symbol}</span>,
-    },
-  ])
-)
 
 /* ── SVG Portraits ──────────────────────────────────────────── */
 

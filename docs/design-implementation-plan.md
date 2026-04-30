@@ -51,7 +51,7 @@ Trocar de modelo via `/model` antes de iniciar a fase, ou passar `model` ao spaw
 - [x] Fase 4 — Home (parchment frame)
 - [x] Fase 5 — Lobby (antecâmara + aside)
 - [x] Fase 6 — Mesa (refator estrutural)
-- [ ] Fase 7 — Action panel + reaction bar com cores heráldicas
+- [x] Fase 7 — Action panel + reaction bar com cores heráldicas
 - [ ] Fase 8 — Overlays dramáticos
 - [ ] Fase 9 — Atualização de testes
 - [ ] Fase 10 — Verificação visual e UX (opcional)
@@ -223,6 +223,8 @@ Cada fase = 1 commit no padrão Conventional Commits, sem co-authored-by. Após 
 
 **Agente recomendado**: nenhum — execução direta.
 **Modelo recomendado**: **Sonnet 4.6** — vários componentes que tocam a lógica do socket, estado de turno e reações precisam coerência.
+
+**Status**: ✅ Concluída em 2026-04-30. Desvios: shim `CHARACTER_CONFIG` removido de `character-card.tsx` e `block-claim-selector.tsx` reescrito para usar classes `.btn.house-*` direto. `BlockClaimSelector` mantido como componente (usado inline em `reaction-bar.tsx`). Os 13 testes falhando são pré-existentes das Fases 3/6 (cobertos pela Fase 9).
 
 ---
 

@@ -4,16 +4,14 @@ import { useState } from "react"
 import type { PendingAction, PublicPlayerState } from "@coup/shared"
 import { CardType } from "@coup/shared"
 import { socket } from "@/lib/socket"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { BlockClaimSelector } from "./block-claim-selector"
 
 const ACTION_LABELS: Record<string, string> = {
   FOREIGN_AID: "Ajuda Externa",
-  TAX: "Imposto (Duque)",
-  STEAL: "Roubar (Capitao)",
-  ASSASSINATE: "Assassinar (Assassino)",
-  EXCHANGE: "Embaixador",
+  TAX: "Imposto",
+  STEAL: "Roubo",
+  ASSASSINATE: "Assassinato",
+  EXCHANGE: "Troca de Cartas",
 }
 
 const BLOCKER_RULES: Record<string, { anyPlayer: boolean; cards: CardType[] }> = {
@@ -50,13 +48,18 @@ export function ReactionBar({
 
   const myReactionStatus = pendingAction.pendingReactions[playerId]
 
-  const pendingPlayerNames = Object.entries(pendingAction.pendingReactions)
-    .filter(([, status]) => status === "WAITING")
+  const waiting = Object.entries(pendingAction.pendingReactions)
+    .filter(([id, status]) => status === "WAITING" && id !== pendingAction.playerId)
     .map(([id]) => players.find((p) => p.id === id)?.name ?? id)
-    .join(", ")
 
   const actorName =
     players.find((p) => p.id === pendingAction.playerId)?.name ?? pendingAction.playerId
+
+  const targetName = pendingAction.targetId
+    ? players.find((p) => p.id === pendingAction.targetId)?.name
+    : null
+
+  const actionLabel = ACTION_LABELS[pendingAction.type] ?? pendingAction.type
 
   function handlePass() {
     socket.emit("GAME_ACTION", roomId, { type: "PASS", playerId })
@@ -66,21 +69,33 @@ export function ReactionBar({
     socket.emit("GAME_ACTION", roomId, { type: "CHALLENGE", playerId })
   }
 
+  const isActor = pendingAction.playerId === playerId
+  const alreadyReacted = myReactionStatus !== "WAITING"
+
+  if (isActor || alreadyReacted) {
+    return (
+      <div className="action-panel state-enter">
+        <div className="action-title">
+          <em>{actorName}</em> declarou <em>{actionLabel}</em>
+          {targetName ? <> contra <em>{targetName}</em></> : null}
+        </div>
+        <div style={{ textAlign: "center", fontFamily: "var(--font-display)", fontStyle: "italic", color: "oklch(0.86 0.03 70 / 0.75)", fontSize: 14 }}>
+          {waiting.length
+            ? `Aguardando reação de ${waiting.join(", ")}…`
+            : "Resolvendo…"}
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800 flex flex-col gap-2">
-      <p className="text-sm text-zinc-300 font-medium text-center">
-        {actorName} declarou {ACTION_LABELS[pendingAction.type] ?? pendingAction.type}
-      </p>
-      {pendingPlayerNames && (
-        <p className="text-xs text-zinc-500 text-center">
-          Aguardando: {pendingPlayerNames}
-        </p>
-      )}
-      {myReactionStatus !== "WAITING" ? (
-        <p className={cn("text-sm text-center", "text-zinc-500")}>
-          Voce passou — aguardando os demais
-        </p>
-      ) : showBlockClaim ? (
+    <div className="action-panel state-enter">
+      <div className="action-title">
+        <em>{actorName}</em> declarou <em>{actionLabel}</em>
+        {targetName ? <> contra <em>{targetName}</em></> : null}
+      </div>
+
+      {showBlockClaim ? (
         <BlockClaimSelector
           validCards={blockResult.cards}
           roomId={roomId}
@@ -88,34 +103,26 @@ export function ReactionBar({
           onCancel={() => setShowBlockClaim(false)}
         />
       ) : (
-        <div className="flex items-center justify-center gap-4">
+        <div className="reaction-bar">
+          <button className="btn" onClick={handlePass}>
+            Permitir
+          </button>
           {canChallenge && (
-            <Button
-              variant="ghost"
-              className="border border-destructive/50 text-destructive hover:bg-destructive/10 min-h-[44px]"
-              onClick={handleChallenge}
-            >
-              Contestar
-            </Button>
+            <button className="btn danger" onClick={handleChallenge}>
+              ⚔ Contestar
+            </button>
           )}
           {blockResult.canBlock && (
-            <Button
-              variant="ghost"
-              className="border border-zinc-600 hover:bg-zinc-800 min-h-[44px]"
-              onClick={() => setShowBlockClaim(true)}
-            >
+            <button className="btn" onClick={() => setShowBlockClaim(true)}>
               Bloquear
-            </Button>
+            </button>
           )}
-          <Button
-            variant="ghost"
-            className="border border-zinc-700 text-zinc-400 hover:bg-zinc-800 min-h-[44px]"
-            onClick={handlePass}
-          >
-            Passar
-          </Button>
         </div>
       )}
+
+      <div style={{ textAlign: "center", fontFamily: "var(--font-display)", fontStyle: "italic", color: "oklch(0.86 0.03 70 / 0.6)", fontSize: 13 }}>
+        Bluff permitido. Se contestado e mentiu, perde uma influência.
+      </div>
     </div>
   )
 }

@@ -2,24 +2,21 @@
 
 import { CardType } from "@coup/shared"
 import { socket } from "@/lib/socket"
-import { Button } from "@/components/ui/button"
-import { CHARACTER_CONFIG } from "@/components/character-card"
-import { cn } from "@/lib/utils"
 
 const CARD_LABELS: Record<string, string> = {
   DUKE: "Duque",
   CONTESSA: "Condessa",
-  CAPTAIN: "Capitao",
+  CAPTAIN: "Capitão",
   AMBASSADOR: "Embaixador",
   ASSASSIN: "Assassino",
 }
 
-const CARD_HOVER: Record<string, string> = {
-  DUKE: "hover:bg-character-duke/10",
-  CAPTAIN: "hover:bg-character-captain/10",
-  AMBASSADOR: "hover:bg-character-ambassador/10",
-  CONTESSA: "hover:bg-character-countess/10",
-  ASSASSIN: "hover:bg-character-assassin/10",
+const CARD_HOUSE: Record<string, string> = {
+  DUKE: "house-duke",
+  CAPTAIN: "house-captain",
+  AMBASSADOR: "house-ambassador",
+  CONTESSA: "house-assassin",
+  ASSASSIN: "house-assassin",
 }
 
 interface BlockClaimSelectorProps {
@@ -36,20 +33,15 @@ export function BlockClaimSelector({
   onCancel,
 }: BlockClaimSelectorProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <p className="text-sm font-semibold text-center">Bloquear como:</p>
-      {validCards.map((card) => {
-        const config = CHARACTER_CONFIG[card]
-        return (
-          <Button
+    <div className="reaction-bar" style={{ flexDirection: "column", alignItems: "center" }}>
+      <p style={{ fontFamily: "var(--font-sc)", fontSize: 10, letterSpacing: "0.2em", color: "var(--gold)", opacity: 0.85 }}>
+        BLOQUEAR COMO
+      </p>
+      <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+        {validCards.map((card) => (
+          <button
             key={card}
-            variant="ghost"
-            className={cn(
-              "min-h-[44px] gap-2 border",
-              config?.borderClass + "/50",
-              config?.colorClass,
-              CARD_HOVER[card]
-            )}
+            className={`btn ${CARD_HOUSE[card] ?? ""}`}
             onClick={() =>
               socket.emit("GAME_ACTION", roomId, {
                 type: "BLOCK",
@@ -58,14 +50,13 @@ export function BlockClaimSelector({
               })
             }
           >
-            {config && <config.Icon className="h-4 w-4" />}
             {CARD_LABELS[card] ?? card}
-          </Button>
-        )
-      })}
-      <Button variant="ghost" className="text-zinc-500 hover:text-zinc-300" onClick={onCancel}>
-        Voltar
-      </Button>
+          </button>
+        ))}
+        <button className="btn ghost" onClick={onCancel}>
+          Voltar
+        </button>
+      </div>
     </div>
   )
 }

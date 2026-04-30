@@ -2,12 +2,11 @@
 
 import type { PendingAction, PublicPlayerState } from "@coup/shared"
 import { socket } from "@/lib/socket"
-import { Button } from "@/components/ui/button"
 
 const CARD_LABELS: Record<string, string> = {
   DUKE: "Duque",
   CONTESSA: "Condessa",
-  CAPTAIN: "Capitao",
+  CAPTAIN: "Capitão",
   AMBASSADOR: "Embaixador",
   ASSASSIN: "Assassino",
 }
@@ -38,7 +37,6 @@ export function BlockChallengeBar({
     ""
 
   const isActivePlayer = activePlayerId === playerId
-
   const activePlayerName =
     players.find((p) => p.id === activePlayerId)?.name ?? activePlayerId
 
@@ -53,31 +51,24 @@ export function BlockChallengeBar({
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 px-6 py-4 bg-zinc-950/95 backdrop-blur-sm border-t border-zinc-800 flex flex-col gap-2">
-      <p className="text-sm font-semibold text-zinc-200 text-center">
-        {blockerName} bloqueou com {cardLabel} — Contestar?
-      </p>
+    <div className="action-panel state-enter">
+      <div className="action-title">
+        <em>{blockerName}</em> bloqueou como <em>{cardLabel}</em>
+      </div>
+
       {isActivePlayer && myReactionStatus === "WAITING" ? (
-        <div className="flex items-center justify-center gap-4">
-          <Button
-            variant="ghost"
-            className="border border-destructive/50 text-destructive hover:bg-destructive/10 min-h-[44px]"
-            onClick={handleChallengeBlock}
-          >
-            Contestar bloco
-          </Button>
-          <Button
-            variant="ghost"
-            className="border border-zinc-700 text-zinc-400 hover:bg-zinc-800 min-h-[44px]"
-            onClick={handleAcceptBlock}
-          >
+        <div className="reaction-bar">
+          <button className="btn danger" onClick={handleChallengeBlock}>
+            ⚔ Contestar bloco
+          </button>
+          <button className="btn ghost" onClick={handleAcceptBlock}>
             Aceitar bloco
-          </Button>
+          </button>
         </div>
       ) : (
-        <p className="text-xs text-zinc-500 text-center">
-          Aguardando {activePlayerName} decidir
-        </p>
+        <div style={{ textAlign: "center", fontFamily: "var(--font-display)", fontStyle: "italic", color: "oklch(0.86 0.03 70 / 0.75)", fontSize: 14 }}>
+          Aguardando <em style={{ color: "var(--gold)", fontStyle: "normal" }}>{activePlayerName}</em> decidir…
+        </div>
       )}
     </div>
   )
