@@ -875,6 +875,57 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .state-enter { animation: fade-up 0.4s ease-out backwards; }
 
+/* ====== Dramatic overlays (Fase 8) ====== */
+.dramatic-backdrop {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, oklch(0 0 0 / 0.55), oklch(0 0 0 / 0.85));
+  z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  animation: fade-up 0.3s ease;
+  padding: 20px;
+}
+
+.dramatic-panel {
+  background: linear-gradient(180deg, oklch(0.20 0.03 60), oklch(0.10 0.02 60));
+  border: 1px solid var(--gold);
+  padding: 32px 40px;
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 40px 80px oklch(0 0 0 / 0.7), 0 0 80px oklch(0.76 0.13 82 / 0.15);
+}
+.dramatic-panel::before,
+.dramatic-panel::after {
+  content: "";
+  position: absolute;
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--gold);
+  pointer-events: none;
+}
+.dramatic-panel::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+.dramatic-panel::after  { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+
+.winner-crest {
+  font-size: 72px;
+  color: var(--gold);
+  text-align: center;
+  animation: flicker 2.5s infinite;
+  text-shadow: 0 0 40px oklch(0.76 0.13 82 / 0.5);
+}
+
+.slash-effect {
+  position: absolute; top: 50%; left: 50%;
+  width: 200%; height: 6px;
+  background: linear-gradient(90deg, transparent, var(--parchment), transparent);
+  transform: translate(-50%, -50%) rotate(-15deg);
+  animation: blade 0.6s ease-out forwards;
+  filter: drop-shadow(0 0 10px oklch(0.96 0.1 85 / 0.8));
+  pointer-events: none;
+  z-index: 60;
+}
+
 @media (max-width: 900px) {
   .chronicle { position: fixed; right: 12px; top: 70px; width: 240px; }
 }

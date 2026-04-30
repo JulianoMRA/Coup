@@ -52,7 +52,7 @@ Trocar de modelo via `/model` antes de iniciar a fase, ou passar `model` ao spaw
 - [x] Fase 5 — Lobby (antecâmara + aside)
 - [x] Fase 6 — Mesa (refator estrutural)
 - [x] Fase 7 — Action panel + reaction bar com cores heráldicas
-- [ ] Fase 8 — Overlays dramáticos
+- [x] Fase 8 — Overlays dramáticos
 - [ ] Fase 9 — Atualização de testes
 - [ ] Fase 10 — Verificação visual e UX (opcional)
 
@@ -249,6 +249,8 @@ Cada fase = 1 commit no padrão Conventional Commits, sem co-authored-by. Após 
 
 **Agente recomendado**: nenhum — execução direta. Verificar antes os valores de `GamePhase` em `@coup/shared` para gatilhar a animação no momento certo.
 **Modelo recomendado**: **Sonnet 4.6** — gatilho da `coup-animation` exige inspecionar o enum `GamePhase` e decidir a transição correta sem novo phase no backend.
+
+**Status**: ✅ Concluída em 2026-04-30. Desvios: `CoupAnimation` dispara em `AWAITING_COUP_TARGET && !needsInfluenceChoice` (ator e espectadores veem a animação; a vítima já vê o seletor de influência). Botão "Revanche" renomeado para "Nova Partida" conforme handoff — teste em `frontend-reconnect.test.ts` atualizado. `keepCount` no `ExchangeSelector` calculado dinamicamente da mão viva (não hardcoded 2).
 
 ---
 

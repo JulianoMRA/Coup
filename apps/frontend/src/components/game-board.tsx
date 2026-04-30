@@ -14,6 +14,7 @@ import { WinnerOverlay } from "@/components/winner-overlay"
 import { ReactionBar } from "@/components/reaction-bar"
 import { BlockChallengeBar } from "@/components/block-challenge-bar"
 import { ExchangeSelector } from "@/components/exchange-selector"
+import { CoupAnimation } from "@/components/coup-animation"
 import { computeSeatPositions } from "@/lib/seat-positions"
 
 interface GameBoardProps {
@@ -113,6 +114,10 @@ export function GameBoard({ game, playerId, roomId, error }: GameBoardProps) {
 
         <TableCenter deckCount={game.deckCount} />
         <Chronicle log={game.log} />
+
+        {game.phase === GamePhase.AWAITING_COUP_TARGET && !needsInfluenceChoice && (
+          <CoupAnimation />
+        )}
       </div>
 
       {error && (

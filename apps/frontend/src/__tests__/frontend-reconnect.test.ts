@@ -26,8 +26,8 @@ describe("useGame — REJOIN_ROOM on connect", () => {
   })
 })
 
-describe("WinnerOverlay — Revanche button", () => {
-  it("renders a button with text Revanche", async () => {
+describe("WinnerOverlay — Nova Partida button", () => {
+  it("renders a button with text Nova Partida", async () => {
     const { WinnerOverlay } = await import("@/components/winner-overlay")
 
     const players = [{ id: "p1", name: "Ana", coins: 5, cardCount: 1, eliminated: false, revealedCards: [] }]
@@ -38,10 +38,10 @@ describe("WinnerOverlay — Revanche button", () => {
       })
     )
 
-    expect(screen.getByRole("button", { name: "Revanche" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Nova Partida" })).toBeInTheDocument()
   })
 
-  it("emits REMATCH with roomId when Revanche button is clicked", async () => {
+  it("emits REMATCH with roomId when Nova Partida button is clicked", async () => {
     const { WinnerOverlay } = await import("@/components/winner-overlay")
 
     const players = [{ id: "p1", name: "Ana", coins: 5, cardCount: 1, eliminated: false, revealedCards: [] }]
@@ -52,7 +52,7 @@ describe("WinnerOverlay — Revanche button", () => {
       })
     )
 
-    fireEvent.click(screen.getByRole("button", { name: "Revanche" }))
+    fireEvent.click(screen.getByRole("button", { name: "Nova Partida" }))
 
     expect(socket.emit).toHaveBeenCalledWith("REMATCH", "room123")
   })
