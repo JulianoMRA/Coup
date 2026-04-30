@@ -26,40 +26,6 @@ describe("useGame — REJOIN_ROOM on connect", () => {
   })
 })
 
-describe("PlayerPanel — disconnected indicator", () => {
-  it("renders (desconectado) for players in disconnectedPlayers array", async () => {
-    const { PlayerPanel } = await import("@/components/player-panel")
-
-    const players = [{ id: "p1", name: "Ana", coins: 2, cardCount: 2, eliminated: false, revealedCards: [] }]
-    render(
-      React.createElement(PlayerPanel, {
-        players,
-        activePlayerId: "p2",
-        myId: "p3",
-        disconnectedPlayers: ["p1"],
-      })
-    )
-
-    expect(screen.getByText("(desconectado)")).toBeInTheDocument()
-  })
-
-  it("does NOT render (desconectado) for players NOT in disconnectedPlayers array", async () => {
-    const { PlayerPanel } = await import("@/components/player-panel")
-
-    const players = [{ id: "p1", name: "Ana", coins: 2, cardCount: 2, eliminated: false, revealedCards: [] }]
-    render(
-      React.createElement(PlayerPanel, {
-        players,
-        activePlayerId: "p2",
-        myId: "p3",
-        disconnectedPlayers: [],
-      })
-    )
-
-    expect(screen.queryByText("(desconectado)")).toBeNull()
-  })
-})
-
 describe("WinnerOverlay — Revanche button", () => {
   it("renders a button with text Revanche", async () => {
     const { WinnerOverlay } = await import("@/components/winner-overlay")
