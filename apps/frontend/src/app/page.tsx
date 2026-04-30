@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Swords } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ConnectionBadge } from "@/components/connection-badge"
+import { Crest } from "@/components/ui/crest"
+import { Filigree } from "@/components/ui/filigree"
 import { getOrCreatePlayerId } from "@/lib/session"
 import { getBackendUrl } from "@/lib/backend-url"
 import { getPlayerName, savePlayerName } from "@/hooks/use-lobby"
@@ -13,8 +11,8 @@ import { getPlayerName, savePlayerName } from "@/hooks/use-lobby"
 export default function Home() {
   const router = useRouter()
   const [username, setUsername] = useState("")
-  const [playerId, setPlayerId] = useState("")
   const [isCreating, setIsCreating] = useState(false)
+  const [playerId, setPlayerId] = useState("")
 
   useEffect(() => {
     setPlayerId(getOrCreatePlayerId())
@@ -32,14 +30,11 @@ export default function Home() {
     if (!username.trim() || !playerId) return
     setIsCreating(true)
     try {
-      const res = await fetch(
-        getBackendUrl() + "/api/rooms",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ hostId: playerId, hostName: username.trim() }),
-        }
-      )
+      const res = await fetch(getBackendUrl() + "/api/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hostId: playerId, hostName: username.trim() }),
+      })
       if (!res.ok) return
       const { roomId } = (await res.json()) as { roomId: string }
       savePlayerName(username.trim())
@@ -50,36 +45,41 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="w-full max-w-[400px] flex flex-col gap-4">
-        <ConnectionBadge />
-        <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-8 shadow-2xl flex flex-col gap-4">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Swords className="h-7 w-7 text-zinc-400" />
-            <h1 className="text-4xl font-bold tracking-[0.25em] text-zinc-100 font-cinzel">COUP</h1>
-            <Swords className="h-7 w-7 text-zinc-400 -scale-x-100" />
-          </div>
-          <p className="text-xs text-zinc-500 text-center tracking-[0.3em] uppercase font-cinzel mb-4">Online</p>
-          <Input
-            placeholder="Seu nome"
+    <div className="felt home-shell">
+      <div className="home-card frame">
+        <span className="frame-corner-tr" />
+        <span className="frame-corner-bl" />
+
+        <div className="home-crest">
+          <Crest size={56} />
+        </div>
+
+        <h1 className="home-title">COUP</h1>
+        <div className="home-sub">Manipulação · Blefe · Poder</div>
+        <p className="home-tag">Apenas uma família sobreviverá à intriga da corte</p>
+
+        <Filigree />
+
+        <div className="home-form" style={{ marginTop: 20 }}>
+          <label className="sc">Seu nome</label>
+          <input
+            className="coup-input"
+            placeholder="Giuliano, Lorenzo, Isabella..."
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             onKeyDown={handleKeyDown}
             maxLength={16}
-            className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500"
           />
-          <Button
+          <button
+            className="btn primary lg"
+            disabled={!username.trim() || isCreating}
             onClick={handleCreateRoom}
-            disabled={username.trim().length === 0 || isCreating}
-            className="w-full min-h-[44px]"
           >
-            Criar Sala
-          </Button>
-          <p className="text-sm text-zinc-500 text-center">
-            ou entre pelo link de convite enviado por um amigo
-          </p>
+            {isCreating ? "Criando…" : "Criar Sala"}
+          </button>
+          <p className="home-invite-hint">ou entre pelo link de convite enviado por um amigo</p>
         </div>
       </div>
-    </main>
+    </div>
   )
 }
