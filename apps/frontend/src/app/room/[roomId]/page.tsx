@@ -2,18 +2,13 @@
 
 import { use, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Copy } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ConnectionBadge } from "@/components/connection-badge"
+import { Crest } from "@/components/ui/crest"
+import { Filigree } from "@/components/ui/filigree"
 import { getOrCreatePlayerId } from "@/lib/session"
 import { getPlayerName, savePlayerName, useLobby } from "@/hooks/use-lobby"
 import { useGame } from "@/hooks/use-game"
 import { GameBoard } from "@/components/game-board"
 import { socket } from "@/lib/socket"
-import { cn } from "@/lib/utils"
 
 export default function RoomPage({ params }: { params: Promise<{ roomId: string }> }) {
   const { roomId } = use(params)
@@ -68,7 +63,7 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
     socket.emit("START_GAME", roomId)
   }
 
-  // Game active — switch from lobby to game board (also handles reconnect where only STATE_UPDATE arrives, not GAME_STARTED)
+  // Game active
   if (game) {
     return <GameBoard game={game} playerId={playerId} roomId={roomId} error={gameError} />
   }
@@ -76,158 +71,194 @@ export default function RoomPage({ params }: { params: Promise<{ roomId: string 
   // Room not found
   if (error === "Room not found") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-xl font-semibold text-zinc-300">Sala não encontrada.</p>
-        <Button onClick={() => router.push("/")}>Voltar ao início</Button>
-      </main>
+      <div className="felt home-shell">
+        <div className="home-card frame">
+          <span className="frame-corner-tr" />
+          <span className="frame-corner-bl" />
+          <div className="home-crest"><Crest size={40} /></div>
+          <p style={{ textAlign: "center", fontFamily: "var(--font-display)", fontSize: 20, color: "var(--wine-deep)", margin: "0 0 24px" }}>
+            Sala não encontrada.
+          </p>
+          <button className="btn primary lg" onClick={() => router.push("/")}>
+            Voltar ao início
+          </button>
+        </div>
+      </div>
     )
   }
 
-  // Sub-state A: username entry
+  // Sub-state A: name entry
   if (!playerName) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-8">
-        <div className="w-full max-w-[400px] flex flex-col gap-4">
-          <ConnectionBadge />
-          <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-8 shadow-2xl flex flex-col gap-4">
-            <h1 className="text-xl font-semibold text-zinc-100">Entrar na Sala</h1>
-            <p className="text-sm text-zinc-500">Sala: {roomId}</p>
-            {error && error !== "Room not found" && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
-            <Input
-              placeholder="Seu nome"
+      <div className="felt home-shell">
+        <div className="home-card frame">
+          <span className="frame-corner-tr" />
+          <span className="frame-corner-bl" />
+          <div className="home-crest"><Crest size={40} /></div>
+          <h1 className="home-title" style={{ fontSize: 48 }}>COUP</h1>
+          <div className="home-sub" style={{ marginBottom: 8 }}>Antecâmara · {roomId}</div>
+          <Filigree />
+          {error && error !== "Room not found" && (
+            <p style={{ color: "var(--wine-deep)", fontSize: 13, textAlign: "center", margin: "8px 0 0" }}>
+              {error}
+            </p>
+          )}
+          <div className="home-form" style={{ marginTop: 20 }}>
+            <label className="sc">Seu nome</label>
+            <input
+              className="coup-input"
+              placeholder="Giuliano, Lorenzo, Isabella..."
               value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               onKeyDown={handleKeyDown}
               maxLength={16}
-              className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder:text-zinc-500"
+              autoFocus
             />
-            <p className="text-xs text-zinc-500">
-              Apenas letras, números, espaços e hífens. Máximo 16 caracteres.
-            </p>
-            <Button
+            <button
+              className="btn primary lg"
+              disabled={!nameInput.trim()}
               onClick={handleJoin}
-              disabled={nameInput.trim().length === 0}
-              className="w-full min-h-[44px]"
             >
               Entrar na Sala
-            </Button>
+            </button>
           </div>
         </div>
-      </main>
+      </div>
     )
   }
 
   // Sub-state B: active lobby
   const isHost = lobby?.hostId === playerId
-  const allReady =
-    lobby ? lobby.players.length >= 2 && lobby.players.every((p) => p.isReady) : false
-  const startDisabledReason =
-    !lobby || lobby.players.length < 2
-      ? "Aguarde ao menos 2 jogadores"
-      : !allReady
-        ? "Aguarde todos os jogadores ficarem prontos"
-        : null
+  const canStart = lobby ? lobby.players.length >= 2 : false
+  const seats = lobby ? [...lobby.players] : []
+  while (seats.length < 6) seats.push(null as unknown as typeof seats[0])
+  const inviteUrl = typeof window !== "undefined" ? window.location.href : ""
 
   return (
-    <main className="min-h-screen flex flex-col items-center py-8 px-4">
-      <div className="w-full max-w-[480px] flex flex-col gap-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-[20px] font-semibold text-zinc-100">Sala de Espera</h1>
-          <ConnectionBadge />
+    <div className="felt" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      {/* Top bar */}
+      <div className="top-bar">
+        <div className="top-bar-brand">
+          <Crest size={22} />
+          <h1>COUP</h1>
+        </div>
+        <div className="top-bar-meta">
+          <span>SALA · {roomId}</span>
+          <span className="divider">◆</span>
+          <span>AGUARDANDO</span>
+        </div>
+      </div>
+
+      {error && (
+        <p style={{ padding: "8px 24px", color: "var(--wine-deep)", fontFamily: "var(--font-display)", fontSize: 14 }}>
+          {error}
+        </p>
+      )}
+
+      {/* Main grid */}
+      <div className="lobby-shell">
+        {/* Left: seats */}
+        <div className="lobby-main">
+          <div className="lobby-hero">
+            <div className="eyebrow">Antecâmara</div>
+            <h2 className="lobby-hero-title">A corte se reúne</h2>
+            <p className="lobby-hero-desc">
+              Convide até cinco amigos. Quando todos estiverem sentados, o Duque pode dar o sinal.
+            </p>
+
+            <div style={{ marginTop: 24 }}>
+              <div className="eyebrow">Jogadores ({lobby?.players.length ?? 0}/6)</div>
+              <div className="lobby-seats">
+                {seats.map((p, i) => {
+                  if (!p) {
+                    return (
+                      <div key={`empty-${i}`} className="lobby-seat-card empty">
+                        <div className="seat-av">?</div>
+                        <div className="seat-nm" style={{ color: "oklch(0.76 0.13 82 / 0.4)", fontSize: 14 }}>
+                          Assento livre
+                        </div>
+                      </div>
+                    )
+                  }
+                  const isMe = p.playerId === playerId
+                  const isPlayerHost = p.playerId === lobby?.hostId
+                  return (
+                    <div key={p.playerId} className={`lobby-seat-card${isPlayerHost ? " host" : ""}`}>
+                      <div className="seat-av">{p.name.charAt(0).toUpperCase()}</div>
+                      <div className="seat-nm">{p.name}{isMe ? " (você)" : ""}</div>
+                      {isPlayerHost && <span className="seat-badge">Anfitrião</span>}
+                      {!isPlayerHost && p.isReady && <span className="seat-badge ready">Pronto</span>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {error && <p className="text-sm text-destructive">{error}</p>}
-
-        {/* Card 1: Invite link */}
-        <Card className="bg-zinc-900/60 border-zinc-800">
-          <CardHeader className="pb-2">
-            <p className="text-sm font-semibold text-zinc-500">Convite</p>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-2">
+        {/* Right: aside */}
+        <aside className="lobby-aside">
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 8 }}>Convite</div>
             {showFallback ? (
-              <div className="flex flex-col gap-1">
-                <p className="text-xs text-zinc-500">Copie o link manualmente</p>
-                <p className="text-sm font-mono break-all select-all text-zinc-400">
-                  {typeof window !== "undefined" ? window.location.href : ""}
-                </p>
-              </div>
-            ) : (
-              <p className="text-sm font-mono truncate text-zinc-400">
-                {typeof window !== "undefined" ? window.location.href : ""}
+              <p style={{ fontFamily: "var(--font-display)", fontSize: 13, color: "var(--parchment)", wordBreak: "break-all" }}>
+                {inviteUrl}
               </p>
-            )}
-            <Button
-              variant="secondary"
-              className="w-full gap-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 min-h-[44px]"
-              onClick={handleCopyLink}
-            >
-              <Copy className="h-4 w-4" />
-              {copied ? "Copiado!" : "Copiar link"}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Card 2: Players */}
-        <Card className="bg-zinc-900/60 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="text-base text-zinc-300">
-              Jogadores ({lobby?.players.length ?? 0}/6)
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            {!lobby || lobby.players.length === 0 ? (
-              <p className="text-sm text-zinc-500">Aguardando outros jogadores...</p>
             ) : (
-              lobby.players.map((player) => (
-                <div key={player.playerId} className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-zinc-700 text-zinc-300 flex items-center justify-center text-sm font-semibold shrink-0">
-                    {player.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="flex-1 text-base text-zinc-200">
-                    {player.name}
-                    {player.playerId === lobby.hostId && (
-                      <span className="text-sm text-zinc-500 ml-1">(anfitrião)</span>
-                    )}
-                  </span>
-                  <Badge
-                    className={cn(
-                      "text-xs",
-                      player.isReady
-                        ? "bg-emerald-500 text-white hover:bg-emerald-500"
-                        : "bg-zinc-800 text-zinc-500 border border-zinc-700"
-                    )}
-                  >
-                    {player.isReady ? "Pronto" : "Aguardando"}
-                  </Badge>
-                </div>
-              ))
+              <div className="invite-link">
+                <input readOnly value={inviteUrl} />
+                <button className="btn gold sm" style={{ borderRadius: 0, border: "none", minWidth: 90 }} onClick={handleCopyLink}>
+                  {copied ? "Copiado!" : "Copiar"}
+                </button>
+              </div>
             )}
-          </CardContent>
-        </Card>
+            <p className="invite-link-hint">Compartilhe o link — qualquer um com ele pode entrar.</p>
+          </div>
 
-        {/* Ready toggle — all players */}
-        <Button
-          variant={myReady ? "outline" : "default"}
-          className="w-full min-h-[44px]"
-          onClick={handleReadyToggle}
-        >
-          {myReady ? "Cancelar Prontidão" : "Estou Pronto!"}
-        </Button>
+          <Filigree />
 
-        {/* Start button — host only */}
-        {isHost && (
-          <Button
-            className="w-full min-h-[44px]"
-            disabled={!allReady}
-            title={startDisabledReason ?? undefined}
-            onClick={handleStartGame}
-          >
-            Iniciar Jogo
-          </Button>
-        )}
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>Regras desta partida</div>
+            <ul className="lobby-rules">
+              <li>◆ 5 personagens clássicos</li>
+              <li>◆ Artes iguais (menos informação)</li>
+              <li>◆ Turno de 30 segundos</li>
+              <li>◆ Contestação permitida</li>
+            </ul>
+          </div>
+
+          <div style={{ flex: 1 }} />
+
+          <Filigree />
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <button
+              className={`btn ${myReady ? "ghost" : "primary"} lg`}
+              onClick={handleReadyToggle}
+            >
+              {myReady ? "Cancelar Prontidão" : "Estou Pronto!"}
+            </button>
+
+            {isHost ? (
+              <button
+                className="btn primary lg"
+                disabled={!canStart}
+                onClick={handleStartGame}
+              >
+                {canStart ? "Iniciar Partida" : "Aguardando jogadores…"}
+              </button>
+            ) : (
+              <div className="lobby-aside-title">
+                Aguardando o anfitrião iniciar…
+              </div>
+            )}
+
+            <button className="btn ghost sm" onClick={() => router.push("/")}>
+              Sair da sala
+            </button>
+          </div>
+        </aside>
       </div>
-    </main>
+    </div>
   )
 }
